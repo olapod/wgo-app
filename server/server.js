@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Data = require('./models/Data');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const withAuth = require('./middleware');
 
 require('dotenv').config();
+const secret = process.env.TOKEN_PASS;
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -22,7 +24,8 @@ mongoose
   .connect(
     db,
     { useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      // useCreateIndex: true
     }
         )
   .then(() => console.log("MongoDB successfully connected"))
@@ -39,6 +42,22 @@ app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 })
 
+app.get('/api/getData',  function(req, res) {
+  Data.find({}, function(err, items){
+    if(err){
+        console.log("What the fuck? ", err);
+        return
+    }
+
+    if(items.length == 0) {
+        console.log("No record found")
+        return
+    }
+
+    res.send(items);
+})
+})
+
 // POST route to register a user
 app.post('/api/register', function(req, res) {
   const { email, password } = req.body;
@@ -53,7 +72,25 @@ app.post('/api/register', function(req, res) {
   });
 });
 
-const secret = process.env.TOKEN_PASS;
+// POST route to register a database summary
+
+app.post('/api/data', function (req, res, next) {
+  const array = [{street: 'ul. Nowaka', number: 1, declaration: 1, residence: 2, difference: -1},
+  {street: 'ul. Nowakj', number: 1, declaration: 1, residence: 4, difference: -3}]
+
+    var payload = req.body;
+
+    (async function(){
+
+        const insertMany = await Data.insertMany(array);
+
+        console.log(JSON.stringify(insertMany,'','\t'));
+
+        res.status(200).send('Ok');
+    })();
+});
+
+
 
 app.post('/api/authenticate', function(req, res) {
   const { email, password } = req.body;
