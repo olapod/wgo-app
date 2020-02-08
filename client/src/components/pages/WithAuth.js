@@ -15,9 +15,11 @@ export default function withAuth(ComponentToProtect) {
         .then(res => {
           if (res.status === 200) {
             this.setState({ loading: false });
-          } else {
+          }
+          else {
             const error = new Error(res.error);
             throw error;
+            // console.error("Error checkToken api", res.status)
           }
         })
         .catch(err => {

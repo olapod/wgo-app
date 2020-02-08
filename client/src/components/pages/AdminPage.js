@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 
-export default class AdminPage extends Component {
-    constructor() {
-      super();
-      //Set default message
-      this.state = {
-        message: 'Loading...'
-      }
-    }
+@inject('appStore')
+@observer
+class AdminPage extends Component {
 
-
-    componentDidMount() {
-      //GET message from server using fetch api
-      fetch('/api/admin')
-        .then(res => res.text())
-        .then(res => this.setState({message: res}));
+   componentDidMount() {
+      this.props.appStore.getMessage();
     }
 
     render() {
       return (
         <div>
           <h1>Admin Page</h1>
-          <p>{this.state.message}</p>
+          <p>{this.props.appStore.message}</p>
         </div>
       );
     }
   }
+
+  export default AdminPage;

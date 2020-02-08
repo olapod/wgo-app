@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
+
+@inject('appStore')
+@observer
 
 export default class HomePage extends Component {
-      constructor() {
-      super();
-      //Set default message
-      this.state = {
-        message: []
-      }
-    }
-    componentDidMount() {
-      //GET message from server using fetch api
-      fetch('/api/getData')
-        .then(res => res.json())
-        .then(json => this.setState({message: json}));
 
+    componentDidMount() {
+      this.props.appStore.getSummary()
     }
 
     render() {
-      console.log("Wynik: ", this.state.message);
+      console.log("CO: ", this.props.appStore.summary)
       return (
         <div>
           <h1>Home</h1>
-          <p>Dupa
-            {/* {this.state.message} */}
-            </p>
+          <ul >
+			{this.props.appStore.summary.map(item => <li key={item._id}>{item.street}</li>)}
+		</ul>
         </div>
       );
     }
