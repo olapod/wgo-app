@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
-  street: { type: String, required: true },
-  number: { type: Number, required: true },
-  declaration: { type: Number, required: true },
-  residence: { type: Number, required: true },
-  difference: { type: Number, required: true }
+  ulica: { type: String, required: true },
+  nr: { type: Number, required: true },
+  osoby: { type: Number, required: true },
+  meldunki: { type: Number, required: true },
+  roznica: { type: Number, required: true }
 });
 
-dataSchema.index({ street: 1, number: 1}, { unique: true });
+dataSchema.index({ ulica: 1, nr: 1}, { unique: true });
 
 module.exports = mongoose.model('Data', dataSchema);

@@ -6,8 +6,6 @@ class AppStore {
 
     // }
 
-    @observable email = '';
-    @observable password = '';
     @observable message = 'Loading...';
     @observable summary = [];
     @observable elud = [];
@@ -44,6 +42,24 @@ class AppStore {
 @action errorHandle = () => {
   this.error = true;
 }
+
+@action postData = (e) => {
+  e.preventDefault();
+  const obj = {elud: this.elud, wgo: this.wgo};
+
+  fetch('/api/data', {
+    method: "post",
+    headers: {
+        "Content-Type": "application/json" //lub używając powyższej opisanego Headers()
+    },
+    body: JSON.stringify(obj)
+})
+.then(res => res.json())
+.then((res) => {
+    console.log("Dodałem bazy danych", res);
+})
+.catch(error => console.log("Błąd!!: ", error))
+ }
 }
 const appStore = new AppStore();
 

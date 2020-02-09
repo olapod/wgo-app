@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const withAuth = require('./middleware');
+let { compareData } = require('./logic/compareData');
 
 require('dotenv').config();
 const secret = process.env.TOKEN_PASS;
@@ -122,19 +123,20 @@ app.get('/api/getData',  function(req, res) {
 // POST route to register a database summary
 
 app.post('/api/data', function (req, res, next) {
-  const array = [{street: 'ul. Nowaka', number: 1, declaration: 1, residence: 2, difference: -1},
-  {street: 'ul. Nowakj', number: 1, declaration: 1, residence: 4, difference: -3}]
+  // const array = [{street: 'ul. Nowaka', number: 1, declaration: 1, residence: 2, difference: -1},
+  // {street: 'ul. Nowakj', number: 1, declaration: 1, residence: 4, difference: -3}]
+  // const { elud, wgo } = req.body;
+  var payload = req.body;
+  const array = compareData(payload.elud, payload.wgo)
+  console.log('Co mamy: ', typeof payload.elud[0].nr)
+    // (async function(){
 
-    var payload = req.body;
+    //     const insertMany = await Data.insertMany(array);
 
-    (async function(){
+    //     console.log(JSON.stringify(insertMany,'','\t'));
 
-        const insertMany = await Data.insertMany(array);
-
-        console.log(JSON.stringify(insertMany,'','\t'));
-
-        res.status(200).send('Ok');
-    })();
+    //     res.status(200).send('Ok');
+    // })();
 });
 
 

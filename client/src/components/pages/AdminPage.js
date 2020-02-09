@@ -63,26 +63,13 @@ class AdminPage extends Component {
       </div>
       <div className='button_container'>
         <Button type="button" className="btn btn-primary" disabled={!isEnabled}
-        // onClick={this.props.appStore.getAll}
+        onClick={this.props.appStore.postData}
         >
           Porównaj bazy
         </Button>
       </div>
     </div>
     )};
-
-  //  componentDidMount() {
-  //     this.props.appStore.getMessage();
-  //   }
-
-  //   render() {
-  //     return (
-  //       <div>
-  //         <h1>Admin Page</h1>
-  //         <p>{this.props.appStore.message}</p>
-  //       </div>
-  //     );
-  //   }
   }
 
   export default AdminPage;
