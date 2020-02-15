@@ -123,21 +123,43 @@ app.get('/api/getData',  function(req, res) {
 // POST route to register a database summary
 
 app.post('/api/data', function (req, res, next) {
-  // const array = [{street: 'ul. Nowaka', number: 1, declaration: 1, residence: 2, difference: -1},
-  // {street: 'ul. Nowakj', number: 1, declaration: 1, residence: 4, difference: -3}]
-  // const { elud, wgo } = req.body;
-  var payload = req.body;
-  const array = compareData(payload.elud, payload.wgo)
-  console.log('Co mamy: ', typeof payload.elud[0].nr)
-    // (async function(){
 
-    //     const insertMany = await Data.insertMany(array);
+  let payload = req.body;
+  // console.log('Co dostaję: ', payload);
+  payload.elud.forEach((element) =>{element.nr = parseInt(element.nr, 10);})
+  payload.wgo.forEach((element) =>{element.nr = parseInt(element.nr, 10); element.osoby = parseInt(element.osoby, 10);})
+  const summary = compareData(payload.elud, payload.wgo)
+  //ZMIENIĆ STRINGI NA NUMERY
+  // Data.deleteMany({}, function(err) {
+  //   if (err) {
+  //     console.log(err)
+  //   } else {
+  //     console.log("okey")
+  //   }
+  //   Data.insertMany(summary)
+  //   .then((docs)=>{
+  //   console.log(docs);
+  //   })
+  //   .catch(err => console.log(err));
+  //    });
+Data.insertMany(
+    summary,
+    {ordered: false}
+ )
+ .then((docs)=>{
+    console.log(docs);
+    })
+    .catch(err => console.log(err));
+     });
+// });
 
-    //     console.log(JSON.stringify(insertMany,'','\t'));
-
-    //     res.status(200).send('Ok');
-    // })();
-});
+  // Data.drop()
+  // .then (Data.insertMany(summary))
+  // .then((docs)=>{
+  //   console.log(docs);
+  // })
+  // .catch(err => console.log(err));
+// });
 
 
 

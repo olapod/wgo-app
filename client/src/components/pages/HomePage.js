@@ -16,7 +16,7 @@ export default class HomePage extends Component {
         <div>
           <h1>Home</h1>
           <ul >
-			{this.props.appStore.summary.map(item => <li key={item._id}>{item.street}</li>)}
+			{this.props.appStore.summary.map(item => <li key={item._id}>{item.ulica} {item.nr}</li>)}
 		</ul>
         </div>
       );

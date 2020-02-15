@@ -27,7 +27,7 @@ class AppStore {
    //GET message from server using fetch api
    fetch('/api/getData')
    .then(res => res.json())
-   .then(json => this.summary = json);
+   .then(json => this.summary = json)
 
 }
 

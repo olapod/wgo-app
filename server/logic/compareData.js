@@ -1,45 +1,3 @@
-//DANE ELUD
-// let elud = [{
-//     nr: 12,
-//     lokal: 3,
-//     ulica: 'ul. Sobieskiego',
-// },
-// {
-//     nr: 12,
-//   lokal: 4,
-//     ulica: 'ul. toto',
-// },
-// {
-//     nr: 45,
-//   lokal: 3,
-//     ulica: 'ul. tutu',
-// },
-// {
-//     nr: 42,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-// },
-//         {
-//     nr: 42,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-// },
-//         {
-//     nr: 43,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-// },
-// {
-//     nr: 43,
-//   lokal: 6,
-//     ulica: 'ul. tutu',
-// },
-//         {
-//     nr: 12,
-//   lokal: 7,
-//     ulica: 'ul. Sobieskiego',
-// },
-// ];
 let compareData = function(elud, wgo) {
 //tworzę listę bez lokalu
 let newElud = elud.map(({ lokal, ...rest }) => rest);
@@ -57,65 +15,6 @@ if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
 }
 }
 };
-// console.log('Wynik ELUD: ', unique);
-
-
-
-//Dane WGO
-// let wgo = [{
-//     nr: 12,
-//     lokal: '',
-//     ulica: 'ul. Sobieskiego',
-//     osoby: 4
-// },
-// {
-//     nr: 12,
-//   lokal: 4,
-//     ulica: 'ul. toto',
-//   osoby: 2
-// },
-// {
-//     nr: 45,
-//   lokal: 3,
-//     ulica: 'ul. tutu',
-//   osoby: 1
-// },
-// {
-//     nr: 42,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-//   osoby: 10
-// },
-//         {
-//     nr: 42,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-//     osoby: 5
-// },
-//         {
-//     nr: 43,
-//   lokal: 2,
-//     ulica: 'ul. tutu',
-// },
-// {
-//     nr: 43,
-//   lokal: '',
-//     ulica: 'ul. tutu',
-//   osoby: 4
-// },
-//         {
-//     nr: 12,
-//   lokal: 7,
-//     ulica: 'ul. Sobieskiego',
-//     osoby: 5
-// },
-//        {
-//     nr: 42,
-//   lokal: 7,
-//     ulica: 'ul. tutu',
-//     osoby: 7
-// },
-// ];
 
 //tworzę listę bez lokalu
 let newWgo = wgo.map(({ lokal, osoby, ...rest }) => rest);
@@ -135,7 +34,9 @@ if (uniqueWgoStreets[i].nr == wgo[k].nr && uniqueWgoStreets[i].ulica == wgo[k].u
 }
 };
 
-
+// console.log('Co porownuje: Elud: ', unique,
+//  ' Wgo: ', uniqueWgoStreets
+//  )
 //Porównanie wyników
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
 for (var k = 0; k <unique.length; k++) {
@@ -143,11 +44,21 @@ if (uniqueWgoStreets[i].nr == unique[k].nr && uniqueWgoStreets[i].ulica == uniqu
 
 uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
 uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
-}
-}
-}
-return uniqueWgoStreets;
+}}}
+
+//Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
+for (var i = 0; i < unique.length; i++) {
+    if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 ||  (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 ))
+        {uniqueWgoStreets.push({nr: unique[i].nr,
+                              ulica: unique[i].ulica,
+                              osoby: 0,
+                              roznica:  unique[i].liczba_meldunków,
+                              meldunki: unique[i].liczba_meldunków})
+}};
+
 // console.log('Wynik WGO: ', uniqueWgoStreets);
+return uniqueWgoStreets;
+
 }
 
 module.exports = { compareData };

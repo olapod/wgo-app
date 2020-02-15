@@ -24,7 +24,7 @@ class DataUploadingElud extends React.Component {
         Wgraj plik .CSV
         </Button>
       </label> */}
-      <p>Wgraj plik .CSV z bazą danych. Plik powinien zawierać kolumnę o nazwię "ulica" oraz kolumnę o nazwie "numer". Ulice powinny mieć nazwy dokładnie takie same jak w bazie jednostek urbanistycznych! Wielkość liter nie ma znaczenia.</p>
+      <p>Wgraj plik ELUD z bazą danych. </p>
     </div>
     )};
 };
