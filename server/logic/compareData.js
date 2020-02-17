@@ -19,10 +19,10 @@ if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
 //tworzę listę bez lokalu
 let newWgo = wgo.map(({ lokal, osoby, ...rest }) => rest);
 
-//tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków
+//tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków, DGO
 let jsonObject2 = newWgo.map(JSON.stringify);
 let uniqueWgo = new Set(jsonObject2);
-let uniqueWgoStreets = Array.from(uniqueWgo).map(JSON.parse).map((osoby, roznica, meldunki) => ({...osoby, roznica, meldunki, osoby: 0, roznica: 0, meldunki: 0}));
+let uniqueWgoStreets = Array.from(uniqueWgo).map(JSON.parse).map((osoby, roznica, meldunki, DGO) => ({...osoby, roznica, meldunki, DGO, osoby: 0, roznica: 0, meldunki: 0, DGO: ''}));
 
 //zliczam liczbę osób na każdej nieruchomości
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
@@ -39,24 +39,39 @@ if (uniqueWgoStreets[i].nr == wgo[k].nr && uniqueWgoStreets[i].ulica == wgo[k].u
 //  )
 //Porównanie wyników
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
-for (var k = 0; k <unique.length; k++) {
-if (uniqueWgoStreets[i].nr == unique[k].nr && uniqueWgoStreets[i].ulica == unique[k].ulica && uniqueWgoStreets[i].osoby && unique[k].liczba_meldunków) {
+  for (var k = 0; k <unique.length; k++) {
+    if (uniqueWgoStreets[i].nr == unique[k].nr && uniqueWgoStreets[i].ulica == unique[k].ulica && uniqueWgoStreets[i].osoby && unique[k].liczba_meldunków) {
 
-uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
-uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
-}}}
-
+        uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
+        uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
+        uniqueWgoStreets[i].DGO = 'nie';
+    }
+    if (!uniqueWgoStreets[i].DGO) {
+        uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
+        uniqueWgoStreets[i].DGO = 'nie';
+        console.log('What1: ', uniqueWgoStreets[i])
+    }
+}}
+console.log('Wynik WGO1: ', uniqueWgoStreets);
 //Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
 for (var i = 0; i < unique.length; i++) {
-    if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 ||  (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 ))
+    if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 || uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 )
         {uniqueWgoStreets.push({nr: unique[i].nr,
                               ulica: unique[i].ulica,
                               osoby: 0,
                               roznica:  unique[i].liczba_meldunków,
-                              meldunki: unique[i].liczba_meldunków})
+                              meldunki: unique[i].liczba_meldunków,
+                              DGO: 'tak'})
 }};
+// console.log('Wynik WGO2: ', uniqueWgoStreets);
+// for (var i = 0; i < uniqueWgoStreets.length; i++) {
+//   if (unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) === -1 || unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) > -1 && unique.map(x => { return x.nr; }).indexOf(uniqueWgoStreets[i].nr) === -1 )
+//       { uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
+//         uniqueWgoStreets[i].DGO = 'nie';
+//         console.log('What2: ', uniqueWgoStreets[i])
+//       }};
 
-// console.log('Wynik WGO: ', uniqueWgoStreets);
+// console.log('Wynik WGO3: ', uniqueWgoStreets);
 return uniqueWgoStreets;
 
 }

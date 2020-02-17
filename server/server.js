@@ -1,15 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const User = require('./models/User');
-const Data = require('./models/Data');
+const User = require('./models/User.model');
+const Data = require('./models/Data.model');
 const jwt = require('jsonwebtoken');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const withAuth = require('./middleware');
-let { compareData } = require('./logic/compareData');
+
 
 require('dotenv').config();
+
+const dataRoutes = require('./routes/Data.routes');
+
 const secret = process.env.TOKEN_PASS;
 
 const app = express();
@@ -18,6 +21,7 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(dataRoutes);
 
 // DB Config
 const db = require("./config/keys").mongoURI;
@@ -104,62 +108,6 @@ app.get('/checkToken', withAuth, function(req, res) {
   res.sendStatus(200);
 });
 
-app.get('/api/getData',  function(req, res) {
-  Data.find({}, function(err, items){
-    if(err){
-        console.log("What the fuck? ", err);
-        return
-    }
-
-    if(items.length == 0) {
-        console.log("No record found")
-        return
-    }
-
-    res.send(items);
-})
-})
-
-// POST route to register a database summary
-
-app.post('/api/data', function (req, res, next) {
-
-  let payload = req.body;
-  // console.log('Co dostaję: ', payload);
-  payload.elud.forEach((element) =>{element.nr = parseInt(element.nr, 10);})
-  payload.wgo.forEach((element) =>{element.nr = parseInt(element.nr, 10); element.osoby = parseInt(element.osoby, 10);})
-  const summary = compareData(payload.elud, payload.wgo)
-  //ZMIENIĆ STRINGI NA NUMERY
-  // Data.deleteMany({}, function(err) {
-  //   if (err) {
-  //     console.log(err)
-  //   } else {
-  //     console.log("okey")
-  //   }
-  //   Data.insertMany(summary)
-  //   .then((docs)=>{
-  //   console.log(docs);
-  //   })
-  //   .catch(err => console.log(err));
-  //    });
-Data.insertMany(
-    summary,
-    {ordered: false}
- )
- .then((docs)=>{
-    console.log(docs);
-    })
-    .catch(err => console.log(err));
-     });
-// });
-
-  // Data.drop()
-  // .then (Data.insertMany(summary))
-  // .then((docs)=>{
-  //   console.log(docs);
-  // })
-  // .catch(err => console.log(err));
-// });
 
 
 

@@ -1,13 +1,10 @@
 import { observable, action } from "mobx"
 
 class AppStore {
-    // constructor () {
-    //     this.resetState();
-
-    // }
 
     @observable message = 'Loading...';
     @observable summary = [];
+    @observable streets = [];
     @observable elud = [];
     @observable wgo = [];
     @observable loading = true;
@@ -25,10 +22,16 @@ class AppStore {
 
 @action getSummary = () => {
    //GET message from server using fetch api
-   fetch('/api/getData')
+   fetch('/api/getSummary')
    .then(res => res.json())
    .then(json => this.summary = json)
+}
 
+@action getStreets = () => {
+  //GET message from server using fetch api
+  fetch('/api/getStreets')
+  .then(res => res.json())
+  .then(json => this.streets = json)
 }
 
 @action loadWgo = data => {
@@ -47,7 +50,7 @@ class AppStore {
   e.preventDefault();
   const obj = {elud: this.elud, wgo: this.wgo};
 
-  fetch('/api/data', {
+  fetch('/api/updateData', {
     method: "post",
     headers: {
         "Content-Type": "application/json" //lub używając powyższej opisanego Headers()
