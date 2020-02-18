@@ -3,13 +3,13 @@ const router = express.Router();
 
 const DataController = require('../controllers/Data.controller');
 
-// get all posts
+// get summary
 router.route('/api/getSummary').get(DataController.getSummary);
 
-// get single post
+// get streets
 router.route('/api/getStreets').get(DataController.getStreets);
 
-// get posts by range
+// update database
 router.route('/api/updateData').post(DataController.updateData);
 
 module.exports = router;
