@@ -12,4 +12,8 @@ router.route('/api/getStreets').get(DataController.getStreets);
 // update database
 router.route('/api/updateData').post(DataController.updateData);
 
+router.route('/api/streets/:street').get(DataController.filterByStreet);
+
+router.route('/api/streets/:street/:number').get(DataController.filterByStreetAndNumber);
+
 module.exports = router;
