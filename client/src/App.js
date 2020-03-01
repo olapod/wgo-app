@@ -8,7 +8,9 @@ import Home from './components/pages/HomePage';
 import Admin from './components/pages/AdminPage';
 import NotFound from './components/pages/NotFoundPage';
 import Login from './components/pages/LoginPage';
-import Summary from './components/pages/SummaryPage';
+import OneRecordPage from './components/pages/OneRecordPage';
+import DifferencePage from './components/pages/DifferencePage';
+import DGOstatusPage from './components/pages/DGOstatusPage';
 import WithAuth from './components/pages/WithAuth';
 
 @observer
@@ -21,7 +23,9 @@ class App extends React.Component {
             <Route path="/" exact component={Home} />
             <Route path="/admin" exact component={WithAuth(Admin)} />
             <Route path="/login" exact component={Login} />
-            <Route path='/search/:street' component={Summary} />
+            <Route path='/raport/:street/:number' exact component={OneRecordPage} />
+            <Route path='/raport2/difference/:dif' exact component={DifferencePage} />
+            <Route path='/raport3/status/:status' exact component={DGOstatusPage} />
             <Route component={NotFound} />
           </Switch>
         </MainLayout>

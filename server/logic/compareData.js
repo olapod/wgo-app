@@ -44,15 +44,14 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
 
         uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
         uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
-        uniqueWgoStreets[i].DGO = 'nie';
+        uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
     }
     if (!uniqueWgoStreets[i].DGO) {
         uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
-        uniqueWgoStreets[i].DGO = 'nie';
-        console.log('What1: ', uniqueWgoStreets[i])
+        uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
     }
 }}
-console.log('Wynik WGO1: ', uniqueWgoStreets);
+
 //Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
 for (var i = 0; i < unique.length; i++) {
     if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 || uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 )
@@ -61,7 +60,7 @@ for (var i = 0; i < unique.length; i++) {
                               osoby: 0,
                               roznica:  unique[i].liczba_meldunków,
                               meldunki: unique[i].liczba_meldunków,
-                              DGO: 'tak'})
+                              DGO: 'niezłożona deklaracja DGO'})
 }};
 // console.log('Wynik WGO2: ', uniqueWgoStreets);
 // for (var i = 0; i < uniqueWgoStreets.length; i++) {

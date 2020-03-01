@@ -9,6 +9,7 @@ exports.getSummary = async (req, res) => {
   }
 };
 
+//filter ulica i numer
 exports.getStreets = async (req, res) => {
 
   try {
@@ -38,17 +39,51 @@ exports.filterByStreetAndNumber = async function (req, res) {
 
     let street = req.params.street;
     let number = req.params.number;
-    console.log('WWW: ', street, number);
     const selectedItem = await Data.findOne({ulica: street, nr: number});
     // const uniqueNumbers = [...new Set(selectedStreet.map(item => item.nr))];
     res.status(200).json(await selectedItem);
+  } catch(err) {
+    res.status(500).json(err);
+  }
 
+};
+//filter różnica w DGO i meldunkach
+exports.getDiff = async (req, res) => {
+
+  try {
+    res.status(200).json(await Data.distinct('roznica'));
   } catch(err) {
     res.status(500).json(err);
   }
 
 };
 
+exports.filterByDiff = async function (req, res) {
+  try {
+
+    let diff = req.params.diff;
+    const selectedUnits = await Data.find({roznica: diff});
+    // const uniqueNumbers = [...new Set(selectedStreet.map(item => item.nr))];
+    res.status(200).json(await selectedUnits);
+  } catch(err) {
+    res.status(500).json(err);
+  }
+
+};
+
+exports.filterByDGOstatus = async function (req, res) {
+  try {
+
+    let status = req.params.status;
+    const selectedUnits = await Data.find({DGO: status});
+    // const uniqueNumbers = [...new Set(selectedStreet.map(item => item.nr))];
+    res.status(200).json(await selectedUnits);
+  } catch(err) {
+    res.status(500).json(err);
+  }
+
+};
+//ładowanie baz danych - AdminPage
 
 exports.updateData = async function (req, res) {
   try {
