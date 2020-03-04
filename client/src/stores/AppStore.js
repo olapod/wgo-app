@@ -26,13 +26,31 @@ class AppStore {
     @observable elud = [];
     @observable wgo = [];
 
+
+//pagination
+@observable amount = 0;
+@observable itemsPerPage = 2,
+@observable presentPage = 1
+
     //other
     @observable loading = true;
     @observable redirect = false;
     @observable error = false;
 
 
+//pagination function
+@action handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.perPage;
 
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.receivedData()
+        });
+
+    };
 
   //GET message from server using fetch api
   @action getMessage = () => {
@@ -79,7 +97,12 @@ class AppStore {
 
 @action recordHandleClick = (e) => {
    e.preventDefault();
-axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`)
+axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
+        params: {
+          street: this.selectedStreet,
+          number: this.selectedNumber
+        }
+      })
 .then(res => this.selectedUnitByAddress = res.data)
   }
 
@@ -100,8 +123,27 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`)
 
 @action diffHandleClick = (e) => {
    e.preventDefault();
-axios.get(`/api/differences/${this.selectedDiff}`)
-.then(res => this.selectedUnitsByDiff = res.data)
+
+  }
+
+@action diffHandleClick = (e, page) => {
+   e.preventDefault();
+   const itemsPerPage = 2;
+   const startAt = (page - 1) * itemsPerPage;
+   const limit = itemsPerPage;
+axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
+        params: {
+          diff: this.selectedDiff,
+          startAt: this.startAt,
+          limit: this.limit
+        }
+      }))
+.then(res => this.selectedUnitsByDiff = {
+        docs: res.data.docs,
+        amount: res.data.amount,
+        postsPerPage,
+        presentPage: page,
+      })
 .then(this.loading = false);
   }
 

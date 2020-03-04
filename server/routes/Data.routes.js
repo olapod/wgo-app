@@ -22,7 +22,7 @@ router.route('/api/streets/:street/:number').get(DataController.filterByStreetAn
 router.route('/api/getDiff').get(DataController.getDiff);
 
 //filter by differeneces
-router.route('/api/differences/:diff').get(DataController.filterByDiff);
+router.route('/api/differences/:diff/range/:startAt/:limit').get(DataController.filterByDiff);
 
 //filter by DGO status
 router.route('/api/DGOstatus/:status').get(DataController.filterByDGOstatus);
