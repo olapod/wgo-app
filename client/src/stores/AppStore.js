@@ -29,8 +29,8 @@ class AppStore {
 
 //pagination
 @observable amount = 0;
-@observable itemsPerPage = 2,
-@observable presentPage = 1
+@observable itemsPerPage = 2;
+@observable presentPage = 1;
 
     //other
     @observable loading = true;
@@ -137,14 +137,15 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
           startAt: this.startAt,
           limit: this.limit
         }
-      }))
+      })
 .then(res => this.selectedUnitsByDiff = {
         docs: res.data.docs,
         amount: res.data.amount,
-        postsPerPage,
+        itemsPerPage,
         presentPage: page,
       })
-.then(this.loading = false);
+.then(this.loading = false)
+.then(console.log('Dostaje: ', this.selectedUnitsByDiff));
   }
 
 //filtr statusu deklaracji
