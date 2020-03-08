@@ -50,7 +50,7 @@ class AppStore {
   let selected = data.selected;
   this.selectedPage = selected;
   this.getDGOStatusItems(this.selectedPage);
-  console.log(selected)
+  // console.log(selected)
 };
 
   //GET message from server using fetch api
@@ -128,7 +128,7 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
   }
 
 @action getDiffItems = (page) => {
-   const itemsPerPage = 2;
+   const itemsPerPage = 20;
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
@@ -162,7 +162,7 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
 //   }
 
 @action getDGOStatusItems = (page) => {
-   const itemsPerPage = 2;
+   const itemsPerPage = 20;
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
@@ -180,7 +180,7 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
         selectedPage: page,
       })
 .then(this.loading = false)
-.then(console.log('Dostaje: ', this.selectedUnitsByDGOstatus));
+// .then(console.log('Dostaje: ', this.selectedUnitsByDGOstatus));
   }
 
 //ładowanie danych - AdminPage

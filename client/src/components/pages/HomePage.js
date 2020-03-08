@@ -30,7 +30,7 @@ export default class HomePage extends Component {
 
     render() {
 let {streetsOptions,
-      summary,
+      // summary,
       streetsHandleChange,
       numbersOptions,
       numbersHandleChange,
@@ -111,9 +111,9 @@ let {streetsOptions,
           </Col>
         </Row>
       </Container>
-          <ul >
+          {/* <ul >
 			{summary.map(item => <li key={item._id}>{item.ulica} {item.nr} Meldunki: {item.meldunki} Deklaracja DGO: {item.osoby} Różnica: {item.roznica} Status: {item.DGO}</li>)}
-		</ul>
+		</ul> */}
         </div>
       );
     }
