@@ -24,7 +24,8 @@ class App extends React.Component {
             <Route path="/admin" exact component={WithAuth(Admin)} />
             <Route path="/login" exact component={Login} />
             <Route path='/raport/:street/:number' exact component={OneRecordPage} />
-            <Route path='/raport2/difference/:dif' exact component={DifferencePage} />
+            <Route path='/raport2/difference/:diff' exact component={DifferencePage} />
+            {/* <Route path='/raport2/differences/:diff' exact component={DifferencePage} /> */}
             <Route path='/raport3/status/:status' exact component={DGOstatusPage} />
             <Route component={NotFound} />
           </Switch>

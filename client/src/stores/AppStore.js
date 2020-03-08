@@ -30,7 +30,7 @@ class AppStore {
 //pagination
 @observable amount = 0;
 @observable itemsPerPage = 2;
-@observable presentPage = 1;
+@observable selectedPage = 0;
 
     //other
     @observable loading = true;
@@ -39,18 +39,19 @@ class AppStore {
 
 
 //pagination function
-@action handlePageClick = (e) => {
-        const selectedPage = e.selected;
-        const offset = selectedPage * this.perPage;
 
-        this.setState({
-            currentPage: selectedPage,
-            offset: offset
-        }, () => {
-            this.receivedData()
-        });
+@action handlePageClickedDiff = (data) => {
+  let selected = data.selected;
+  this.selectedPage = selected;
+  this.getDiffItems(this.selectedPage);
+};
 
-    };
+@action handlePageClickedDGOStatus = (data) => {
+  let selected = data.selected;
+  this.selectedPage = selected;
+  this.getDGOStatusItems(this.selectedPage);
+  console.log(selected)
+};
 
   //GET message from server using fetch api
   @action getMessage = () => {
@@ -126,26 +127,25 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 
   }
 
-@action diffHandleClick = (e, page) => {
-   e.preventDefault();
+@action getDiffItems = (page) => {
    const itemsPerPage = 2;
-   const startAt = (page - 1) * itemsPerPage;
+  //  const startAt = (page - 1) * itemsPerPage;
+   const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
 axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         params: {
           diff: this.selectedDiff,
-          startAt: this.startAt,
-          limit: this.limit
+          startAt: startAt,
+          limit: limit
         }
       })
 .then(res => this.selectedUnitsByDiff = {
         docs: res.data.docs,
         amount: res.data.amount,
         itemsPerPage,
-        presentPage: page,
+        selectedPage: page,
       })
 .then(this.loading = false)
-.then(console.log('Dostaje: ', this.selectedUnitsByDiff));
   }
 
 //filtr statusu deklaracji
@@ -153,12 +153,34 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
   this.selectedDGOstatus = selectedOption.value;
         }
 
-@action DGOhandleClick = (e) => {
-   e.preventDefault();
-axios.get(`/api/DGOstatus/${this.selectedDGOstatus}`)
-.then(res => this.selectedUnitsByDGOstatus = res.data)
-.then(res => console.log('dff: ',this.selectedUnitsByDGOstatus))
-.then(this.loading = false);
+// @action DGOhandleClick = (e) => {
+//    e.preventDefault();
+// axios.get(`/api/DGOstatus/${this.selectedDGOstatus}`)
+// .then(res => this.selectedUnitsByDGOstatus = res.data)
+// .then(res => console.log('dff: ',this.selectedUnitsByDGOstatus))
+// .then(this.loading = false);
+//   }
+
+@action getDGOStatusItems = (page) => {
+   const itemsPerPage = 2;
+  //  const startAt = (page - 1) * itemsPerPage;
+   const startAt = page * itemsPerPage;
+   const limit = itemsPerPage;
+axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`, {
+        params: {
+          status: this.selectedDGOstatus,
+          startAt: startAt,
+          limit: limit
+        }
+      })
+.then(res => this.selectedUnitsByDGOstatus = {
+        docs: res.data.docs,
+        amount: res.data.amount,
+        itemsPerPage,
+        selectedPage: page,
+      })
+.then(this.loading = false)
+.then(console.log('Dostaje: ', this.selectedUnitsByDGOstatus));
   }
 
 //ładowanie danych - AdminPage

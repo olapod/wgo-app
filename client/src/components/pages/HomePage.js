@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 const DGOoptions = [
-  { value: 'złoożna deklaracja DGO', label: 'złożona deklaracja DGO' },
+  { value: 'złożona deklaracja DGO', label: 'złożona deklaracja DGO' },
   { value: 'niezłożona deklaracja DGO', label: 'niezłożona deklaracja DGO' },
 ];
 
@@ -23,6 +23,11 @@ export default class HomePage extends Component {
       this.props.appStore.getDiff();
     }
 
+    diffHandleClick = (e) => {
+      e.preventDefault();
+      this.props.appStore.getDiffItems(this.props.appStore.presentPage)
+    }
+
     render() {
 let {streetsOptions,
       summary,
@@ -33,7 +38,7 @@ let {streetsOptions,
       selectedStreet,
       selectedNumber,
       diffOptions,
-      diffHandleClick,
+      // diffHandleClick,
       diffHandleChange,
       selectedDiff,
       selectedDGOstatus,
@@ -79,7 +84,9 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz różnicę"
         />
-        <button onClick={diffHandleClick} >
+        <button
+        // onClick={this.diffHandleClick}
+        >
         <Link to={'/raport2/difference/' + selectedDiff}>Filtruj</Link>
 
         </button>

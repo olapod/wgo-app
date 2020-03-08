@@ -25,6 +25,7 @@ router.route('/api/getDiff').get(DataController.getDiff);
 router.route('/api/differences/:diff/range/:startAt/:limit').get(DataController.filterByDiff);
 
 //filter by DGO status
-router.route('/api/DGOstatus/:status').get(DataController.filterByDGOstatus);
+// router.route('/api/DGOstatus/:status').get(DataController.filterByDGOstatus);
+router.route('/api/DGOstatus/:status/range/:startAt/:limit').get(DataController.filterByDGOstatus);
 
 module.exports = router;
