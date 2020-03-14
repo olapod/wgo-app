@@ -46,13 +46,25 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
         uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
     }
+    //sprawdz to jutro
     if (!uniqueWgoStreets[i].DGO) {
         uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
     }
-}}
+    // if (uniqueWgoStreets[i].ulica.indexOf(unique[k].ulica) === -1 || uniqueWgoStreets[i].ulica.indexOf(unique[k].ulica) !== -1 && uniqueWgoStreets[i].nr.indexOf(unique[k].nr) === -1) {
 
-//Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
+    //     uniqueWgoStreets.push({nr: unique[k].nr,
+    //                           ulica: unique[k].ulica,
+    //                           osoby: 0,
+    //                           roznica:  unique[k].liczba_meldunków,
+    //                           meldunki: unique[k].liczba_meldunków,
+    //                           DGO: 'niezłożona deklaracja DGO'})
+    // }
+    // else {console.log('Check: ')}
+}
+
+}
+// Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
 for (var i = 0; i < unique.length; i++) {
     if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 || uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 )
         {uniqueWgoStreets.push({nr: unique[i].nr,
@@ -61,7 +73,9 @@ for (var i = 0; i < unique.length; i++) {
                               roznica:  unique[i].liczba_meldunków,
                               meldunki: unique[i].liczba_meldunków,
                               DGO: 'niezłożona deklaracja DGO'})
-}};
+}
+else {console.log('Check: ' )}
+};
 // console.log('Wynik WGO2: ', uniqueWgoStreets);
 // for (var i = 0; i < uniqueWgoStreets.length; i++) {
 //   if (unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) === -1 || unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) > -1 && unique.map(x => { return x.nr; }).indexOf(uniqueWgoStreets[i].nr) === -1 )

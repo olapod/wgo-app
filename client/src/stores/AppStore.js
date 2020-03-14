@@ -1,4 +1,5 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, runInAction } from "mobx";
+// configure({ enforceActions: 'observed' });
 const axios = require('axios');
 
 class AppStore {
@@ -33,7 +34,7 @@ class AppStore {
 @observable selectedPage = 0;
 
     //other
-    @observable loading = true;
+    @observable loading = false;
     @observable redirect = false;
     @observable error = false;
 
@@ -185,13 +186,67 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
 
 //ładowanie danych - AdminPage
 
-@action loadWgo = data => {
-  this.wgo = data;
-};
+@action loadEludData = data => {
+  return new Promise(function(resolve, reject) {
+    if (data) {
+        resolve(data);
+    } else {
+        reject("Nie jest ok");
+    }
+  })}
 
-@action loadElud = data => {
-  this.elud = data;
-};
+@action loadWgoData = data => {
+  return new Promise(function(resolve, reject) {
+    if (data) {
+        resolve(data);
+    } else {
+        reject("Nie jest ok");
+    }
+  })}
+
+@action
+loadElud = async (data) => {
+        try {
+            this.loading = true
+            const response = await this.loadEludData(data)
+
+            if (response) {
+                runInAction(() => {
+                  this.elud = response
+                    this.loading = false;
+                })
+            }
+        } catch (error) {
+            runInAction(() => {
+                this.error = true;
+            });
+        }
+    };
+
+
+
+@action
+loadWgo = async (data) => {
+        try {
+            this.loading = true
+            const response = await this.loadWgoData(data)
+            if (response) {
+                runInAction(() => {
+                  this.wgo = response
+                    this.loading = false;
+                })
+            }
+        } catch (error) {
+            runInAction(() => {
+                this.error = true;
+            });
+        }
+    };
+
+
+// @action loadWgoData = data => {
+//   return this.wgo = data;
+// };
 
 @action errorHandle = () => {
   this.error = true;
@@ -201,9 +256,11 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
   e.preventDefault();
 
   axios.post('/api/updateData', {elud: this.elud, wgo: this.wgo})
+    .then(console.log('Loading...'))
     .then(function (res) {
-      console.log(res);
+      console.log('Finished loading');
     })
+    // .then(console.log('Finished loading'))
     .catch(function (error) {
       console.log(error);
     });

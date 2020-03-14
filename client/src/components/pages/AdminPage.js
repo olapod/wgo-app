@@ -5,37 +5,52 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
+import Spinner from '../common/Spinner'
 
 @inject('appStore')
 @observer
 class AdminPage extends Component {
 
   renderElud() {
+    console.log('What: ', this.props.appStore.loading)
 
-    if (!this.props.appStore.elud.length) {
+    if (!this.props.appStore.elud.length && !this.props.appStore.loading) {
+      console.log('War 1')
       return (
         <div className='button_container'>
         <DataUploadingElud />
         </div>
-      )};
-    if (this.props.appStore.elud.length) {
+      )}
+    if (this.props.appStore.loading) {
+      console.log('War 2', this.props.appStore.loading)
+      return (
+        <div >
+        <p>LOading...</p>
+        </div>
+      )}
+    if (!this.props.appStore.loading) {
+      console.log('War 3')
         return (
           <div className='button_container'>
           <FontAwesomeIcon
 								icon={faCheckCircle}/>
           <p>Plik z bazą ELUD wgrano poprawnie.</p>
           </div>
-        )};
+        )}
        }
 
   renderWgo() {
+    if (this.props.appStore.loading) {
+      return (
+        <Spinner/>
+      )}
 
     if (!this.props.appStore.wgo.length) {
       return (
         <div className='button_container'>
          <DataUploadingWgo />
          </div>
-      )};
+      )}
     if (this.props.appStore.wgo.length) {
         return (
           <div className='button_container'>
@@ -43,13 +58,14 @@ class AdminPage extends Component {
 								icon={faCheckCircle}/>
           <p>Plik WGO wgrano poprawnie.</p>
           </div>
-        )};
+        )}
 
 
   }
 
   render() {
     const isEnabled = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0;
+    if (!this.props.appStore.loading) {
   return (
     <div className='data_loading'>
       <div className='csv_title'>
@@ -70,7 +86,14 @@ class AdminPage extends Component {
       </div>
     </div>
     )};
+
+  if (this.props.appStore.loading) {
+    return (
+    <Spinner />
+    )
   }
+
+}}
 
   export default AdminPage;
 
