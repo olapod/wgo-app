@@ -1,5 +1,6 @@
 import { observable, action, computed, runInAction } from "mobx";
-// configure({ enforceActions: 'observed' });
+import { configure } from "mobx";
+configure({ enforceActions: 'observed' });
 const axios = require('axios');
 
 class AppStore {
@@ -57,15 +58,16 @@ class AppStore {
   //GET message from server using fetch api
   @action getMessage = () => {
     return axios.get('/api/admin')
-    .then(res =>
+    .then(res => {runInAction(() => {
       // this.appStore.message = res
-      this.message = res.data);
+      this.message = res.data})})
     }
 //pobieram całą bazę
 @action getSummary = () => {
    //GET message from server using fetch api
    return axios.get('/api/getSummary')
-   .then(res => this.summary= res.data)
+   .then(res => {runInAction(() => {
+   this.summary= res.data})})
   //  .then(json => this.summary = json)
 }
 //filtr wg ulicy i numeru
@@ -73,7 +75,8 @@ class AppStore {
 @action getStreets = () => {
   //GET message from server using fetch api
   return axios.get('/api/getStreets')
-    .then(res => this.streets = res.data)
+    .then(res => {runInAction(() => {
+      this.streets = res.data})})
 }
 
 @computed get streetsOptions() {
@@ -84,7 +87,8 @@ class AppStore {
   // this.selectedStreet = selectedOption.value;
   this.selectedStreet = selectedOption.value;
   axios.get(`/api/streets/${this.selectedStreet}`)
-.then(res => this.numbers = res.data)
+.then(res => {runInAction(() => {
+  this.numbers = res.data})})
         }
 
 @computed get numbersOptions() {
@@ -94,7 +98,8 @@ class AppStore {
 @action numbersHandleChange = (selectedOption) => {
   this.selectedNumber = selectedOption.value;
   axios.get(`/api/streets/${this.selectedStreet}`)
-.then(res => this.numbers = res.data)
+.then(res => {runInAction(() => {
+  this.numbers = res.data})})
         }
 
 @action recordHandleClick = (e) => {
@@ -105,14 +110,16 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
           number: this.selectedNumber
         }
       })
-.then(res => this.selectedUnitByAddress = res.data)
+.then(res => {runInAction(() => {
+  this.selectedUnitByAddress = res.data})})
   }
 
 //filtr różnic
 @action getDiff = () => {
   //GET message from server using fetch api
   return axios.get('/api/getDiff')
-    .then(res => this.diff = res.data)
+    .then(res => {runInAction(() => {
+      this.diff = res.data})})
 }
 
 @computed get diffOptions() {
@@ -140,27 +147,20 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
           limit: limit
         }
       })
-.then(res => this.selectedUnitsByDiff = {
+.then(res => {runInAction(() => {
+  this.selectedUnitsByDiff = {
         docs: res.data.docs,
         amount: res.data.amount,
         itemsPerPage,
         selectedPage: page,
-      })
-.then(this.loading = false)
+      }})})
+.then(runInAction(() => {this.loading = false}))
   }
 
 //filtr statusu deklaracji
 @action DGOhandleChange = (selectedOption) => {
   this.selectedDGOstatus = selectedOption.value;
         }
-
-// @action DGOhandleClick = (e) => {
-//    e.preventDefault();
-// axios.get(`/api/DGOstatus/${this.selectedDGOstatus}`)
-// .then(res => this.selectedUnitsByDGOstatus = res.data)
-// .then(res => console.log('dff: ',this.selectedUnitsByDGOstatus))
-// .then(this.loading = false);
-//   }
 
 @action getDGOStatusItems = (page) => {
    const itemsPerPage = 20;
@@ -174,19 +174,19 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
           limit: limit
         }
       })
-.then(res => this.selectedUnitsByDGOstatus = {
+.then(res => {runInAction(() => {
+  this.selectedUnitsByDGOstatus = {
         docs: res.data.docs,
         amount: res.data.amount,
         itemsPerPage,
         selectedPage: page,
-      })
-.then(this.loading = false)
+      }})})
+.then(runInAction(() => {this.loading = false}))
 // .then(console.log('Dostaje: ', this.selectedUnitsByDGOstatus));
   }
 
 //ładowanie danych - AdminPage
-
-@action loadEludData = data => {
+loadEludData = data => {
   return new Promise(function(resolve, reject) {
     if (data) {
         resolve(data);
@@ -195,7 +195,7 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
     }
   })}
 
-@action loadWgoData = data => {
+loadWgoData = data => {
   return new Promise(function(resolve, reject) {
     if (data) {
         resolve(data);
@@ -204,16 +204,17 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
     }
   })}
 
-@action
-loadElud = async (data) => {
+@action loadElud = async (data) => {
+  this.loading = true;
+
         try {
-            this.loading = true
-            const response = await this.loadEludData(data)
 
+            const response = await this.loadEludData(data)
+            console.log('Spr: ', this.loading)
             if (response) {
                 runInAction(() => {
-                  this.elud = response
-                    this.loading = false;
+                  this.elud = response;
+                  this.loading = false;
                 })
             }
         } catch (error) {
@@ -227,8 +228,9 @@ loadElud = async (data) => {
 
 @action
 loadWgo = async (data) => {
+  this.loading = true;
         try {
-            this.loading = true
+
             const response = await this.loadWgoData(data)
             if (response) {
                 runInAction(() => {
@@ -256,11 +258,11 @@ loadWgo = async (data) => {
   e.preventDefault();
 
   axios.post('/api/updateData', {elud: this.elud, wgo: this.wgo})
-    .then(console.log('Loading...'))
-    .then(function (res) {
-      console.log('Finished loading');
-    })
-    // .then(console.log('Finished loading'))
+    .then(runInAction(() => {this.loading = true}))
+    .then(res => {runInAction(() => {
+      this.loading = false;
+      console.log('Status: ', res.status)})})
+    // .then(console.log('Finish status: ', res.status))
     .catch(function (error) {
       console.log(error);
     });

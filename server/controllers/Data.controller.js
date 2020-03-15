@@ -131,7 +131,6 @@ exports.updateData = async function (req, res) {
   let payload = req.body;
   payload.wgo.forEach((element) =>{ element.osoby = parseInt(element.osoby, 10);})
   const summary = compareData(payload.elud, payload.wgo)
-
   await Data.deleteMany({});
   await Data.insertMany(summary, {ordered: false})
 

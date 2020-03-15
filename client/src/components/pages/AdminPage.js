@@ -25,7 +25,7 @@ class AdminPage extends Component {
       console.log('War 2', this.props.appStore.loading)
       return (
         <div >
-        <p>LOading...</p>
+        <p>Loading...</p>
         </div>
       )}
     if (!this.props.appStore.loading) {
@@ -65,7 +65,7 @@ class AdminPage extends Component {
 
   render() {
     const isEnabled = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0;
-    if (!this.props.appStore.loading) {
+    const noButton = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0 && !this.props.appStore.loading;
   return (
     <div className='data_loading'>
       <div className='csv_title'>
@@ -78,22 +78,18 @@ class AdminPage extends Component {
         { this.renderElud() }
       </div>
       <div className='button_container'>
-        <Button type="button" className="btn btn-primary" disabled={!isEnabled}
+       <Button type="button" className="btn btn-primary" disabled={!isEnabled}
         onClick={this.props.appStore.postData}
         >
-          Porównaj bazy
+          Wgraj obie bazy
         </Button>
+      {noButton ? <p>Bazy zostały załadowane</p> : <p>Czekam na załadowanie</p>}
+
       </div>
     </div>
-    )};
-
-  if (this.props.appStore.loading) {
-    return (
-    <Spinner />
     )
   }
-
-}}
+}
 
   export default AdminPage;
 

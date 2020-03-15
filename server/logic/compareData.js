@@ -1,19 +1,18 @@
 let compareData = function(elud, wgo) {
-//tworzę listę bez lokalu
-let newElud = elud.map(({ lokal, ...rest }) => rest);
+  //tworzę listę bez lokalu
+  let newElud = elud.map(({ lokal, ...rest }) => rest);
 
-//tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków
-let jsonObject = newElud.map(JSON.stringify);
-let uniqueSet = new Set(jsonObject);
-let unique = Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
-//zliczam liczbę meldunków na nieruchomości
-for (var i = 0; i < unique.length; i++) {
-for (var k = 0; k < newElud.length; k++) {
-if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
-  unique[i].liczba_meldunków++
-
-}
-}
+  //tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków
+  let jsonObject = newElud.map(JSON.stringify);
+  let uniqueSet = new Set(jsonObject);
+  let unique = Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
+  //zliczam liczbę meldunków na nieruchomości
+  for (var i = 0; i < unique.length; i++) {
+  for (var k = 0; k < newElud.length; k++) {
+    if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
+      unique[i].liczba_meldunków++
+    }
+  }
 };
 
 //tworzę listę bez lokalu
@@ -29,14 +28,13 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
 for (var k = 0; k <wgo.length; k++) {
 if (uniqueWgoStreets[i].nr == wgo[k].nr && uniqueWgoStreets[i].ulica == wgo[k].ulica &&  wgo[k].osoby) {
   uniqueWgoStreets[i].osoby +=  wgo[k].osoby
-
 }
 }
 };
 
-// console.log('Co porownuje: Elud: ', unique,
-//  ' Wgo: ', uniqueWgoStreets
-//  )
+console.log('Co porownuje1: Elud: ', unique.length,
+ ' Wgo: ', uniqueWgoStreets.length
+ )
 //Porównanie wyników
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
   for (var k = 0; k <unique.length; k++) {
@@ -45,46 +43,39 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
         uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
         uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
+        unique.splice(k,1);
+        // console.log('Match 1: ', unique[k]);
     }
-    //sprawdz to jutro
-    if (!uniqueWgoStreets[i].DGO) {
+  }
+}
+
+// Pętla dla ulic/numerów, które nie występują w bazie ELUD, a występują w bazie WGO
+for (var i = 0; i < uniqueWgoStreets.length; i++) {
+      if (!uniqueWgoStreets[i].DGO) {
         uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
+        // console.log('Match 2: ', uniqueWgoStreets[i]);
     }
-    // if (uniqueWgoStreets[i].ulica.indexOf(unique[k].ulica) === -1 || uniqueWgoStreets[i].ulica.indexOf(unique[k].ulica) !== -1 && uniqueWgoStreets[i].nr.indexOf(unique[k].nr) === -1) {
-
-    //     uniqueWgoStreets.push({nr: unique[k].nr,
-    //                           ulica: unique[k].ulica,
-    //                           osoby: 0,
-    //                           roznica:  unique[k].liczba_meldunków,
-    //                           meldunki: unique[k].liczba_meldunków,
-    //                           DGO: 'niezłożona deklaracja DGO'})
-    // }
-    // else {console.log('Check: ')}
 }
 
-}
+console.log('Co porownuje2: Elud: ', unique.length,
+ ' Wgo: ', uniqueWgoStreets.length
+ )
 // Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
 for (var i = 0; i < unique.length; i++) {
-    if (uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) === -1 || uniqueWgoStreets.map(x => { return x.ulica; }).indexOf(unique[i].ulica) !== -1 && uniqueWgoStreets.map(x => { return x.nr; }).indexOf(unique[i].nr) === -1 )
-        {uniqueWgoStreets.push({nr: unique[i].nr,
+      uniqueWgoStreets.push({nr: unique[i].nr,
                               ulica: unique[i].ulica,
                               osoby: 0,
                               roznica:  unique[i].liczba_meldunków,
                               meldunki: unique[i].liczba_meldunków,
                               DGO: 'niezłożona deklaracja DGO'})
 }
-else {console.log('Check: ' )}
-};
-// console.log('Wynik WGO2: ', uniqueWgoStreets);
-// for (var i = 0; i < uniqueWgoStreets.length; i++) {
-//   if (unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) === -1 || unique.map(x => { return x.ulica; }).indexOf(uniqueWgoStreets[i].ulica) > -1 && unique.map(x => { return x.nr; }).indexOf(uniqueWgoStreets[i].nr) === -1 )
-//       { uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
-//         uniqueWgoStreets[i].DGO = 'nie';
-//         console.log('What2: ', uniqueWgoStreets[i])
-//       }};
 
-// console.log('Wynik WGO3: ', uniqueWgoStreets);
+
+
+console.log('Co porownuje3: Elud: ', unique.length,
+ ' Wgo: ', uniqueWgoStreets.length
+ )
 return uniqueWgoStreets;
 
 }
