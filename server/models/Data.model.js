@@ -9,6 +9,6 @@ const dataSchema = new mongoose.Schema({
   DGO: { type: String, required: true },
 });
 
-dataSchema.index({ ulica: 1, nr: 1}, { unique: true });
+// dataSchema.index({ ulica: 1, nr: 1}, { unique: true });
 
 module.exports = mongoose.model('Data', dataSchema);

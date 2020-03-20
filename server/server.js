@@ -33,7 +33,7 @@ mongoose
     db,
     { useNewUrlParser: true,
       useUnifiedTopology: true,
-      // useCreateIndex: true
+      useCreateIndex: true
     }
         )
   .then(() => console.log("MongoDB successfully connected"))
@@ -48,6 +48,6 @@ app.get('/', function (req, res) {
 
 app.get('/api/home', function(req, res) {
   res.send('Welcome!');
-});
+})
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

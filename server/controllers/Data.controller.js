@@ -130,13 +130,16 @@ exports.updateData = async function (req, res) {
   try {
   let payload = req.body;
   payload.wgo.forEach((element) =>{ element.osoby = parseInt(element.osoby, 10);})
-  const summary = compareData(payload.elud, payload.wgo)
+  console.log('Dane dotarły z frontendu')
+  const summary = await compareData(payload.elud, payload.wgo)
+  console.log('Dane zostały przygotowane do załadowania do mongo.db')
   await Data.deleteMany({});
   await Data.insertMany(summary, {ordered: false})
-
+  console.log('Dane zostały  załadowane do mongo.db')
   res.status(200).send('Database updated successfully')
 
   } catch(err) {
     res.status(500).json(err);
+    console.log(err)
   }
 }
