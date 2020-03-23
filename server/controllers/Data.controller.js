@@ -136,7 +136,7 @@ exports.updateData = async function (req, res) {
   await Data.deleteMany({});
   await Data.insertMany(summary, {ordered: false})
   console.log('Dane zostały  załadowane do mongo.db')
-  res.status(200).send('Database updated successfully')
+  res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')
 
   } catch(err) {
     res.status(500).json(err);

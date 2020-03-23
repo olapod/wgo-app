@@ -1,4 +1,4 @@
-
+var  logger = require('../utils/logger.js');
 
 let compareData = function(elud, wgo) {
 
@@ -12,12 +12,12 @@ if (typeof elud[i].nr === 'string') {
   }
   //tworzę listę bez lokalu i innych danych
   let newElud = elud.map(record => ({ ulica: record.ulica, nr: record.nr }));
-console.log("Pętla 1");
+logger.info("Pętla 1");
   //tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków
   let jsonObject = newElud.map(JSON.stringify);
   let uniqueSet = new Set(jsonObject);
   let unique = Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
-  console.log("Pętla 2");
+  logger.info("Pętla 2");
   //zliczam liczbę meldunków na nieruchomości
   for (var i = 0; i < unique.length; i++) {
   for (var k = 0; k < newElud.length; k++) {
@@ -61,7 +61,7 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
 
 console.log("Pętla 7")
 
- console.log('Co porownuje1: Elud: ', unique.length,
+ console.log('Przed porównaniem: Elud: ', unique.length,
  ' Wgo: ', uniqueWgoStreets.length
  )
 console.log("Pętla 8");
@@ -80,17 +80,16 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
     }
   }
 }
-console.log("Pętla 9");
+console.log("Porónanie 1: Elud: ", unique.length, "Wgo: ", uniqueWgoStreets.length);
 // Pętla dla ulic/numerów, które nie występują w bazie ELUD, a występują w bazie WGO
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
-      if (!uniqueWgoStreets[i].DGO) {
+      if (uniqueWgoStreets[i].DGO === '') {
         uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
-        // console.log('Match 2: ', uniqueWgoStreets[i]);
     }
 }
 
-console.log('Co porownuje2: Elud: ', unique.length,
+console.log('Porównanie 2: Elud: ', unique.length,
  ' Wgo: ', uniqueWgoStreets.length
  )
 // Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
@@ -103,7 +102,7 @@ for (var i = 0; i < unique.length; i++) {
                               DGO: 'niezłożona deklaracja DGO'})
 }
 
-console.log('Co porownuje3: Elud: ', unique.length,
+console.log('Porównanie 3: Elud: ', unique.length,
  ' Wgo: ', uniqueWgoStreets.length
  )
 // const unique2 = Array.from(new Set(uniqueWgoStreets.map(x=>JSON.stringify(x)))).map(x=>JSON.parse(x));

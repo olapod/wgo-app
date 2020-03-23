@@ -41,6 +41,7 @@ class AdminPage extends Component {
 
   renderWgo() {
     if (this.props.appStore.loading) {
+       this.props.appStore.getLogs();
       return (
         <Spinner/>
       )}
@@ -64,6 +65,7 @@ class AdminPage extends Component {
   }
 
   render() {
+    console.log('SocketIO: ', this.props.appStore.response)
     const isEnabled = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0;
     const noButton = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0 && !this.props.appStore.loading;
   return (

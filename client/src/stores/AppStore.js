@@ -1,7 +1,11 @@
 import { observable, action, computed, runInAction } from "mobx";
 import { configure } from "mobx";
+import socketIOClient from "socket.io-client";
 configure({ enforceActions: 'observed' });
 const axios = require('axios');
+
+
+
 
 class AppStore {
 
@@ -38,6 +42,8 @@ class AppStore {
     @observable loading = false;
     @observable redirect = false;
     @observable error = false;
+    @observable response = false;
+    @observable endpoint = 'localhost:5000'
 
 
 //pagination function
@@ -61,6 +67,13 @@ class AppStore {
     .then(res => {runInAction(() => {
       // this.appStore.message = res
       this.message = res.data})})
+    }
+
+    //get logs from node.js
+    @action getLogs = () => {
+      console.log('Funkcja wywołana')
+    const socket = socketIOClient(this.endpoint);
+    socket.on("log", data => this.response = data);
     }
 //pobieram całą bazę
 @action getSummary = () => {
@@ -261,7 +274,7 @@ loadWgo = async (data) => {
     .then(runInAction(() => {this.loading = true}))
     .then(res => {runInAction(() => {
       this.loading = false;
-      console.log('Status: ', res.status)})})
+      console.log('Status: ', res)})})
     // .then(console.log('Finish status: ', res.status))
     .catch(function (error) {
       console.log(error);
