@@ -5,12 +5,19 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
-import Spinner from '../common/Spinner'
+import Spinner from '../common/Spinner';
+import io from "socket.io-client";
 
 @inject('appStore')
 @observer
 class AdminPage extends Component {
 
+componentDidMount() {
+  var socket = io.connect('http://localhost:5000');
+  socket.on("logs", function(data) {
+      console.log('Test IO: ', data);
+      })
+}
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
 

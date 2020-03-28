@@ -14,6 +14,7 @@
     "mongoose": "^5.8.11",
     "socket.io": "^2.3.0",
     "winston": "^3.2.1",
-    "winston-socket.io": "^0.4.0"
+    "winston-socket.io": "^0.4.0",
+    "winston-transport-http-stream": "^0.1.4"
   }
 }
