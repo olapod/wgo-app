@@ -1,6 +1,6 @@
 import { observable, action, computed, runInAction } from "mobx";
 import { configure } from "mobx";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 configure({ enforceActions: 'observed' });
 const axios = require('axios');
 
@@ -42,7 +42,7 @@ class AppStore {
     @observable loading = false;
     @observable redirect = false;
     @observable error = false;
-    @observable response = null;
+    @observable logs = [];
 
 
 //pagination function
@@ -68,13 +68,14 @@ class AppStore {
       this.message = res.data})})
     }
 
-    //get logs from node.js
-    @action getLogs = () => {
-  var socket = io.connect('http://localhost:5000');
-  socket.on("log", function(data) {
-      console.log('Test IO: ', data);
-  });
-    }
+  //get logs from node.js
+  @action logReceive = (log) => {
+        this.logs = [log, ...this.logs];
+  }
+
+  @action resetLogs = () => {
+        this.logs = [];
+  }
 
 //pobieram całą bazę
 @action getSummary = () => {

@@ -1,5 +1,6 @@
 const Data = require('../models/Data.model');
 let { compareData } = require('../logic/compareData');
+var  logger = require('../utils/logger.js');
 
 exports.getSummary = async (req, res) => {
   try {
@@ -128,14 +129,14 @@ exports.filterByDGOstatus = async function (req, res) {
 
 exports.updateData = async function (req, res) {
   try {
-  let payload = req.body;
+  let payload = await req.body;
   payload.wgo.forEach((element) =>{ element.osoby = parseInt(element.osoby, 10);})
-  console.log('Dane dotarły z frontendu')
+  await logger.info('Pliki z danymi zostały załadowane')
   const summary = await compareData(payload.elud, payload.wgo)
-  console.log('Dane zostały przygotowane do załadowania do mongo.db')
+  await logger.info('Dane zostały przygotowane do załadowania do mongo.db')
   await Data.deleteMany({});
   await Data.insertMany(summary, {ordered: false})
-  console.log('Dane zostały  załadowane do mongo.db')
+  await logger.info('Dane zostały przetworzone i załadowane bez błędów!!!')
   res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')
 
   } catch(err) {

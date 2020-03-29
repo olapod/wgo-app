@@ -1,28 +1,30 @@
 var  logger = require('../utils/logger.js');
 
-let compareData = function(elud, wgo) {
-
+let compareData = async function(elud, wgo) {
+await logger.info("Przygotowuję dane z bazy ELUD do analizy");
   for (var i = 0; i < elud.length; i++) {
   if (typeof elud[i].ulica === 'string') {
-  elud[i].ulica = elud[i].ulica.toUpperCase();
+  elud[i].ulica = await elud[i].ulica.toUpperCase();
   }
 if (typeof elud[i].nr === 'string') {
-  elud[i].nr = elud[i].nr.toUpperCase();
+  elud[i].nr = await elud[i].nr.toUpperCase();
   }
   }
+  // logger.info("Zmieniłem zapis danych w bazie ELUD na duże litery");
   //tworzę listę bez lokalu i innych danych
-  let newElud = elud.map(record => ({ ulica: record.ulica, nr: record.nr }));
-logger.info("Pętla 1");
+  let newElud = await elud.map(record => ({ ulica: record.ulica, nr: record.nr }));
+// logger.info("Usunęłem zbędne dane z bazy ELUD");
   //tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków
-  let jsonObject = newElud.map(JSON.stringify);
-  let uniqueSet = new Set(jsonObject);
-  let unique = Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
-  logger.info("Pętla 2");
+  let jsonObject = await newElud.map(JSON.stringify);
+  let uniqueSet = await new Set(jsonObject);
+  let unique = await Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
+  // logger.info("Stworzyłem listę unikalnych adresów z tą samą ulicą i numerem, dodałem klucz liczba_meldunków");
   //zliczam liczbę meldunków na nieruchomości
+  await logger.info("Zliczam liczbę meldunków dla każdej nieruchomości. CHWILĘ TO POTRWA....")
   for (var i = 0; i < unique.length; i++) {
   for (var k = 0; k < newElud.length; k++) {
     if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
-      unique[i].liczba_meldunków++
+     await unique[i].liczba_meldunków++
     }
   }
 };
@@ -30,26 +32,30 @@ logger.info("Pętla 1");
 
 
 
-console.log("Pętla 4");
+await logger.info("Przygotowuję dane z bazy WGO do analizy");
 
 for (var i = 0; i < wgo.length; i++) {
   if (typeof wgo[i].ulica === 'string') {
-  wgo[i].ulica = wgo[i].ulica.toUpperCase();
+  wgo[i].ulica = await wgo[i].ulica.toUpperCase();
   }
 if (typeof wgo[i].nr === 'string') {
   wgo[i].nr = wgo[i].nr.toUpperCase();
   }
   }
+
+  // logger.info("Zmieniłem zapis danych w bazie WGO na duże litery");
 //tworzę listę bez lokalu i innych danych
 let newWgo = wgo.map(record => ({ ulica: record.ulica, nr: record.nr }));
 // let newWgo = wgo.map(({ lokal, osoby, ...rest }) => rest);
-console.log("Pętla 5");
+// logger.info("Usunęłem zbędne dane z bazy ELUD");
 //tworzę listę unikalnych adresów z tą samą ulicą i numerem, dodaje klucz liczba_meldunków, DGO
 let jsonObject2 = newWgo.map(JSON.stringify);
 let uniqueWgo = new Set(jsonObject2);
 let uniqueWgoStreets = Array.from(uniqueWgo).map(JSON.parse).map((osoby, roznica, meldunki, DGO) => ({...osoby, roznica, meldunki, DGO, osoby: 0, roznica: 0, meldunki: 0, DGO: ''}));
 
-console.log("Pętla 6");
+// logger.info("Stworzyłem listę unikalnych adresów z tą samą ulicą i numerem w bazie WGO, dodałem klucz liczba_meldunków z bazy ELUD i klucz różnicy w meldunkach");
+
+logger.info("Zliczam liczbę deklaracji WGO dla każdej nieruchomości. CHWILĘ TO POTRWA....")
 //zliczam liczbę osób na każdej nieruchomości
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
   for (var k = 0; k <wgo.length; k++) {
@@ -59,12 +65,12 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
   }
 };
 
-console.log("Pętla 7")
+logger.info("Porównuję obie bazy")
 
- console.log('Przed porównaniem: Elud: ', unique.length,
- ' Wgo: ', uniqueWgoStreets.length
- )
-console.log("Pętla 8");
+//  logger.info('Przed porównaniem liczba rekordów w Elud: ', unique.length,
+//  ' w Wgo: ', uniqueWgoStreets.length
+//  )
+
 //Porównanie wyników
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
   for (var k = 0; k <unique.length; k++) {
@@ -80,7 +86,10 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
     }
   }
 }
-console.log("Porónanie 1: Elud: ", unique.length, "Wgo: ", uniqueWgoStreets.length);
+// logger.info("Porównałem bazę Elud i WGO na podstawie tych samych adresów")
+// logger.info('Po porównaniu liczba rekordów w Elud nieznalezionych w WGO: ', unique.length,
+//  ' liczb rekordów w Wgo: ', uniqueWgoStreets.length
+//  )
 // Pętla dla ulic/numerów, które nie występują w bazie ELUD, a występują w bazie WGO
 for (var i = 0; i < uniqueWgoStreets.length; i++) {
       if (uniqueWgoStreets[i].DGO === '') {
@@ -88,10 +97,10 @@ for (var i = 0; i < uniqueWgoStreets.length; i++) {
         uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
     }
 }
-
-console.log('Porównanie 2: Elud: ', unique.length,
- ' Wgo: ', uniqueWgoStreets.length
- )
+// logger.info('Odnalazłem rekordy, które nie występują w bazie ELUD, a występują w bazie WGO ')
+// logger.info('Po tej operacji liczba rekordów w Elud nieznalezionych w WGO: ', unique.length,
+//  ' liczb rekordów w Wgo: ', uniqueWgoStreets.length
+//  )
 // Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
 for (var i = 0; i < unique.length; i++) {
       uniqueWgoStreets.push({ulica: unique[i].ulica,
@@ -101,10 +110,11 @@ for (var i = 0; i < unique.length; i++) {
                               meldunki: unique[i].liczba_meldunków,
                               DGO: 'niezłożona deklaracja DGO'})
 }
+logger.info('Na koniec odnalazłem rekordy, które nie występują w bazie WGO, a występują w bazie Elud ')
 
-console.log('Porównanie 3: Elud: ', unique.length,
- ' Wgo: ', uniqueWgoStreets.length
- )
+// logger.info('Po tych operacjach liczba rekordów w Elud wynosi: ', unique.length,
+//  ' liczb rekordów w Wgo wynosi: ', uniqueWgoStreets.length
+//  )
 // const unique2 = Array.from(new Set(uniqueWgoStreets.map(x=>JSON.stringify(x)))).map(x=>JSON.parse(x));
 
 // console.log('Co porownuje4: Elud: ', unique.length,

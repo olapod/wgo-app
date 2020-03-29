@@ -5,19 +5,22 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
-import Spinner from '../common/Spinner';
+// import Spinner from '../common/Spinner';
 import io from "socket.io-client";
-
+const socket = io('/');
 @inject('appStore')
 @observer
 class AdminPage extends Component {
 
 componentDidMount() {
-  var socket = io.connect('http://localhost:5000');
-  socket.on("logs", function(data) {
-      console.log('Test IO: ', data);
-      })
-}
+    socket.on('log', log => this.props.appStore.logReceive(log));
+    }
+
+ componentWillUnmount() {
+   socket.emit('end');
+   this.props.appStore.resetLogs();
+  }
+
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
 
@@ -47,11 +50,11 @@ componentDidMount() {
        }
 
   renderWgo() {
-    if (this.props.appStore.loading) {
-       this.props.appStore.getLogs();
-      return (
-        <Spinner/>
-      )}
+    // if (this.props.appStore.loading) {
+    //   //  this.props.appStore.getLogs();
+    //   return (
+    //     <Spinner/>
+    //   )}
 
     if (!this.props.appStore.wgo.length) {
       return (
@@ -72,7 +75,7 @@ componentDidMount() {
   }
 
   render() {
-    console.log('SocketIO: ', this.props.appStore.response)
+    console.log('SocketIO: ', this.props.appStore.logs)
     const isEnabled = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0;
     const noButton = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0 && !this.props.appStore.loading;
   return (
@@ -94,6 +97,12 @@ componentDidMount() {
         </Button>
       {noButton ? <p>Bazy zostały załadowane</p> : <p>Czekam na załadowanie</p>}
 
+      </div>
+      <div>
+      <h5>Logi</h5>
+      <ul >
+			{ this.props.appStore.logs.map((log, i) => <li key={i}>Level: {log.data.level} Message: {log.data.message}  </li>)}
+		</ul>
       </div>
     </div>
     )
