@@ -18,7 +18,7 @@ const DGOoptions = [
 export default class HomePage extends Component {
 
     componentDidMount() {
-      this.props.appStore.getSummary();
+      // this.props.appStore.getSummary();
       this.props.appStore.getStreets();
       this.props.appStore.getDiff();
     }

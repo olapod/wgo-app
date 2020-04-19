@@ -10,6 +10,6 @@ router.route('/api/register').post(UserController.register);
 
 router.route('/api/authenticate').post(UserController.authenticate);
 
-router.route('/checkToken').get(withAuth, UserController.checkToken);
+router.route('/api/checkToken').get(withAuth, UserController.checkToken);
 
 module.exports = router;

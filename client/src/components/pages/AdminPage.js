@@ -6,20 +6,27 @@ import Button from 'react-bootstrap/Button';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
 // import Spinner from '../common/Spinner';
-import io from "socket.io-client";
-const socket = io('/');
-@inject('appStore')
+import io from 'socket.io-client';
+
+// const socket = io('/');
+const socket = io("localhost:3001")
+// const socket = io('/');
+// const socket = io('ws://localhost:3001', {
+//   // WARNING: in that case, there is no fallback to long-polling
+//   transports: [ 'websocket' ] // or [ 'websocket', 'polling' ], which is the same thing
+// })
+@inject('appStore') 
 @observer
 class AdminPage extends Component {
 
 componentDidMount() {
-    socket.on('log', log => this.props.appStore.logReceive(log));
-    }
+  socket.on('log', log => this.props.appStore.logReceive(log));
+}
 
- componentWillUnmount() {
-   socket.emit('end');
-   this.props.appStore.resetLogs();
-  }
+//  componentWillUnmount() {
+//    socket.emit('end');
+//    this.props.appStore.resetLogs();
+//   }
 
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
@@ -101,7 +108,7 @@ componentDidMount() {
       <div>
       <h5>Logi</h5>
       <ul >
-			{ this.props.appStore.logs.map((log, i) => <li key={i}>Level: {log.data.level} Message: {log.data.message}  </li>)}
+			{ this.props.appStore.logs.map((log, i) => <li key={i}>{log}</li>)}
 		</ul>
       </div>
     </div>

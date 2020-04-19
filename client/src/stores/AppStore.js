@@ -78,13 +78,13 @@ class AppStore {
   }
 
 //pobieram całą bazę
-@action getSummary = () => {
-   //GET message from server using fetch api
-   return axios.get('/api/getSummary')
-   .then(res => {runInAction(() => {
-   this.summary= res.data})})
-  //  .then(json => this.summary = json)
-}
+// @action getSummary = () => {
+//    //GET message from server using fetch api
+//    return axios.get('/api/getSummary')
+//    .then(res => {runInAction(() => {
+//    this.summary= res.data})})
+//   //  .then(json => this.summary = json)
+// }
 //filtr wg ulicy i numeru
 
 @action getStreets = () => {

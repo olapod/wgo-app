@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^3.0.4-napi",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
@@ -12,9 +12,6 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
-    "socket.io": "^2.3.0",
-    "winston": "^3.2.1",
-    "winston-socket.io": "^0.4.0",
-    "winston-transport-http-stream": "^0.1.4"
+    "socket.io": "^2.2.0"
   }
 }
