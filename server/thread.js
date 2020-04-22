@@ -20,22 +20,26 @@ mongoose
 parentPort.postMessage('Faza 1 - Przygotowanie danych do porównania')
 const payload = workerData;
 
-// app.emitter.emit("newEvent", "Faza 1");
-// console.log('Co: ', payload);
+// // app.emitter.emit("newEvent", "Faza 1");
+// // console.log('Co: ', payload);
+// function insertData(data) {
+//   return new Promise(resolve => {
+//     console.log('What: ', data.length)
+//     Data.insertMany(data, {ordered: false});
+//     resolve(console.log('Jest ok'));
+//   })
+// }
+
 parentPort.postMessage('Faza 2 - Rozpoczynam fazę analizy danych');
 const finalData = compareData(payload.elud, payload.wgo)
+// finalData.then(data => {insertData(data)})
+// .then(process.exit())
+
 finalData.then(data => {
   const summary = data;
   console.log('What: ', summary.length)
-  Data.insertMany(summary, {ordered: false});
-  parentPort.postMessage('Faza 4 - Zapisanie danych w nowej bazie danych. Wszystko gra :)')
-}) 
-// Data.insertMany(finalData, {ordered: false})
+  Data.insertMany(summary, {ordered: false});  
+  parentPort.postMessage('Wgranie danych z obu baz zostało wykonane poprawnie!')  
+})
 
-// finalData.then(data => {
-//     parentPort.postMessage('Faza 3 - Przygotowanie danych do zapisania');
-//     const summary = data;
-    
-    
-//     // process.exit() 
-// });
+//Popracować jeszcze nad zakmnięciem wątku po wykonanej pracy

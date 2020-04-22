@@ -128,7 +128,7 @@ exports.updateData = async function (req, res) {
     worker.on('message', (result) => {
       app.emitter.emit("newEvent", result);          
     });
-    
+     
     res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')
 
   } catch(err) {

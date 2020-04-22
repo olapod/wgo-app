@@ -6,6 +6,8 @@ import Select from "react-select";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+// import Button from 'react-bootstrap/Button';
+import { CSVLink, CSVDownload } from "react-csv";
 
 const DGOoptions = [
   { value: 'złożona deklaracja DGO', label: 'złożona deklaracja DGO' },
@@ -21,6 +23,7 @@ export default class HomePage extends Component {
       // this.props.appStore.getSummary();
       this.props.appStore.getStreets();
       this.props.appStore.getDiff();
+      
     }
 
     diffHandleClick = (e) => {
@@ -30,7 +33,7 @@ export default class HomePage extends Component {
 
     render() {
 let {streetsOptions,
-      // summary,
+      summary,
       streetsHandleChange,
       numbersOptions,
       numbersHandleChange,
@@ -43,7 +46,8 @@ let {streetsOptions,
       selectedDiff,
       selectedDGOstatus,
       DGOhandleChange,
-      DGOhandleClick} = this.props.appStore;
+      DGOhandleClick,
+      getSummary} = this.props.appStore;
       return (
         <div>
           <h1>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
@@ -111,6 +115,11 @@ let {streetsOptions,
           </Col>
         </Row>
       </Container>
+      <button onClick={getSummary}>
+      <CSVLink data={summary}>
+    Pobierz bazę
+    </CSVLink>
+      </button>
           {/* <ul >
 			{summary.map(item => <li key={item._id}>{item.ulica} {item.nr} Meldunki: {item.meldunki} Deklaracja DGO: {item.osoby} Różnica: {item.roznica} Status: {item.DGO}</li>)}
 		</ul> */}
