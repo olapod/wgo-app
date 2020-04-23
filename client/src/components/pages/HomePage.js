@@ -7,7 +7,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
-import { CSVLink, CSVDownload } from "react-csv";
+import Spinner from '../common/Spinner';
+import { CSVLink } from "react-csv";
 
 const DGOoptions = [
   { value: 'złożona deklaracja DGO', label: 'złożona deklaracja DGO' },
@@ -24,6 +25,11 @@ export default class HomePage extends Component {
       this.props.appStore.getStreets();
       this.props.appStore.getDiff();
       
+    }
+
+    componentWillUnmount() {
+      this.props.appStore.resetLoading();
+      this.props.appStore.resetSummary();
     }
 
     diffHandleClick = (e) => {
@@ -47,7 +53,17 @@ let {streetsOptions,
       selectedDGOstatus,
       DGOhandleChange,
       DGOhandleClick,
-      getSummary} = this.props.appStore;
+      getSummary,
+    loading} = this.props.appStore;
+
+    let downloadLink;
+    if (summary.length === 0 && loading === true) {
+      downloadLink = <Spinner />
+    } if (summary.length > 0 && loading === true) {
+      downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
+    }
+    if (summary.length === 0 && loading === false) {downloadLink  = <button onClick={getSummary}> Pobierz bazę</button>}
+console.log('Loading: ', loading)
       return (
         <div>
           <h1>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
@@ -115,11 +131,10 @@ let {streetsOptions,
           </Col>
         </Row>
       </Container>
-      <button onClick={getSummary}>
-      <CSVLink data={summary}>
-    Pobierz bazę
-    </CSVLink>
-      </button>
+      
+      {downloadLink}
+      
+     
           {/* <ul >
 			{summary.map(item => <li key={item._id}>{item.ulica} {item.nr} Meldunki: {item.meldunki} Deklaracja DGO: {item.osoby} Różnica: {item.roznica} Status: {item.DGO}</li>)}
 		</ul> */}

@@ -31,6 +31,7 @@ export default function withAuth(ComponentToProtect) {
       const { loading, redirect } = this.state;
       if (loading) {
         return null;
+        
       }
       if (redirect) {
         return <Redirect to="/login" />;

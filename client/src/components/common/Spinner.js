@@ -13,10 +13,10 @@ class Spinner extends React.Component {
 render() {
       return (
         <div className="spinner">
-          <h3 className="spinner-title">Porównuję bazy danych....</h3>
+          <h5 className="spinner-title">Przetwarzam żądanie...</h5>
           <SyncLoader
             css={override}
-            size={50}
+            size={25}
             color={"#3f51b5"}
           />
         </div>

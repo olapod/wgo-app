@@ -42,9 +42,15 @@ class AppStore {
     @observable loading = false;
     @observable redirect = false;
     @observable error = false;
-    @observable logs = [];
+    @observable logs = [];    
 
+    @action resetLoading = () => {
+      this.loading = false
+    }
 
+    @action resetSummary = () => {
+      this.summary = []
+    }
 //pagination function
 
 @action handlePageClickedDiff = (data) => {
@@ -80,6 +86,7 @@ class AppStore {
 //pobieram całą bazę
 @action getSummary = () => {
    //GET message from server using fetch api
+   this.loading = true
    return axios.get('/api/getSummary')
    .then(res => {runInAction(() => {
    this.summary= res.data})})

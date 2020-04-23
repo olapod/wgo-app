@@ -7,14 +7,8 @@ import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
 // import Spinner from '../common/Spinner';
 import io from 'socket.io-client';
-
-// const socket = io('/');
 const socket = io("localhost:3001")
-// const socket = io('/');
-// const socket = io('ws://localhost:3001', {
-//   // WARNING: in that case, there is no fallback to long-polling
-//   transports: [ 'websocket' ] // or [ 'websocket', 'polling' ], which is the same thing
-// })
+
 @inject('appStore') 
 @observer
 class AdminPage extends Component {
@@ -92,7 +86,7 @@ componentDidMount() {
         <p>W celu uzyskania polskich znaków pliki powinny być kodowane w formacie UTF-8</p>
       </div>
 
-      <div className='container'>
+      <div >
         { this.renderWgo() }
         { this.renderElud() }
       </div>
