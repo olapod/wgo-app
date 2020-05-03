@@ -1,20 +1,25 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { observer, inject } from 'mobx-react';
+
+@inject('appStore')
+@observer
 
 export default function withAuth(ComponentToProtect) {
   return class extends Component {
-    constructor() {
-      super();
-      this.state = {
-        loading: true,
-        redirect: false,
-      };
-    }
+    // constructor() {
+    //   super();
+    //   this.state = {
+    //     loading: true,
+    //     redirect: false,
+    //   };
+    // }
     componentDidMount() {
       fetch('/api/checkToken')
         .then(res => {
           if (res.status === 200) {
-            this.setState({ loading: false });
+            // this.setState({ loading: false });
+            this.props.appStore.logIn();
           }
           else {
             const error = new Error(res.error);
@@ -24,12 +29,16 @@ export default function withAuth(ComponentToProtect) {
         })
         .catch(err => {
           console.error(err);
-          this.setState({ loading: false, redirect: true });
+          // this.setState({ loading: false, redirect: true });
+          this.props.appStore.reDirect();
         });
     }
     render() {
-      const { loading, redirect } = this.state;
-      if (loading) {
+      // const { loading, redirect } = this.state;  
+          const {login, redirect } = this.props.appStore;
+      // 
+      // if (loading) {
+      if (!login) {
         return null;
         
       }
@@ -37,6 +46,7 @@ export default function withAuth(ComponentToProtect) {
         return <Redirect to="/login" />;
       }
       return <ComponentToProtect {...this.props} />;
+      // return <Redirect to="/admin" />;
     }
   }
 }

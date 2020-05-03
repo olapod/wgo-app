@@ -42,7 +42,23 @@ class AppStore {
     @observable loading = false;
     @observable redirect = false;
     @observable error = false;
-    @observable logs = [];    
+    @observable logs = [];  
+    
+  //login & logout
+  @observable login = false;
+  @observable redirect = false;
+
+  @action logIn = () => {
+    this.login = true
+  }
+
+  @action logOut = () => {
+    this.login = false
+  }
+
+  @action reDirect = () => {
+    this.redirect = true
+  }
 
     @action resetLoading = () => {
       this.loading = false

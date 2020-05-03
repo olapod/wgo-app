@@ -57,13 +57,16 @@ let {streetsOptions,
     loading} = this.props.appStore;
 
     let downloadLink;
+      
     if (summary.length === 0 && loading === true) {
       downloadLink = <Spinner />
     } if (summary.length > 0 && loading === true) {
       downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
     }
-    if (summary.length === 0 && loading === false) {downloadLink  = <button onClick={getSummary}> Pobierz bazę</button>}
-console.log('Loading: ', loading)
+    if (summary.length === 0 && loading === false) {
+      downloadLink  = <button onClick={getSummary}> Pobierz bazę</button>
+    }
+
       return (
         <div>
           <h1>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
