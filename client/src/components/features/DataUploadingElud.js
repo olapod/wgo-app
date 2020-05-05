@@ -18,12 +18,7 @@ class DataUploadingElud extends React.Component {
         cssInputClass='csv-input'
         onError={this.props.appStore.errorHandle.bind(this)}
         inputId="contained-button-file-2"
-      />
-      {/* <label className="custom-file-upload" htmlFor="contained-button-file-2">
-        <Button type="button" className="btn btn-primary">
-        Wgraj plik .CSV
-        </Button>
-      </label> */}
+      />      
       <p>Wgraj plik ELUD z bazą danych. </p>
     </div>
     )};

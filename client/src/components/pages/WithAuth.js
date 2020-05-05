@@ -20,6 +20,8 @@ export default function withAuth(ComponentToProtect) {
           if (res.status === 200) {
             // this.setState({ loading: false });
             this.props.appStore.logIn();
+            // this.props.appStore.getUser();
+            // console.log('Zaloogowany: ', this.props.appStore.user)
           }
           else {
             const error = new Error(res.error);

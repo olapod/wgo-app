@@ -47,6 +47,7 @@ class AppStore {
   //login & logout
   @observable login = false;
   @observable redirect = false;
+  @observable user = '';
 
   @action logIn = () => {
     this.login = true
@@ -64,6 +65,14 @@ class AppStore {
       this.loading = false
     }
 
+    // @action getUser = () => {
+    //   return axios.get('/api/authenticate')
+    //   .then(res => {runInAction(() => {
+    //     // this.appStore.message = res
+    //     this.user = res.cookie
+    //     console.log('Zalogowany: ', this.user)
+    //   })})
+    //   }
     @action resetSummary = () => {
       this.summary = []
     }
