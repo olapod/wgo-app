@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { observer, inject } from 'mobx-react';
 
+@inject('appStore')
+@observer
 export default class Login extends Component {
   constructor(props) {
     super(props)
@@ -14,6 +17,7 @@ export default class Login extends Component {
       [name]: value
     });
   }
+ 
   onSubmit = (event) => {
     event.preventDefault();
     fetch('/api/authenticate', {
@@ -26,7 +30,7 @@ export default class Login extends Component {
     .then(res => {
       if (res.status === 200) {
         this.props.history.push('/admin');
-        console.log('Logowanie: ', res)
+        this.props.appStore.getEmail(this.state.email);
       } else {
         const error = new Error(res.error);
         throw error;
@@ -41,11 +45,11 @@ export default class Login extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <h1>Login Below!</h1>
+        <h1>Logowanie do panelu administratora</h1>
         <input
           type="email"
           name="email"
-          placeholder="Enter email"
+          placeholder="Wprowadź email"
           value={this.state.email}
           onChange={this.handleInputChange}
           required
@@ -53,12 +57,12 @@ export default class Login extends Component {
         <input
           type="password"
           name="password"
-          placeholder="Enter password"
+          placeholder="Wprowadź hasło"
           value={this.state.password}
           onChange={this.handleInputChange}
           required
         />
-       <input type="submit" value="Submit"/>
+       <input type="submit" value="Wyślij"/>
       </form>
     );
   }

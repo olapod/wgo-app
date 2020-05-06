@@ -27,7 +27,7 @@ import './NavBar.scss';
 class NavBar extends React.Component {
   
     render() {
-        const {login} = this.props.appStore;
+        const {login, email} = this.props.appStore;
         return (
             <Navbar className="navbarContainer" bg="dark" variant="dark">
                  <Nav>
@@ -41,7 +41,7 @@ class NavBar extends React.Component {
                 }                     
                 </Nav>
                 <Navbar.Text className="navbarText">
-                        Zalogowano jako: ...........
+                        Zalogowano jako: {email}
                     </Navbar.Text>                
             </Navbar>
         );
