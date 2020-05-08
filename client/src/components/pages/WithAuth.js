@@ -21,12 +21,13 @@ export default function withAuth(ComponentToProtect) {
             // this.setState({ loading: false });
             this.props.appStore.logIn();
             // this.props.appStore.getUser();
-            // console.log('Zaloogowany: ', this.props.appStore.user)
+            console.log('Zaloogowany: ', res.status)
           }
           else {
             const error = new Error(res.error);
+            console.error("Error checkToken api", res.status);
             throw error;
-            // console.error("Error checkToken api", res.status)
+            
           }
         })
         .catch(err => {
@@ -38,7 +39,7 @@ export default function withAuth(ComponentToProtect) {
     render() {
       // const { loading, redirect } = this.state;  
           const {login, redirect } = this.props.appStore;
-      // 
+      console.log('Spr: ', login, redirect)
       // if (loading) {
       if (!login) {
         return null;

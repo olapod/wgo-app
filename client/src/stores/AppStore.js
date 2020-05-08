@@ -4,9 +4,6 @@ import { configure } from "mobx";
 configure({ enforceActions: 'observed' });
 const axios = require('axios');
 
-
-
-
 class AppStore {
 
     @observable message = 'Loading...';
@@ -51,13 +48,33 @@ class AppStore {
   // @observable password = '';
 
   @action logIn = () => {
-    this.login = true
+    this.login = true;
+    this.redirect = false;
   }
 
   @action logOut = () => {
+   
     this.login = false;
     this.email = '';
+    
+      fetch('/api/logout', {
+        method: 'get',
+        credentials: 'include',
+        redirect: "follow"
+      }).then(res => {
+        if (res.status === 200) {
+          this.getEmail('');
+        } else {
+          const error = new Error(res.error);
+          throw error;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Błąd wylogowania. Spróbuj ponownie!');
+      });         
   }
+  
 
   @action reDirect = () => {
     this.redirect = true

@@ -28,6 +28,7 @@ class NavBar extends React.Component {
   
     render() {
         const {login, email} = this.props.appStore;
+        console.log('Email: ', email)
         return (
             <Navbar className="navbarContainer" bg="dark" variant="dark">
                  <Nav>
@@ -40,9 +41,9 @@ class NavBar extends React.Component {
                 </div>
                 }                     
                 </Nav>
-                <Navbar.Text className="navbarText">
-                        Zalogowano jako: {email}
-                    </Navbar.Text>                
+                {email
+                ? <Navbar.Text className="navbarText">Zalogowano jako: {email}</Navbar.Text>  
+                : null              }
             </Navbar>
         );
     }

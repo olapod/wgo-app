@@ -38,7 +38,7 @@ exports.register = async (req, res) => {
     } else if (!user) {
       res.status(401)
         .json({
-        error: 'Incorrect email or password'
+        error: 'Błędny email lub hasło'
       });
     } else {
       user.isCorrectPassword(password, function(err, same) {
@@ -68,3 +68,8 @@ exports.register = async (req, res) => {
   exports.checkToken = async (req, res) => {
     res.sendStatus(200);
   }
+
+ exports.logout = async (req, res) => {
+  res.clearCookie('token');
+  res.status(200).json('User Logged out')
+};
