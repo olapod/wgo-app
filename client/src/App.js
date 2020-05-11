@@ -3,7 +3,6 @@ import { observer, Provider } from 'mobx-react';
 import appStore from './stores/AppStore';
 import { Switch, Route } from 'react-router-dom';
 import MainLayout from './components/layout/MainLayout';
-// import routes
 import Home from './components/pages/HomePage';
 import Admin from './components/pages/AdminPage';
 import NotFound from './components/pages/NotFoundPage';
@@ -18,7 +17,12 @@ import WithAuth from './components/pages/WithAuth';
 class App extends React.Component {
   render() {
     return (
-      <Provider appStore={appStore}>
+      <Provider 
+        appStore={appStore}
+        adminStore={appStore.adminStore}
+        homePageStore={appStore.homePageStore}
+        >
+
         <MainLayout>
           <Switch>
             <Route path="/" exact component={Home} />

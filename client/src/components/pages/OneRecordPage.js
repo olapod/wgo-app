@@ -3,13 +3,13 @@ import { observer, inject } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
-@inject('appStore')
+@inject('appStore', 'homePageStore')
 @observer
 
 export default class OneRecordPage extends Component {
 
     render() {
-      let {selectedUnitByAddress} = this.props.appStore;
+      let {selectedUnitByAddress} = this.props.homePageStore;
       let text;
 
        if (selectedUnitByAddress.roznica === 0) {

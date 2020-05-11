@@ -15,26 +15,26 @@ const DGOoptions = [
   { value: 'niezłożona deklaracja DGO', label: 'niezłożona deklaracja DGO' },
 ];
 
-@inject('appStore')
+@inject('appStore', 'homePageStore')
 @observer
 
 export default class HomePage extends Component {
 
     componentDidMount() {
       // this.props.appStore.getSummary();
-      this.props.appStore.getStreets();
-      this.props.appStore.getDiff();
+      this.props.homePageStore.getStreets();
+      this.props.homePageStore.getDiff();
       
     }
 
     componentWillUnmount() {
       this.props.appStore.resetLoading();
-      this.props.appStore.resetSummary();
+      this.props.homePageStore.resetSummary();
     }
 
     diffHandleClick = (e) => {
       e.preventDefault();
-      this.props.appStore.getDiffItems(this.props.appStore.presentPage)
+      this.props.homePageStore.getDiffItems(this.props.appStore.presentPage)
     }
 
     render() {
@@ -54,9 +54,12 @@ let {streetsOptions,
       DGOhandleChange,
       DGOhandleClick,
       getSummary,
-    loading} = this.props.appStore;
+    } = this.props.homePageStore;
+
+    let {loading} = this.props.appStore;
 
     let downloadLink;
+    console.log('Loading: ', loading, 'Summary: ', summary.length)
       
     if (summary.length === 0 && loading === true) {
       downloadLink = <Spinner />

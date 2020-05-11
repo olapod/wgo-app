@@ -3,7 +3,7 @@ import CSVReader from 'react-csv-reader';
 import { observer, inject } from 'mobx-react';
 // import Button from 'react-bootstrap/Button';
 
-@inject("appStore")
+@inject('appStore', 'adminStore')
 @observer
 class DataUploadingElud extends React.Component {
 
@@ -11,7 +11,7 @@ class DataUploadingElud extends React.Component {
   return (
     <div className='csv'>
       <CSVReader
-        onFileLoaded={this.props.appStore.loadElud.bind(this)}
+        onFileLoaded={this.props.adminStore.loadElud.bind(this)}
         // inputStyle={{opacity: 0, width: '170px', marginLeft: '-170px'}}
         parserOptions={{header: true}}
         cssClass="csv-reader-input"

@@ -9,12 +9,12 @@ import DataUploadingElud from '../features/DataUploadingElud';
 import io from 'socket.io-client';
 const socket = io("localhost:3001")
 
-@inject('appStore') 
+@inject('appStore', 'adminStore') 
 @observer
 class AdminPage extends Component {
 
 componentDidMount() {
-  socket.on('log', log => this.props.appStore.logReceive(log));
+  socket.on('log', log => this.props.adminStore.logReceive(log));
 }
 
 //  componentWillUnmount() {
@@ -25,7 +25,7 @@ componentDidMount() {
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
 
-    if (!this.props.appStore.elud.length && !this.props.appStore.loading) {
+    if (!this.props.adminStore.elud.length && !this.props.appStore.loading) {
       console.log('War 1')
       return (
         <div className='button_container'>
@@ -57,13 +57,13 @@ componentDidMount() {
     //     <Spinner/>
     //   )}
 
-    if (!this.props.appStore.wgo.length) {
+    if (!this.props.adminStore.wgo.length) {
       return (
         <div className='button_container'>
          <DataUploadingWgo />
          </div>
       )}
-    if (this.props.appStore.wgo.length) {
+    if (this.props.adminStore.wgo.length) {
         return (
           <div className='button_container'>
           <FontAwesomeIcon
@@ -76,9 +76,9 @@ componentDidMount() {
   }
 
   render() {
-    console.log('SocketIO: ', this.props.appStore.logs)
-    const isEnabled = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0;
-    const noButton = this.props.appStore.wgo.length > 0 && this.props.appStore.elud.length > 0 && !this.props.appStore.loading;
+    console.log('SocketIO: ', this.props.adminStore.logs)
+    const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0;
+    const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.appStore.loading;
   return (
     <div className='data_loading'>
       <div className='csv_title'>
@@ -92,7 +92,7 @@ componentDidMount() {
       </div>
       <div className='button_container'>
        <Button type="button" className="btn btn-primary" disabled={!isEnabled}
-        onClick={this.props.appStore.postData}
+        onClick={this.props.adminStore.postData}
         >
           Wgraj obie bazy
         </Button>
@@ -102,7 +102,7 @@ componentDidMount() {
       <div>
       <h5>Logi</h5>
       <ul >
-			{ this.props.appStore.logs.map((log, i) => <li key={i}>{log}</li>)}
+			{ this.props.adminStore.logs.map((log, i) => <li key={i}>{log}</li>)}
 		</ul>
       </div>
     </div>

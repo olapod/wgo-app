@@ -5,14 +5,14 @@ import { observer, inject } from 'mobx-react';
 
 // import Button from 'react-bootstrap/Button';
 
-@inject("appStore")
+@inject("appStore", 'adminStore')
 @observer
 class DataUploadingWgo extends React.Component {
   render() {
     return (
       <div className='csv'>
         <CSVReader
-          onFileLoaded={this.props.appStore.loadWgo.bind(this)}
+          onFileLoaded={this.props.adminStore.loadWgo.bind(this)}
           // inputStyle={{ opacity: 0, width: '170px', marginLeft: '-170px' }}
           parserOptions={{header: true}}
           cssClass="csv-reader-input"
