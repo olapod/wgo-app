@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import Pagination from '../common/Pagination';
 
-@inject('appStore', 'homePageStore')
+@inject('appStore', 'homePageStore', 'paginationStore')
 @observer
 
 export default class DifferencePage extends Component {
@@ -13,7 +13,7 @@ export default class DifferencePage extends Component {
 
     render() {
        let {selectedUnitsByDiff, selectedDiff } = this.props.homePageStore; 
-        let { handlePageClickedDiff } = this.props.appStore;
+        let { handlePageClickedDiff } = this.props.paginationStore;
        const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
        if(selectedUnitsByDiff.docs) {
       return (

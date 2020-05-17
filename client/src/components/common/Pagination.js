@@ -32,26 +32,3 @@ class Pagination extends Component {
 }
 
 export default Pagination;
-
-// const Pagination = (props) => {
-// 	let {selectedUnitsByDiff} = this.props.appStore
-// 	const pageCount = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage)
-// return (
-
-// <ReactPaginate
-//   previousLabel={'previous'}
-//   nextLabel={'next'}
-//   breakLabel={'...'}
-//   breakClassName={'break-me'}
-//   pageCount={pageCount}
-//   marginPagesDisplayed={2}
-//   pageRangeDisplayed={selectedUnitsByDiff.itemsPerPage}
-//   onPageChange={props.handlePageClick}
-//   containerClassName={'pagination'}
-//   subContainerClassName={'pages pagination'}
-//   activeClassName={'active'}
-//   />
-
-//  )
-// }
-// export default Pagination

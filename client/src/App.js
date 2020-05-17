@@ -21,6 +21,7 @@ class App extends React.Component {
         appStore={appStore}
         adminStore={appStore.adminStore}
         homePageStore={appStore.homePageStore}
+        paginationStore={appStore.paginationStore}
         >
 
         <MainLayout>

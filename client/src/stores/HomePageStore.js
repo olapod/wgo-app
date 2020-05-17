@@ -1,10 +1,9 @@
 import { observable, action, runInAction, computed } from "mobx";
 import { configure } from "mobx";
-// import io from "socket.io-client";
 configure({ enforceActions: 'observed' });
 const axios = require('axios');
 
-class AdminStore {
+class HomePageStore {
     constructor (appStore) {
         this.appStore = appStore;        
     }
@@ -159,4 +158,4 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
 }
 
 
-export default AdminStore;
+export default HomePageStore;

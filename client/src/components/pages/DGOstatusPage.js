@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 import Pagination from '../common/Pagination';
 
-@inject('appStore', 'homePageStore')
+@inject('appStore', 'homePageStore', 'paginationStore')
 @observer
 
 export default class DGOstatusPage extends Component {
 componentDidMount(){
-    this.props.homePageStore.getDGOStatusItems(this.props.appStore.selectedPage);
+    this.props.homePageStore.getDGOStatusItems(this.props.paginationStore.selectedPage);
     }
 
     render() {
-       let { handlePageClickedDGOStatus} = this.props.appStore;
+       let { handlePageClickedDGOStatus} = this.props.paginationStore;
        let { selectedUnitsByDGOstatus, selectedDGOstatus } = this.props.homePageStore;
        const pageCountbyDGOStatus = Math.ceil(selectedUnitsByDGOstatus.amount / selectedUnitsByDGOstatus.itemsPerPage);
        if(selectedUnitsByDGOstatus.docs) {

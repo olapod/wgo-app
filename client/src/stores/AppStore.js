@@ -1,25 +1,19 @@
 import { observable, action } from "mobx";
-// import { configure } from "mobx";
-// import io from "socket.io-client";
 import AdminStore from './AdminStore';
 import HomePageStore from './HomePageStore';
-// configure({ enforceActions: 'observed' });
-// const axios = require('axios');
+import PaginationStore from './PaginationStore';
+
 
 class AppStore {
 
   constructor() {
     this.adminStore = new AdminStore(this);
     this.homePageStore = new HomePageStore(this);
+    this.paginationStore = new PaginationStore(this);
   }
 
   @observable message = 'Loading...';
    
-//pagination
-@observable amount = 0;
-@observable itemsPerPage = 2;
-@observable selectedPage = 0;
-
     //other
     @observable loading = false;
     @observable redirect = false;
@@ -80,20 +74,6 @@ class AppStore {
     @action errorHandle = () => {
       this.error = true;
     }
-//pagination function
-
-@action handlePageClickedDiff = (data) => {
-  let selected = data.selected;
-  this.selectedPage = selected;
-  this.homePageStore.getDiffItems(this.selectedPage);
-};
-
-@action handlePageClickedDGOStatus = (data) => {
-  let selected = data.selected;
-  this.selectedPage = selected;
-  this.homePageStore.getDGOStatusItems(this.selectedPage);
-  // console.log(selected)
-};
 
 }
 
