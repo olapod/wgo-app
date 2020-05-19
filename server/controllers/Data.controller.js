@@ -20,7 +20,9 @@ exports.getSummary = async (req, res) => {
 exports.getStreets = async (req, res) => {
 
   try {
-    res.status(200).json(await Data.distinct('ulica'));
+    let streets = await Data.distinct('ulica')
+    streets.sort((a,b) => a.localeCompare(b))
+    res.status(200).json(streets);
   } catch(err) {
     res.status(500).json(err);
   }
@@ -33,18 +35,24 @@ exports.filterByStreet = async function (req, res) {
     let street = req.params.street;
     const selectedStreet = await Data.find({ulica: street});
     const uniqueNumbers = [...new Set(selectedStreet.map(item => item.nr))].sort((a,b) => a.localeCompare(b))
-    console.log(uniqueNumbers)
+    const nonNumbers = uniqueNumbers.filter(function(item){
+      return /^[\D*]/.test(item);
+  }).sort();
+  
+  const numbers = uniqueNumbers.filter(function(item){
+      return /^[\d]/.test(item);
+  });
     // csortowanie numerów i numerów z literami
-    // uniqueNumbers.sort(function(a, b) {
-    //   var splitter = /^(\d+)([A-Z]*)/;
-    //   a = a.match(splitter); b = b.match(splitter);
-    //   var anum = parseInt(a[1], 10), bnum = parseInt(b[1], 10);
-    //   if (anum === bnum)
-    //     return a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0;
-    //   return anum - bnum;     
-    // });
-    
-    res.status(200).json(uniqueNumbers);
+    numbers.sort(function(a, b) {
+      var splitter = /^(\d+)([A-Z]*)/;
+      a = a.match(splitter); b = b.match(splitter);
+      var anum = parseInt(a[1], 10), bnum = parseInt(b[1], 10);
+      if (anum === bnum)
+        return a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0;
+      return anum - bnum;     
+    });
+    const sortedNumbers = numbers.concat(nonNumbers)
+    res.status(200).json(sortedNumbers);
 
   } catch(err) {
     res.status(500).json(err);

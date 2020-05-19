@@ -54,7 +54,8 @@ let {streetsOptions,
       DGOhandleChange,
       DGOhandleClick,
       getSummary,
-    } = this.props.homePageStore;
+    
+        } = this.props.homePageStore;
 
     let {loading} = this.props.appStore;
 

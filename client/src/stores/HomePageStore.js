@@ -47,7 +47,8 @@ class HomePageStore {
   //GET message from server using fetch api
   return axios.get('/api/getStreets')
     .then(res => {runInAction(() => {
-      this.streets = res.data})})
+      this.streets = res.data
+      })})    
 }
 
 @computed get streetsOptions() {
@@ -55,7 +56,6 @@ class HomePageStore {
 }
 
 @action streetsHandleChange = (selectedOption) => {
-  // this.selectedStreet = selectedOption.value;
   this.selectedStreet = selectedOption.value;
   axios.get(`/api/streets/${this.selectedStreet}`)
 .then(res => {runInAction(() => {
