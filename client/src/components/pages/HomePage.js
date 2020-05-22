@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
 import Spinner from '../common/Spinner';
 import { CSVLink } from "react-csv";
+import './HomePage.scss';
 
 const DGOoptions = [
   { value: 'złożona deklaracja DGO', label: 'złożona deklaracja DGO' },
@@ -53,14 +54,14 @@ let {streetsOptions,
       selectedDGOstatus,
       DGOhandleChange,
       DGOhandleClick,
-      getSummary,
-    
+      getSummary,    
         } = this.props.homePageStore;
 
     let {loading} = this.props.appStore;
 
     let downloadLink;
-    console.log('Loading: ', loading, 'Summary: ', summary.length)
+    console.log('What: ', numbersOptions)
+    console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
       
     if (summary.length === 0 && loading === true) {
       downloadLink = <Spinner />
@@ -72,11 +73,11 @@ let {streetsOptions,
     }
 
       return (
-        <div>
-          <h1>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
+        <div className='titleContainer'>
+          <h1 className='title'>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
           <Container>
             <Row>
-              <Col>
+              <Col className='column'>
          <form>
          <h3>Raport dla punktu adresowego</h3>
         <Select
@@ -89,7 +90,7 @@ let {streetsOptions,
 
         <Select
           options={numbersOptions}
-          // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
+          // defaultValue={numbersOptions[0]}
           onChange={numbersHandleChange}
 
           // isMulti
@@ -101,7 +102,7 @@ let {streetsOptions,
         </button>
       </form>
           </Col>
-          <Col>
+          <Col className='column'>
              <form>
              <h3>Raport wg różnic w meldunkach i deklaracjach GO</h3>
         <Select
@@ -120,7 +121,7 @@ let {streetsOptions,
       </form>
       <p>Różnica na plus oznacza więcej meldunków niż DGO. Różnica na minus oznacza więcej DGO niż meldunków.</p>
           </Col>
-          <Col>
+          <Col className='column'>
              <form>
              <h3>Raport wg złożonych / niezłożonych deklaracji GO</h3>
         <Select

@@ -17,7 +17,7 @@ class HomePageStore {
 
     //selected items in filter
     @observable selectedStreet = '';
-    @observable selectedNumber = '';
+    @observable selectedNumber = null;
     @observable selectedDiff = null;
     @observable selectedDGOstatus = '';
 
@@ -44,10 +44,12 @@ class HomePageStore {
 //filtr wg ulicy i numeru
 
 @action getStreets = () => {
+   
   //GET message from server using fetch api
   return axios.get('/api/getStreets')
     .then(res => {runInAction(() => {
       this.streets = res.data
+      this.resetNumber() 
       })})    
 }
 
@@ -59,11 +61,17 @@ class HomePageStore {
   this.selectedStreet = selectedOption.value;
   axios.get(`/api/streets/${this.selectedStreet}`)
 .then(res => {runInAction(() => {
-  this.numbers = res.data})})
-        }
+  this.numbers = res.data  
+})})
+}
+
 
 @computed get numbersOptions() {
   return this.numbers.map(n => ({ label: n, value: n }))
+}
+
+@action resetNumber = () => {
+  this.selectedNumber = null;
 }
 
 @action numbersHandleChange = (selectedOption) => {
