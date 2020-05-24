@@ -75,6 +75,7 @@ class HomePageStore {
 }
 
 @action numbersHandleChange = (selectedOption) => {
+  console.log('Store: ', selectedOption)
   this.selectedNumber = selectedOption.value;
   axios.get(`/api/streets/${this.selectedStreet}`)
 .then(res => {runInAction(() => {

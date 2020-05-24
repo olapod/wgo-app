@@ -6,6 +6,7 @@ import Select from "react-select";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 // import Button from 'react-bootstrap/Button';
 import Spinner from '../common/Spinner';
 import { CSVLink } from "react-csv";
@@ -69,7 +70,7 @@ let {streetsOptions,
       downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
     }
     if (summary.length === 0 && loading === false) {
-      downloadLink  = <button onClick={getSummary}> Pobierz bazę</button>
+      downloadLink  = <Button onClick={getSummary}> Pobierz bazę</Button>
     }
 
       return (
@@ -80,7 +81,7 @@ let {streetsOptions,
               <Col className='column'>
          <form>
          <h3>Raport dla punktu adresowego</h3>
-        <Select
+        <Select className='selector'
           options={streetsOptions}
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
           onChange={streetsHandleChange}
@@ -96,15 +97,17 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz numer"
         />
-        <button onClick={recordHandleClick} >
+        <div className='d-flex justify-content-center'>
+        <Button onClick={recordHandleClick} >
         <Link to={'/raport/' + selectedStreet +'/'+ selectedNumber}>Filtruj</Link>
 
-        </button>
+        </Button>
+        </div>
       </form>
           </Col>
           <Col className='column'>
              <form>
-             <h3>Raport wg różnic w meldunkach i deklaracjach GO</h3>
+             <h3>Raport wg różnic w meldunkach</h3>
         <Select
           options={diffOptions}
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
@@ -112,18 +115,20 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz różnicę"
         />
-        <button
+        <div className='d-flex justify-content-center'>
+        <Button
         // onClick={this.diffHandleClick}
         >
         <Link to={'/raport2/difference/' + selectedDiff}>Filtruj</Link>
 
-        </button>
+        </Button>
+        </div>
       </form>
-      <p>Różnica na plus oznacza więcej meldunków niż DGO. Różnica na minus oznacza więcej DGO niż meldunków.</p>
+      <p>Różnica na plus oznacza więcej meldunków niż deklaracji. Różnica na minus oznacza więcej deklaracj niż meldunków.</p>
           </Col>
           <Col className='column'>
              <form>
-             <h3>Raport wg złożonych / niezłożonych deklaracji GO</h3>
+             <h3>Raport wg złożonych / niezłożonych deklaracji</h3>
         <Select
           options={DGOoptions}
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
@@ -131,16 +136,21 @@ let {streetsOptions,
           // isMulti
           placeholder="Status deklaracji GO"
         />
-        <button onClick={DGOhandleClick} >
+        <div className='d-flex justify-content-center'>
+        <Button onClick={DGOhandleClick} >
         <Link to={'/raport3/status/' + selectedDGOstatus}>Filtruj</Link>
 
-        </button>
+        </Button>
+        </div>
       </form>
           </Col>
         </Row>
       </Container>
+      <Container>
+        <p>Pobierz całą bazę w formacie CSV</p>
+        {downloadLink}
+      </Container>
       
-      {downloadLink}
       
      
           {/* <ul >
