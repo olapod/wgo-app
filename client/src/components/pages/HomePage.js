@@ -60,9 +60,19 @@ let {streetsOptions,
 
     let {loading} = this.props.appStore;
 
+    // const selectStyle = {
+    //   control: base => ({
+    //     ...base,
+    //     border: '1px solid #343a40',
+    //     marginBottom: 5,
+    //     // This line disable the blue border
+    //     boxShadow: 'none'
+    //   })
+    // };
+
     let downloadLink;
-    console.log('What: ', numbersOptions)
-    console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
+    // console.log('What: ', numbersOptions)
+    // console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
       
     if (summary.length === 0 && loading === true) {
       downloadLink = <Spinner />
@@ -70,12 +80,12 @@ let {streetsOptions,
       downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
     }
     if (summary.length === 0 && loading === false) {
-      downloadLink  = <Button onClick={getSummary}> Pobierz bazę</Button>
+      downloadLink  = <Button className='csvButton' onClick={getSummary}> Pobierz bazę</Button>
     }
 
       return (
         <div className='titleContainer'>
-          <h1 className='title'>Aplikacja do raportowania różnic w osobach zgłoszonych do DGO i bazy ELUD</h1>
+          <h1 className='title'>Aplikacja do raportowania różnic w osobach zgłoszonych do deklaracji odpadowych i bazy ELUD</h1>
           <Container>
             <Row>
               <Col className='column'>
@@ -86,7 +96,7 @@ let {streetsOptions,
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
           onChange={streetsHandleChange}
           // isMulti
-          placeholder="Wybierz ulicę"
+          placeholder="Wybierz ulicę"          
         />
 
         <Select
@@ -96,6 +106,7 @@ let {streetsOptions,
 
           // isMulti
           placeholder="Wybierz numer"
+          // styles={selectStyle}
         />
         <div className='d-flex justify-content-center'>
         <Button onClick={recordHandleClick} >
@@ -107,7 +118,7 @@ let {streetsOptions,
           </Col>
           <Col className='column'>
              <form>
-             <h3>Raport wg różnic w meldunkach</h3>
+             <h3>Raport wg różnic w obu bazach</h3>
         <Select
           options={diffOptions}
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
@@ -115,7 +126,7 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz różnicę"
         />
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center diffButton'>
         <Button
         // onClick={this.diffHandleClick}
         >
@@ -136,7 +147,7 @@ let {streetsOptions,
           // isMulti
           placeholder="Status deklaracji GO"
         />
-        <div className='d-flex justify-content-center'>
+        <div className='d-flex justify-content-center statusButton'>
         <Button onClick={DGOhandleClick} >
         <Link to={'/raport3/status/' + selectedDGOstatus}>Filtruj</Link>
 
@@ -146,9 +157,12 @@ let {streetsOptions,
           </Col>
         </Row>
       </Container>
-      <Container>
-        <p>Pobierz całą bazę w formacie CSV</p>
-        {downloadLink}
+      <Container className='text-center mt-5'>
+        <div className='csvTitle'><p>Pobierz całą bazę w formacie CSV</p></div>
+        <div className='downloadLink'>
+          {downloadLink}
+        </div>
+        
       </Container>
       
       

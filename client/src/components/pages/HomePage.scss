@@ -2,7 +2,8 @@
     min-height: 80vh;
 h3 {
     text-align: center;
-    background-color: #4d814c;
+    background-color: #79969f;
+    color: #343a40;
     // border: 1px solid #343a40;  
     border-radius: 5px;     
 }
@@ -12,16 +13,17 @@ h3 {
     text-align: center;
     // font-weight: bold;
     // border: 2px solid #343a40;
-    background-color: #c27e3e;
+    background-color: #79969f;
     border-radius: 5px;
+    color: #343a40;
 }
 
 .row {
     margin-top: 50px;
     button {
         margin-top: 10px;
-        background-color: #c27e3e;
-        // transition-duration: 0.4s;
+        background-color: #343a40;        
+        transition-duration: 0.4s;
         box-shadow: none;
         border-radius: 5px;
         border: 0px solid;
@@ -30,18 +32,18 @@ h3 {
         margin-bottom: 10px;
         a {
             text-decoration: none; 
-            color: #000000;
+            color: #79969f;
         }
     }
     button:hover {
-        background-color: #7e5229;
-        
+        background-color: #79969f;
+        a {            
+            color: #343a40;
+        }
       }
 }
 
-.csvFormat {
-    margin-top: 200px;
-}
+
 
 // .selector {
 //     border: 1px solid #343a40;
@@ -51,3 +53,25 @@ h3 {
 //     border: 1px solid #000000;
 // }
 }
+
+.downloadLink, .csvTitle {
+    display: block ;
+}
+
+.diffButton, .statusButton {
+    margin-top: 40px;
+}
+
+.csvButton {
+    
+        background-color: #343a40 !important; 
+        border: 0px solid !important;       
+        transition-duration: 0.4s !important;
+        color: #79969f !important;        
+    }
+    .csvButton:hover {
+        background-color: #79969f !important;
+        color: #343a40 !important;
+        
+      }
+
