@@ -20,7 +20,7 @@ h3 {
 
 .row {
     margin-top: 50px;
-    button {
+    .btn-primary {
         margin-top: 10px;
         background-color: #343a40;        
         transition-duration: 0.4s;
@@ -35,11 +35,32 @@ h3 {
             color: #79969f;
         }
     }
-    button:hover {
+    .btn-primary:hover {
         background-color: #79969f;
         a {            
             color: #343a40;
         }
+      }
+
+
+      .buttonInactive {
+            cursor: not-allowed;
+            caret-color: red;
+        a {           
+            cursor: not-allowed;
+            caret-color: red;
+        }
+    }
+
+    .buttonInactive:hover {
+        background-color: #343a40;
+        a {            
+            color: #79969f;
+        }
+      }
+    
+      .buttonInactive:active {
+        background-color: #343a40 !important;        
       }
 }
 
@@ -74,4 +95,3 @@ h3 {
         color: #343a40 !important;
         
       }
-

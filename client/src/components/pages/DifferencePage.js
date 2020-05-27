@@ -10,6 +10,10 @@ export default class DifferencePage extends Component {
   componentDidMount(){
     this.props.homePageStore.getDiffItems(this.props.appStore.selectedPage);
     }
+  
+  componentWillUnmount() {
+    this.props.homePageStore.resetDiffButton();
+  }
 
     render() {
        let {selectedUnitsByDiff, selectedDiff } = this.props.homePageStore; 

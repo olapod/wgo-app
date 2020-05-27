@@ -21,6 +21,9 @@ class HomePageStore {
     @observable selectedDiff = null;
     @observable selectedDGOstatus = '';
 
+    //button's control
+    @observable diffDisabled = true;
+
    //filtred databse
    @observable selectedUnitByAddress = {};
     @observable selectedUnitsByDiff = [];
@@ -71,7 +74,7 @@ class HomePageStore {
 }
 
 @action resetNumber = () => {
-  this.selectedNumber = null;
+  this.selectedNumber = null;  
 }
 
 @action numbersHandleChange = (selectedOption) => {
@@ -106,8 +109,14 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
   return this.diff.map(d => ({ label: d, value: d}))
 }
 
+@action resetDiffButton() {
+  this.selectedDiff = null;
+  this.diffDisabled = true;
+}
+
 @action diffHandleChange = (selectedOption) => {
   this.selectedDiff = selectedOption.value;
+  this.diffDisabled = false;
         }
 
 // @action diffHandleClick = (e) => {

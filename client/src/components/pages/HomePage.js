@@ -31,7 +31,7 @@ export default class HomePage extends Component {
 
     componentWillUnmount() {
       this.props.appStore.resetLoading();
-      this.props.homePageStore.resetSummary();
+      this.props.homePageStore.resetSummary();      
     }
 
     diffHandleClick = (e) => {
@@ -55,11 +55,16 @@ let {streetsOptions,
       selectedDGOstatus,
       DGOhandleChange,
       DGOhandleClick,
-      getSummary,    
+      getSummary,
+      diffDisabled    
         } = this.props.homePageStore;
 
     let {loading} = this.props.appStore;
-
+    // let diffDisabled 
+    // if (selectedDiff === null ) {
+    //   diffDisabled = false}
+    //   else {diffDisabled = true}
+    
     // const selectStyle = {
     //   control: base => ({
     //     ...base,
@@ -71,7 +76,7 @@ let {streetsOptions,
     // };
 
     let downloadLink;
-    // console.log('What: ', numbersOptions)
+    console.log('What: ', selectedDiff, 'Co: ', diffDisabled)
     // console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
       
     if (summary.length === 0 && loading === true) {
@@ -127,11 +132,13 @@ let {streetsOptions,
           placeholder="Wybierz różnicę"
         />
         <div className='d-flex justify-content-center diffButton'>
-        <Button
+        <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'}
+        // as={Link} to={disabled ? '/raport2/difference/' + selectedDiff : '#'}
         // onClick={this.diffHandleClick}
+        // disabled={false}
         >
-        <Link to={'/raport2/difference/' + selectedDiff}>Filtruj</Link>
-
+        <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff}>Filtruj</Link>
+        
         </Button>
         </div>
       </form>
