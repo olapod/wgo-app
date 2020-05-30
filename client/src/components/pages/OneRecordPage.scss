@@ -1,0 +1,34 @@
+.recordContainer {
+    min-height: 80vh;
+
+.recordTitle {
+    margin:30px;
+    padding: 30px;
+    text-align: center;
+    // font-weight: bold;
+    // border: 2px solid #343a40;
+    background-color: #79969f;
+    border-radius: 5px;
+    color: #343a40;
+    }
+}
+
+.recordTable {
+    margin-left: 25%;
+    margin-right: 25%; 
+}
+
+.recordText {
+    text-align: center;
+    margin-top: 50px;    
+}
+
+.badRecord {
+    color: rgb(202, 33, 33);
+    font-size: 50px;
+}
+
+.okRecord {
+    color: rgb(48, 165, 48);
+    font-size: 50px;
+}

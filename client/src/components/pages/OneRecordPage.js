@@ -1,32 +1,59 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import Table from 'react-bootstrap/Table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-
+import './OneRecordPage.scss';
 @inject('appStore', 'homePageStore')
 @observer
 
 export default class OneRecordPage extends Component {
+  
+  componentWillUnmount() {
+    this.props.homePageStore.resetRecordButton();
+  }
 
-    render() {
+    render() {      
       let {selectedUnitByAddress} = this.props.homePageStore;
       let text;
-
+      console.log('record: ', selectedUnitByAddress)
        if (selectedUnitByAddress.roznica === 0) {
-      text = <div><p>Liczba osób zameldowanych jest taka sama jak zgłoszonych do DGO</p><FontAwesomeIcon
-								icon={faCheckCircle}/></div>;
+      text = <div><p>Liczba osób zameldowanych jest taka sama jak zgłoszonych do odpadowej</p><span className='okRecord'><FontAwesomeIcon
+      icon={faCheckCircle}/></span></div>;
     } if (selectedUnitByAddress.roznica > 0) {
-      text = <div><p>Liczba osób zameldowanych jest wyższa niż zgłoszonych do DGO o {selectedUnitByAddress.roznica}</p><FontAwesomeIcon
-								icon={faExclamationCircle}/></div>;
+      text = <div><p>Liczba osób zameldowanych jest wyższa od zgłoszonych do deklaracji odpadowej o {selectedUnitByAddress.roznica}</p><span className='badRecord'><FontAwesomeIcon
+      icon={faExclamationCircle}/></span></div>;
     } if (selectedUnitByAddress.roznica < 0) {
-      text = <div><p>Liczba osób zameldowanych jest niższa niż zgłoszonych do DGO o {selectedUnitByAddress.roznica * -1}</p><FontAwesomeIcon icon={faCheckCircle}/></div>;
+      text = <div><p>Liczba osób zameldowanych jest niższa od zgłoszonych do deklaracji odpadowej o {selectedUnitByAddress.roznica * -1}.</p><span className='okRecord'><FontAwesomeIcon icon={faCheckCircle}/></span></div>;
       }
       return (
-        <div>
-          <h1>Raport dla punktu adresowego</h1>
-            <h3>{selectedUnitByAddress.ulica} nr: {selectedUnitByAddress.nr}</h3>
-            {text}
-            <p>Status deklaracji: {selectedUnitByAddress.DGO}</p>
+        <div className='recordContainer'>
+          <h1 className='recordTitle title'>Raport dla punktu adresowego</h1>
+          <div className='recordTable'>
+          <Table striped bordered >
+            <thead>
+            <tr>
+              <th>ADRES</th>
+              <th>{selectedUnitByAddress.ulica} NR {selectedUnitByAddress.nr}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Liczba osób zameldowanych</td>
+              <td>{selectedUnitByAddress.meldunki}</td>
+            </tr>
+            <tr>
+              <td>Liczba osób w deklaracji odpadowej</td>
+              <td>{selectedUnitByAddress.osoby}</td>
+            </tr>
+            <tr>
+              <td>Status deklaracji</td>
+              <td>{selectedUnitByAddress.DGO}</td>
+            </tr>
+            </tbody>
+          </Table>
+          </div>
+            <h3 className='recordText'>{text}</h3>            
         </div>
       );
     }

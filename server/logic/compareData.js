@@ -96,7 +96,7 @@ function prepareWgo(wgo) {
       
               uniqueWgoStreets[i].roznica = unique[k].liczba_meldunków - uniqueWgoStreets[i].osoby;
               uniqueWgoStreets[i].meldunki = unique[k].liczba_meldunków;
-              uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
+              uniqueWgoStreets[i].DGO = 'złożona deklaracja odpadowa';
               unique.splice(k,1);
               continue;
           }
@@ -110,7 +110,7 @@ function prepareWgo(wgo) {
       for (var i = 0; i < uniqueWgoStreets.length; i++) {
             if (uniqueWgoStreets[i].DGO === '') {
               uniqueWgoStreets[i].roznica = uniqueWgoStreets[i].meldunki - uniqueWgoStreets[i].osoby;
-              uniqueWgoStreets[i].DGO = 'złożona deklaracja DGO';
+              uniqueWgoStreets[i].DGO = 'złożona deklaracja odpadowa';
           }
       }
       // console.log('Odnalazłem rekordy, które nie występują w bazie ELUD, a występują w bazie WGO ')
@@ -124,7 +124,7 @@ function prepareWgo(wgo) {
                                     osoby: 0,
                                     roznica:  unique[i].liczba_meldunków,
                                     meldunki: unique[i].liczba_meldunków,
-                                    DGO: 'niezłożona deklaracja DGO'})
+                                    DGO: 'niezłożona deklaracja odpadowa'})
       }
     resolve(uniqueWgoStreets)
     })

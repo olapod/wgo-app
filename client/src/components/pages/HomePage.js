@@ -13,8 +13,8 @@ import { CSVLink } from "react-csv";
 import './HomePage.scss';
 
 const DGOoptions = [
-  { value: 'złożona deklaracja DGO', label: 'złożona deklaracja DGO' },
-  { value: 'niezłożona deklaracja DGO', label: 'niezłożona deklaracja DGO' },
+  { value: 'złożona deklaracja odpadowa', label: 'złożona deklaracja odpadowa' },
+  { value: 'niezłożona deklaracja odpadowa', label: 'niezłożona deklaracja odpadowa' },
 ];
 
 @inject('appStore', 'homePageStore')
@@ -56,7 +56,9 @@ let {streetsOptions,
       DGOhandleChange,
       DGOhandleClick,
       getSummary,
-      diffDisabled    
+      diffDisabled,
+      recordDisabled,
+      statusDisabled    
         } = this.props.homePageStore;
 
     let {loading} = this.props.appStore;
@@ -76,7 +78,7 @@ let {streetsOptions,
     // };
 
     let downloadLink;
-    console.log('What: ', selectedDiff, 'Co: ', diffDisabled)
+    console.log('What: ', selectedDGOstatus, 'Co: ', statusDisabled)
     // console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
       
     if (summary.length === 0 && loading === true) {
@@ -101,7 +103,8 @@ let {streetsOptions,
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
           onChange={streetsHandleChange}
           // isMulti
-          placeholder="Wybierz ulicę"          
+          placeholder="Wybierz ulicę"
+          noOptionsMessage={() => 'BRAK DANYCH'}          
         />
 
         <Select
@@ -111,11 +114,12 @@ let {streetsOptions,
 
           // isMulti
           placeholder="Wybierz numer"
+          noOptionsMessage={() => 'BRAK DANYCH'} 
           // styles={selectStyle}
         />
         <div className='d-flex justify-content-center'>
-        <Button onClick={recordHandleClick} >
-        <Link to={'/raport/' + selectedStreet +'/'+ selectedNumber}>Filtruj</Link>
+        <Button className={recordDisabled ? 'buttonInactive' : 'buttonActive'} onClick={recordHandleClick} >
+        <Link to={recordDisabled ? '#' :'/raport/' + selectedStreet +'/'+ selectedNumber}>Filtruj</Link>
 
         </Button>
         </div>
@@ -130,15 +134,11 @@ let {streetsOptions,
           onChange={diffHandleChange}
           // isMulti
           placeholder="Wybierz różnicę"
+          noOptionsMessage={() => 'BRAK DANYCH'} 
         />
         <div className='d-flex justify-content-center diffButton'>
-        <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'}
-        // as={Link} to={disabled ? '/raport2/difference/' + selectedDiff : '#'}
-        // onClick={this.diffHandleClick}
-        // disabled={false}
-        >
+        <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'}>
         <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff}>Filtruj</Link>
-        
         </Button>
         </div>
       </form>
@@ -152,11 +152,12 @@ let {streetsOptions,
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
           onChange={DGOhandleChange}
           // isMulti
-          placeholder="Status deklaracji GO"
+          placeholder="Status deklaracji odpadowej"
+          noOptionsMessage={() => 'BRAK DANYCH'} 
         />
         <div className='d-flex justify-content-center statusButton'>
-        <Button onClick={DGOhandleClick} >
-        <Link to={'/raport3/status/' + selectedDGOstatus}>Filtruj</Link>
+        <Button className={statusDisabled ? 'buttonInactive' : 'buttonActive'} onClick={DGOhandleClick} >
+        <Link to={statusDisabled ? '#' :'/raport3/status/' + selectedDGOstatus}>Filtruj</Link>
 
         </Button>
         </div>

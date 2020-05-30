@@ -19,10 +19,12 @@ class HomePageStore {
     @observable selectedStreet = '';
     @observable selectedNumber = null;
     @observable selectedDiff = null;
-    @observable selectedDGOstatus = '';
+    @observable selectedDGOstatus = null;
 
     //button's control
     @observable diffDisabled = true;
+    @observable recordDisabled = true;
+    @observable statusDisabled = true;
 
    //filtred databse
    @observable selectedUnitByAddress = {};
@@ -80,6 +82,7 @@ class HomePageStore {
 @action numbersHandleChange = (selectedOption) => {
   console.log('Store: ', selectedOption)
   this.selectedNumber = selectedOption.value;
+  this.recordDisabled = false;
   axios.get(`/api/streets/${this.selectedStreet}`)
 .then(res => {runInAction(() => {
   this.numbers = res.data})})
@@ -94,8 +97,14 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
         }
       })
 .then(res => {runInAction(() => {
+  console.log('Test: ', res.data)
   this.selectedUnitByAddress = res.data})})
   }
+
+  @action resetRecordButton() {
+    this.selectedNumber = null;
+    this.recordDisabled = true;
+  }  
 
 //filtr różnic
 @action getDiff = () => {
@@ -117,7 +126,7 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 @action diffHandleChange = (selectedOption) => {
   this.selectedDiff = selectedOption.value;
   this.diffDisabled = false;
-        }
+}
 
 // @action diffHandleClick = (e) => {
 //    e.preventDefault();
@@ -125,7 +134,7 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 //   }
 
 @action getDiffItems = (page) => {
-   const itemsPerPage = 20;
+   const itemsPerPage = 12;
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
@@ -149,10 +158,11 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
 //filtr statusu deklaracji
 @action DGOhandleChange = (selectedOption) => {
   this.selectedDGOstatus = selectedOption.value;
+  this.statusDisabled = false;
         }
 
 @action getDGOStatusItems = (page) => {
-   const itemsPerPage = 20;
+   const itemsPerPage = 12;
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
@@ -173,7 +183,14 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
 .then(runInAction(() => {this.appStore.loading = false}))
 
   }
+
+  @action resetStatusButton() {
+    this.selectedDGOstatus = null;
+    this.statusDisabled = true;
+  } 
+  
 }
+
 
 
 export default HomePageStore;

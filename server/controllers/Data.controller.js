@@ -66,6 +66,7 @@ exports.filterByStreetAndNumber = async function (req, res) {
 
     let street = req.query.street;
     let number = req.query.number;
+    console.log('Dostaje ', req.query.street, req.query.number)
     const selectedItem = await Data.findOne({ulica: street, nr: number});
     // const uniqueNumbers = [...new Set(selectedStreet.map(item => item.nr))];
     res.status(200).json(await selectedItem);
