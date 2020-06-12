@@ -1,20 +1,29 @@
-// .caret {
-//     display: inline-block;
-//     width: 0;
-//     height: 0;
-//     margin-left: 2px;
-//     vertical-align: middle;
-//     border-top: 4px dashed;
-//     border-top: 4px solid \9;
-//     border-right: 4px solid transparent;
-//     border-left: 4px solid transparent;
-//   }
+.caret {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+  }
   
-//   .dropup .caret, .navbar-fixed-bottom .dropdown .caret {
-//     border-top: 0;
-//     border-bottom: 4px dashed;
-//     border-bottom: 4px solid \9;
-//     content: "";
-//   }
+  .dropup .caret {
+    border-bottom: 4px dashed;
+    border-top: 0;
+    content: '';
+  }
+  
+  /* Prevent excessive margin from react-table from increasing the height of the
+   * `<thead>`.
+   */
+  .react-bootstrap-table th > .react-bootstrap-table-sort-order > .caret,
+  .react-bootstrap-table th .order > .dropdown > .caret,
+  .react-bootstrap-table th .order > .dropup > .caret {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 
   

@@ -58,7 +58,7 @@ const columns = [{
         striped
         hover
         remote
-        bootstrap4
+        // bootstrap4
         keyField="_id"
         data={ data }
         columns={ columns }
