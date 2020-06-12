@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import Pagination from '../common/Pagination';
-import Table from 'react-bootstrap/Table';
+import DiffTable from '../features/DiffTable';
+// import Pagination from '../common/Pagination';
+// import Table from 'react-bootstrap/Table';
 import './DifferencePage.scss';
 
 @inject('appStore', 'homePageStore', 'paginationStore')
@@ -19,14 +20,25 @@ export default class DifferencePage extends Component {
 
     render() {
        let {selectedUnitsByDiff, selectedDiff } = this.props.homePageStore; 
-        let { handlePageClickedDiff } = this.props.paginationStore;
+        let { handleTableChange, selectedPage } = this.props.paginationStore;
        const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
+       console.log('Paginacja: ', selectedUnitsByDiff.docs, selectedPage, pageCountbyDiff)
+       
        if(selectedUnitsByDiff.docs) {
       return (
         <div className='diffContainer'>
           <h1 className='diffTitle'>Raport z punktów adresowych o różnicy {selectedDiff}</h1>
           <div className='diffTable'>
-          <Table striped bordered >
+          
+          <DiffTable
+            data={ selectedUnitsByDiff.docs }
+            page={ selectedPage }
+            sizePerPage={ selectedUnitsByDiff.itemsPerPage }
+            totalSize={selectedUnitsByDiff.amount}
+            onTableChange={ handleTableChange }
+          />
+         
+          {/* <Table striped bordered >
           <thead>
             <tr>
               <th>ADRES</th>
@@ -53,7 +65,7 @@ export default class DifferencePage extends Component {
     <div className='paginationContainer'>
     <Pagination
     handlePageClick={handlePageClickedDiff} pageCount={pageCountbyDiff} itemsPerPage={selectedUnitsByDiff.itemsPerPage}
-    />
+    /> */}
     </div>
         </div>
       );

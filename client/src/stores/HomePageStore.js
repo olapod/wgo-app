@@ -133,16 +133,40 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 
 //   }
 
-@action getDiffItems = (page) => {
+@action getDiffItems = (page, sortField, sortOrder) => {
    const itemsPerPage = 12;
+   let order = 1
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;
+    if (sortOrder === 'desc') { order = -1 }
+    else {order = 1}
+    
+      //   result = result.sort((a, b) => {
+      //     if (a[sortField] > b[sortField]) {
+      //       return 1;
+      //     } else if (b[sortField] > a[sortField]) {
+      //       return -1;
+      //     }
+      //     return 0;
+      //   });
+      // } else {
+      //   result = result.sort((a, b) => {
+      //     if (a[sortField] > b[sortField]) {
+      //       return -1;
+      //     } else if (b[sortField] > a[sortField]) {
+      //       return 1;
+      //     }
+      //     return 0;
+      //   });
+      // }
+      
 axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         params: {
           diff: this.selectedDiff,
           startAt: startAt,
-          limit: limit
+          limit: limit,
+          sort: {[sortField]: order}
         }
       })
 .then(res => {runInAction(() => {
@@ -152,6 +176,7 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         itemsPerPage,
         selectedPage: page,
       }})})
+.then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
   }
 
@@ -162,7 +187,7 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         }
 
 @action getDGOStatusItems = (page) => {
-   const itemsPerPage = 12;
+   const itemsPerPage = 10;
   //  const startAt = (page - 1) * itemsPerPage;
    const startAt = page * itemsPerPage;
    const limit = itemsPerPage;

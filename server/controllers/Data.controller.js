@@ -42,7 +42,7 @@ exports.filterByStreet = async function (req, res) {
   const numbers = uniqueNumbers.filter(function(item){
       return /^[\d]/.test(item);
   });
-    // csortowanie numerów i numerów z literami
+    // sortowanie numerów i numerów z literami
     numbers.sort(function(a, b) {
       var splitter = /^(\d+)([A-Z]*)/;
       a = a.match(splitter); b = b.match(splitter);
@@ -89,14 +89,15 @@ exports.getDiff = async (req, res) => {
 exports.filterByDiff = async function (req, res) {
   try {
     // let diff = req.params.diff;
-    let { startAt, limit, diff } = req.query;
+    let { startAt, limit, diff, sort } = req.query;
 
     startAt = parseInt(startAt);
     limit = parseInt(limit);
-
-    const docs = await Data.find({roznica: diff}).skip(startAt).limit(limit);
+    sort=JSON.parse(sort);
+    
+    const docs = await Data.find({roznica: diff}).sort(sort).skip(startAt).limit(limit);
     const amount = await Data.find({roznica: diff}).countDocuments();
-    // console.log('DDDD: ', docs, 'WWWWWWW ', amount)
+   
     res.status(200).json({
       docs,
       amount,
