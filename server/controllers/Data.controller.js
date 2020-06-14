@@ -89,19 +89,39 @@ exports.getDiff = async (req, res) => {
 exports.filterByDiff = async function (req, res) {
   try {
     // let diff = req.params.diff;
-    let { startAt, limit, diff, sort } = req.query;
-
+    let { startAt, limit, diff, sort, filters } = req.query;
+    // console.log('Spr: ', typeof filters)
     startAt = parseInt(startAt);
     limit = parseInt(limit);
     sort=JSON.parse(sort);
-    
-    const docs = await Data.find({roznica: diff}).sort(sort).skip(startAt).limit(limit);
-    const amount = await Data.find({roznica: diff}).countDocuments();
+    filters=JSON.parse(filters);
+    console.log('Filter: ', Object.keys(filters).length )
+    if (Object.keys(filters).length === 0) {
+          const docs = await Data.find({roznica: diff}).sort(sort).collation({ locale: "pl", numericOrdering: true}).skip(startAt).limit(limit);
+          const amount = await Data.find({roznica: diff}).countDocuments();
+          res.status(200).json({
+          docs,
+          amount,
+        });
+    }
+    else {
+      console.log(filters)
+        
+      const docs = await Data
+      .find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}})
+      .sort(sort).collation({ locale: "pl", numericOrdering: true})
+      .skip(startAt)
+      .limit(limit);
+      console.log('Docs: ', docs.length)
+      const amount = await Data.find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}}).countDocuments()
+      console.log('Amount: ', amount)
+      res.status(200).json({
+        docs,
+        amount,
+      });
+    };
+  
    
-    res.status(200).json({
-      docs,
-      amount,
-    });
 
   } catch(err) {
     res.status(500).json(err);

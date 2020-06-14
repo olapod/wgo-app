@@ -20,9 +20,9 @@ export default class DifferencePage extends Component {
 
     render() {
        let {selectedUnitsByDiff, selectedDiff } = this.props.homePageStore; 
-        let { handleTableChange, selectedPage } = this.props.paginationStore;
-       const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
-       console.log('Paginacja: ', selectedUnitsByDiff.docs, selectedPage, pageCountbyDiff)
+        let { handleTableChange } = this.props.paginationStore;
+      //  const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
+      //  console.log('Paginacja: ', selectedUnitsByDiff.docs, selectedPage, pageCountbyDiff)
        
        if(selectedUnitsByDiff.docs) {
       return (
@@ -32,8 +32,8 @@ export default class DifferencePage extends Component {
           
           <DiffTable
             data={ selectedUnitsByDiff.docs }
-            page={ selectedPage }
-            sizePerPage={ selectedUnitsByDiff.itemsPerPage }
+            // page={ selectedPage }
+            // sizePerPage={ selectedUnitsByDiff.itemsPerPage }
             totalSize={selectedUnitsByDiff.amount}
             onTableChange={ handleTableChange }
           />

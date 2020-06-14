@@ -9,7 +9,7 @@ class PaginationStore {
    
     //pagination
     // @observable amount = 0;
-    @observable itemsPerPage = 2;
+    @observable sizePerPage = 10;
     @observable selectedPage = 0;
     
        
@@ -28,30 +28,11 @@ class PaginationStore {
     //   this.appStore.homePageStore.getDiffItems(this.selectedPage);
     // };
 
-    @action handleTableChange = (type, { page, sortField, sortOrder }) => {
-      // let result = this.appStore.homePageStore.selectedUnitsByDiff.docs
-      // // Handle column sort
-      // if (sortOrder === 'asc') {
-      //   result = result.sort((a, b) => {
-      //     if (a[sortField] > b[sortField]) {
-      //       return 1;
-      //     } else if (b[sortField] > a[sortField]) {
-      //       return -1;
-      //     }
-      //     return 0;
-      //   });
-      // } else {
-      //   result = result.sort((a, b) => {
-      //     if (a[sortField] > b[sortField]) {
-      //       return -1;
-      //     } else if (b[sortField] > a[sortField]) {
-      //       return 1;
-      //     }
-      //     return 0;
-      //   });
-      // }
+    @action handleTableChange = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
       this.selectedPage = page;
-      this.appStore.homePageStore.getDiffItems(this.selectedPage, sortField, sortOrder);
+      this.sizePerPage = sizePerPage;
+      console.log('Waht: ', this.itemsPerPage);
+      this.appStore.homePageStore.getDiffItems(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
 
     }
     

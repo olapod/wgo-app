@@ -9,6 +9,7 @@ class HomePageStore {
     }
 
     @observable summary = [];
+    @observable itemsPerPage = 10;
 
      //database of filters filters
     @observable streets = [];
@@ -133,50 +134,43 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 
 //   }
 
-@action getDiffItems = (page, sortField, sortOrder) => {
-   const itemsPerPage = 12;
+@action getDiffItems = (page, sortField, sortOrder, sizePerPage, filters) => {
+  console.log('Filters: ', typeof filters)
    let order = 1
-  //  const startAt = (page - 1) * itemsPerPage;
-   const startAt = page * itemsPerPage;
-   const limit = itemsPerPage;
+   if(sizePerPage) {this.itemsPerPage = sizePerPage}
+   const startAt = (page - 1) * this.itemsPerPage;
+     const limit = this.itemsPerPage;
     if (sortOrder === 'desc') { order = -1 }
     else {order = 1}
+    let filter = {};
     
-      //   result = result.sort((a, b) => {
-      //     if (a[sortField] > b[sortField]) {
-      //       return 1;
-      //     } else if (b[sortField] > a[sortField]) {
-      //       return -1;
-      //     }
-      //     return 0;
-      //   });
-      // } else {
-      //   result = result.sort((a, b) => {
-      //     if (a[sortField] > b[sortField]) {
-      //       return -1;
-      //     } else if (b[sortField] > a[sortField]) {
-      //       return 1;
-      //     }
-      //     return 0;
-      //   });
-      // }
-      
+
+    
+    if (filters === undefined || Object.keys(filters).length === 0) {console.log('Git')}
+    else {
+      let keys = Object.keys(filters);
+      console.log('Keys: ', keys)
+      filter = filters}
+    // console.log('Filter: ', filter)
+    
+    
 axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         params: {
           diff: this.selectedDiff,
           startAt: startAt,
           limit: limit,
-          sort: {[sortField]: order}
+          sort: {[sortField]: order},
+          filters: filter
         }
       })
 .then(res => {runInAction(() => {
   this.selectedUnitsByDiff = {
         docs: res.data.docs,
         amount: res.data.amount,
-        itemsPerPage,
-        selectedPage: page,
+        // itemsPerPage,
+        // selectedPage: page,
       }})})
-.then(console.log('Test: ', this.selectedUnitsByDiff.docs))
+// .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
   }
 
