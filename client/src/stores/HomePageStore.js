@@ -135,28 +135,31 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 //   }
 
 @action getDiffItems = (page, sortField, sortOrder, sizePerPage, filters) => {
-  console.log('Filters: ', typeof filters)
-   let order = 1
-   if(sizePerPage) {this.itemsPerPage = sizePerPage}
+  console.log('Filters: ', filters)
+  let filter = {};
+   let order = 1;
+  if(sizePerPage) {this.itemsPerPage = sizePerPage}
    const startAt = (page - 1) * this.itemsPerPage;
      const limit = this.itemsPerPage;
     if (sortOrder === 'desc') { order = -1 }
     else {order = 1}
-    let filter = {};
-    
-
-    
-    if (filters === undefined || Object.keys(filters).length === 0) {console.log('Git')}
-    else {
+   
+   
+    // if (filters === undefined || Object.keys(filters).length === 0) {filter = {diff: this.selectedDiff}}
+    if (filters) {
+      let values = Object.keys(filters).map(f =>filters[f].filterVal);
       let keys = Object.keys(filters);
-      console.log('Keys: ', keys)
-      filter = filters}
-    // console.log('Filter: ', filter)
-    
+      keys.forEach((key, i) => filter[key] = values[i]);
+      Object.assign(filter, {roznica: this.selectedDiff})
+      // console.log('Filter: ', filter)
+      }
+    else {filter = {diff: this.selectedDiff}}
+    console.log('Filter: ', filter)
+  
     
 axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
         params: {
-          diff: this.selectedDiff,
+          // diff: this.selectedDiff,
           startAt: startAt,
           limit: limit,
           sort: {[sortField]: order},
@@ -172,6 +175,7 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
       }})})
 // .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
+    
   }
 
 //filtr statusu deklaracji

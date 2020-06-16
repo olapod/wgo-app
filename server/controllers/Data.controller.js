@@ -89,37 +89,40 @@ exports.getDiff = async (req, res) => {
 exports.filterByDiff = async function (req, res) {
   try {
     // let diff = req.params.diff;
-    let { startAt, limit, diff, sort, filters } = req.query;
-    // console.log('Spr: ', typeof filters)
+    let { startAt, limit, sort, filters } = req.query;
+    console.log('Spr: ', filters)
+    
     startAt = parseInt(startAt);
     limit = parseInt(limit);
     sort=JSON.parse(sort);
     filters=JSON.parse(filters);
-    console.log('Filter: ', Object.keys(filters).length )
-    if (Object.keys(filters).length === 0) {
-          const docs = await Data.find({roznica: diff}).sort(sort).collation({ locale: "pl", numericOrdering: true}).skip(startAt).limit(limit);
-          const amount = await Data.find({roznica: diff}).countDocuments();
-          res.status(200).json({
-          docs,
-          amount,
-        });
-    }
-    else {
-      console.log(filters)
+    if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}; console.log('mam')}
+    console.log('Filter: ', filters )
+    // if (Object.keys(filters).length === 0) {
+    //       const docs = await Data.find({roznica: diff}).sort(sort).collation({ locale: "pl", numericOrdering: true}).skip(startAt).limit(limit);
+    //       const amount = await Data.find({roznica: diff}).countDocuments();
+    //       res.status(200).json({
+    //       docs,
+    //       amount,
+    //     });
+    // }
+    // else {
+    //   console.log(filters)
         
       const docs = await Data
-      .find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}})
+      // .find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}})
+      .find(filters)
       .sort(sort).collation({ locale: "pl", numericOrdering: true})
       .skip(startAt)
       .limit(limit);
-      console.log('Docs: ', docs.length)
-      const amount = await Data.find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}}).countDocuments()
+      // console.log('Docs: ', docs.length)
+      const amount = await Data.find(filters).countDocuments();
       console.log('Amount: ', amount)
       res.status(200).json({
         docs,
         amount,
       });
-    };
+    // };
   
    
 
