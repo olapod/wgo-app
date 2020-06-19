@@ -20,7 +20,7 @@ export default class DifferencePage extends Component {
 
     render() {
        let {selectedUnitsByDiff, selectedDiff } = this.props.homePageStore; 
-        let { handleTableChange } = this.props.paginationStore;
+        let { diffHandleTableChange } = this.props.paginationStore;
       //  const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
       //  console.log('Paginacja: ', selectedUnitsByDiff.docs, selectedPage, pageCountbyDiff)
        
@@ -35,37 +35,9 @@ export default class DifferencePage extends Component {
             // page={ selectedPage }
             // sizePerPage={ selectedUnitsByDiff.itemsPerPage }
             totalSize={selectedUnitsByDiff.amount}
-            onTableChange={ handleTableChange }
-          />
+            onTableChange={ diffHandleTableChange }
+          />   
          
-          {/* <Table striped bordered >
-          <thead>
-            <tr>
-              <th>ADRES</th>
-              <th>LICZBA MELDUNKÓW</th>
-              <th>LICZBA W DEKLARACJI</th>
-              <th>RÓŻNICA</th>
-              <th>STATUS DEKLARACJI</th>
-            </tr>
-            </thead>
-          <tbody>
-            {selectedUnitsByDiff.docs.map(item => {
-              return( 
-              <tr key={item._id}>
-                <td >{item.ulica} {item.nr}</td>
-                <td>{item.meldunki}</td>
-                <td>{item.osoby}</td> 
-                <td>{item.roznica}</td> 
-                <td>{item.DGO}</td>                
-              </tr>
-            )})}
-      </tbody>
-		</Table>
-    </div>
-    <div className='paginationContainer'>
-    <Pagination
-    handlePageClick={handlePageClickedDiff} pageCount={pageCountbyDiff} itemsPerPage={selectedUnitsByDiff.itemsPerPage}
-    /> */}
     </div>
         </div>
       );

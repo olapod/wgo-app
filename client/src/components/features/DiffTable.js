@@ -20,7 +20,7 @@ const columns = [{
     dataField: 'ulica',
     text: 'ADRES',
     sort: true,
-    filter: textFilter()
+    filter: textFilter({placeholder: 'wprowadź ulicę'})
     // sortCaret: (order, column) => {
     //   if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
     //   else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<font color="red">Asc</font></span>);
@@ -32,17 +32,17 @@ const columns = [{
     dataField: 'nr',
     text: 'NUMER',
     sort: true,
-    filter: textFilter()
+    filter: textFilter({placeholder: 'wprowadź nr'})
   }, {
     dataField: 'meldunki',
     text: 'LICZBA MELDUNKÓW',
     sort: true,
-    filter: textFilter()
+    filter: textFilter({placeholder: 'wprowadź liczbę'})
   }, {
     dataField: 'osoby',
     text: 'LICZBA W DEKLARACJI',
     sort: true,
-    filter: textFilter()
+    filter: textFilter({placeholder: 'wprowadź liczbę'})
   }, {
     dataField: 'roznica',
     text: 'RÓŻNICA',    
@@ -50,7 +50,7 @@ const columns = [{
     dataField: 'DGO',
     text: 'STATUS DEKLARACJI',
     sort: true,
-    filter: textFilter()
+    filter: textFilter({placeholder: 'wprowadź status deklaracji'})
   }];
 
   const defaultSorted = [{

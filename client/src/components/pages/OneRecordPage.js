@@ -18,7 +18,7 @@ export default class OneRecordPage extends Component {
       let text;
       console.log('record: ', selectedUnitByAddress)
        if (selectedUnitByAddress.roznica === 0) {
-      text = <div><p>Liczba osób zameldowanych jest taka sama jak zgłoszonych do odpadowej</p><span className='okRecord'><FontAwesomeIcon
+      text = <div><p>Liczba osób zameldowanych jest taka sama jak zgłoszonych do deklaracji odpadowej</p><span className='okRecord'><FontAwesomeIcon
       icon={faCheckCircle}/></span></div>;
     } if (selectedUnitByAddress.roznica > 0) {
       text = <div><p>Liczba osób zameldowanych jest wyższa od zgłoszonych do deklaracji odpadowej o {selectedUnitByAddress.roznica}</p><span className='badRecord'><FontAwesomeIcon

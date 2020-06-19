@@ -10,6 +10,8 @@ class HomePageStore {
 
     @observable summary = [];
     @observable itemsPerPage = 10;
+    @observable startAt = null;
+    @observable limit = null;
 
      //database of filters filters
     @observable streets = [];
@@ -139,8 +141,8 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
   let filter = {};
    let order = 1;
   if(sizePerPage) {this.itemsPerPage = sizePerPage}
-   const startAt = (page - 1) * this.itemsPerPage;
-     const limit = this.itemsPerPage;
+   this.startAt = (page - 1) * this.itemsPerPage;
+   this.limit = this.itemsPerPage;
     if (sortOrder === 'desc') { order = -1 }
     else {order = 1}
    
@@ -149,19 +151,20 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
     if (filters) {
       let values = Object.keys(filters).map(f =>filters[f].filterVal);
       let keys = Object.keys(filters);
+      console.log('One: ', keys, ' Two: ', values)
       keys.forEach((key, i) => filter[key] = values[i]);
       Object.assign(filter, {roznica: this.selectedDiff})
       // console.log('Filter: ', filter)
       }
-    else {filter = {diff: this.selectedDiff}}
+    else {filter = {roznica: this.selectedDiff}}
     console.log('Filter: ', filter)
   
     
-axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
+axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.limit}`, {
         params: {
           // diff: this.selectedDiff,
-          startAt: startAt,
-          limit: limit,
+          startAt: this.startAt,
+          limit: this.limit,
           sort: {[sortField]: order},
           filters: filter
         }
@@ -184,27 +187,48 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${startAt}/${limit}`, {
   this.statusDisabled = false;
         }
 
-@action getDGOStatusItems = (page) => {
-   const itemsPerPage = 10;
-  //  const startAt = (page - 1) * itemsPerPage;
-   const startAt = page * itemsPerPage;
-   const limit = itemsPerPage;
+@action getDGOStatusItems = (page, sortField, sortOrder, sizePerPage, filters) => {
+
+console.log('Filters: ', filters)
+  let filter = {};
+   let order = 1;
+  if(sizePerPage) {this.itemsPerPage = sizePerPage}
+   const startAt = (page - 1) * this.itemsPerPage;
+     const limit = this.itemsPerPage;
+    if (sortOrder === 'desc') { order = -1 }
+    else {order = 1}
+   
+   
+    // if (filters === undefined || Object.keys(filters).length === 0) {filter = {diff: this.selectedDiff}}
+    if (filters) {
+      let values = Object.keys(filters).map(f =>filters[f].filterVal);
+      let keys = Object.keys(filters);
+     
+      keys.forEach((key, i) => filter[key] = values[i]);
+      Object.assign(filter, {DGO: this.selectedDGOstatus})
+      // console.log('Filter: ', filter)
+      }
+    else {filter = {DGO: this.selectedDGOstatus}}
+    console.log('Filter: ', filter)
+  
+    
 axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`, {
         params: {
-          status: this.selectedDGOstatus,
           startAt: startAt,
-          limit: limit
+          limit: limit,
+          sort: {[sortField]: order},
+          filters: filter
         }
       })
 .then(res => {runInAction(() => {
   this.selectedUnitsByDGOstatus = {
         docs: res.data.docs,
         amount: res.data.amount,
-        itemsPerPage,
-        selectedPage: page,
+        // itemsPerPage,
+        // selectedPage: page,
       }})})
+// .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
-
   }
 
   @action resetStatusButton() {

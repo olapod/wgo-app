@@ -31,7 +31,7 @@ class App extends React.Component {
             <Route path="/login" exact component={Login} />
             <Route path="/logout" exact component={Logout} />
             <Route path='/raport/:street/:number' exact component={OneRecordPage} />
-            <Route path='/raport2/difference/:diff' exact component={DifferencePage} />
+            <Route path='/raport2/difference/:diff/range/:startAt/:limit' exact component={DifferencePage} />
             {/* <Route path='/raport2/differences/:diff' exact component={DifferencePage} /> */}
             <Route path='/raport3/status/:status' exact component={DGOstatusPage} />
             <Route component={NotFound} />

@@ -90,32 +90,23 @@ exports.filterByDiff = async function (req, res) {
   try {
     // let diff = req.params.diff;
     let { startAt, limit, sort, filters } = req.query;
-    console.log('Spr: ', filters)
-    
+    console.log('Filtry: ', filters)
     startAt = parseInt(startAt);
     limit = parseInt(limit);
     sort=JSON.parse(sort);
     filters=JSON.parse(filters);
-    if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}; console.log('mam')}
+    if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
+    if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
+    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
     console.log('Filter: ', filters )
-    // if (Object.keys(filters).length === 0) {
-    //       const docs = await Data.find({roznica: diff}).sort(sort).collation({ locale: "pl", numericOrdering: true}).skip(startAt).limit(limit);
-    //       const amount = await Data.find({roznica: diff}).countDocuments();
-    //       res.status(200).json({
-    //       docs,
-    //       amount,
-    //     });
-    // }
-    // else {
-    //   console.log(filters)
-        
+         
       const docs = await Data
-      // .find({roznica: diff, ulica: {$regex: filters.ulica.filterVal, $options: "$i"}})
       .find(filters)
       .sort(sort).collation({ locale: "pl", numericOrdering: true})
       .skip(startAt)
-      .limit(limit);
-      // console.log('Docs: ', docs.length)
+      .limit(limit)
+      .exec();
+      
       const amount = await Data.find(filters).countDocuments();
       console.log('Amount: ', amount)
       res.status(200).json({
@@ -132,20 +123,53 @@ exports.filterByDiff = async function (req, res) {
 };
 
 exports.filterByDGOstatus = async function (req, res) {
+  // try {
+
+  //   let { startAt, limit, status } = req.query;
+
+  //   startAt = parseInt(startAt);
+  //   limit = parseInt(limit);
+
+  //   const docs = await Data.find({DGO: status}).skip(startAt).limit(limit).exec();
+  //   const amount = await Data.find({DGO: status}).countDocuments();
+  //   // console.log('DDDD: ', docs, 'WWWWWWW ', amount)
+  //   res.status(200).json({
+  //     docs,
+  //     amount,
+  //   });
+
+  // } catch(err) {
+  //   res.status(500).json(err);
+  // }
   try {
-
-    let { startAt, limit, status } = req.query;
-
+    // let diff = req.params.diff;
+    let { startAt, limit, sort, filters } = req.query;
+    console.log('Filtry: ', filters)
     startAt = parseInt(startAt);
     limit = parseInt(limit);
-
-    const docs = await Data.find({DGO: status}).skip(startAt).limit(limit);
-    const amount = await Data.find({DGO: status}).countDocuments();
-    // console.log('DDDD: ', docs, 'WWWWWWW ', amount)
-    res.status(200).json({
-      docs,
-      amount,
-    });
+    sort=JSON.parse(sort);
+    filters=JSON.parse(filters);
+    if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
+    if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
+    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
+    console.log('Filter: ', filters )
+         
+      const docs = await Data
+      .find(filters)
+      .sort(sort).collation({ locale: "pl", numericOrdering: true})
+      .skip(startAt)
+      .limit(limit)
+      .exec();
+      
+      const amount = await Data.find(filters).countDocuments();
+      console.log('Amount: ', amount)
+      res.status(200).json({
+        docs,
+        amount,
+      });
+    // };
+  
+   
 
   } catch(err) {
     res.status(500).json(err);

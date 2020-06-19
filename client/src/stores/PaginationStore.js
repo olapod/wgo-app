@@ -12,6 +12,7 @@ class PaginationStore {
     @observable sizePerPage = 10;
     @observable selectedPage = 0;
     
+    
        
     //pagination function
     
@@ -28,18 +29,18 @@ class PaginationStore {
     //   this.appStore.homePageStore.getDiffItems(this.selectedPage);
     // };
 
-    @action handleTableChange = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
+    @action diffHandleTableChange = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
       this.selectedPage = page;
       this.sizePerPage = sizePerPage;
-      console.log('Waht: ', this.itemsPerPage);
+      
       this.appStore.homePageStore.getDiffItems(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
 
     }
     
-    @action handlePageClickedDGOStatus = (data) => {
-      let selected = data.selected;
-      this.selectedPage = selected;
-      this.appStore.homePageStore.getDGOStatusItems(this.selectedPage);
+    @action DGOStatusHandleTableChange  = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
+      this.selectedPage = page;
+      this.sizePerPage = sizePerPage;
+      this.appStore.homePageStore.getDGOStatusItems(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
       // console.log(selected)
     };
     

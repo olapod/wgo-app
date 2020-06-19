@@ -58,7 +58,9 @@ let {streetsOptions,
       getSummary,
       diffDisabled,
       recordDisabled,
-      statusDisabled    
+      statusDisabled,
+      startAt,
+      limit    
         } = this.props.homePageStore;
 
     let {loading} = this.props.appStore;
@@ -138,7 +140,7 @@ let {streetsOptions,
         />
         <div className='d-flex justify-content-center diffButton'>
         <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'}>
-        <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff}>Filtruj</Link>
+        <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff + '/range/' + startAt + '/' + limit}>Filtruj</Link>
         </Button>
         </div>
       </form>
