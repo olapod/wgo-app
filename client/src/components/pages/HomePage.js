@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Spinner from '../common/Spinner';
 import { CSVLink } from "react-csv";
 import './HomePage.scss';
+// import history from "../../history";
 
 const DGOoptions = [
   { value: 'złożona deklaracja odpadowa', label: 'złożona deklaracja odpadowa' },
@@ -38,6 +39,13 @@ export default class HomePage extends Component {
       e.preventDefault();
       this.props.homePageStore.getDiffItems(this.props.appStore.presentPage)
     }
+
+    // historyHandleClick = (e) => {
+    //   e.preventDefault();
+    //   let {selectedDiff, startAt, limit} = this.props.homePageStore;
+    //   history.push(`/raport2/difference/${selectedDiff}/range/${startAt + 1}/${startAt + limit}`)
+    
+    // }
 
     render() {
 let {streetsOptions,
@@ -139,8 +147,9 @@ let {streetsOptions,
           noOptionsMessage={() => 'BRAK DANYCH'} 
         />
         <div className='d-flex justify-content-center diffButton'>
-        <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'}>
-        <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff + '/range/' + startAt + '/' + limit}>Filtruj</Link>
+        <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'} >
+        {/* <Link to={diffDisabled ? '#' : '/raport2/difference/' + selectedDiff + '/range/' + startAt + '/' + startAt+ 1 + limit}>Filtruj</Link> */}
+        <Link to={diffDisabled ? '#' :`/raport2/difference/${selectedDiff}/range/${startAt + 1}/${startAt + limit}`}>Filtruj</Link>
         </Button>
         </div>
       </form>

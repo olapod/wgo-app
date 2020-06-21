@@ -1,6 +1,10 @@
 import { observable, action, runInAction, computed } from "mobx";
 import { configure } from "mobx";
+import history from "../history";
+
+
 configure({ enforceActions: 'observed' });
+
 const axios = require('axios');
 
 class HomePageStore {
@@ -10,8 +14,8 @@ class HomePageStore {
 
     @observable summary = [];
     @observable itemsPerPage = 10;
-    @observable startAt = null;
-    @observable limit = null;
+    @observable startAt = 0;
+    @observable limit = 10;
 
      //database of filters filters
     @observable streets = [];
@@ -137,27 +141,26 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 //   }
 
 @action getDiffItems = (page, sortField, sortOrder, sizePerPage, filters) => {
-  console.log('Filters: ', filters)
+  console.log('Filters: ', page)
   let filter = {};
    let order = 1;
   if(sizePerPage) {this.itemsPerPage = sizePerPage}
    this.startAt = (page - 1) * this.itemsPerPage;
-   this.limit = this.itemsPerPage;
+    this.limit = this.itemsPerPage;
     if (sortOrder === 'desc') { order = -1 }
     else {order = 1}
-   
-   
+    
     // if (filters === undefined || Object.keys(filters).length === 0) {filter = {diff: this.selectedDiff}}
     if (filters) {
       let values = Object.keys(filters).map(f =>filters[f].filterVal);
       let keys = Object.keys(filters);
-      console.log('One: ', keys, ' Two: ', values)
+      // console.log('One: ', keys, ' Two: ', values)
       keys.forEach((key, i) => filter[key] = values[i]);
       Object.assign(filter, {roznica: this.selectedDiff})
       // console.log('Filter: ', filter)
       }
     else {filter = {roznica: this.selectedDiff}}
-    console.log('Filter: ', filter)
+    console.log('Route2: ', this.startAt, this.limit)
   
     
 axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.limit}`, {
@@ -175,7 +178,18 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.li
         amount: res.data.amount,
         // itemsPerPage,
         // selectedPage: page,
-      }})})
+      }
+      if (!this.startAt) {
+        history.push(`/raport2/difference/${this.selectedDiff}/range/1/10`)
+        console.log('MAMA')
+      }
+      else {
+      history.push(`/raport2/difference/${this.selectedDiff}/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
+      console.log('Push!', history)
+      // this.props.history.push(`/raport2/difference/${selectedDiff}/range/${startAt}/${limit}`)
+    }
+    )})
+    
 // .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
     
@@ -240,4 +254,4 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
 
 
 
-export default HomePageStore;
+export default HomePageStore

@@ -12,6 +12,7 @@
     "animate.css": "^3.7.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "history": "^5.0.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.4",
     "node-sass": "^4.13.1",

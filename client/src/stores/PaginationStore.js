@@ -11,7 +11,7 @@ class PaginationStore {
     // @observable amount = 0;
     @observable sizePerPage = 10;
     @observable selectedPage = 0;
-    
+    @observable startAt = 0;
     
        
     //pagination function
@@ -32,7 +32,6 @@ class PaginationStore {
     @action diffHandleTableChange = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
       this.selectedPage = page;
       this.sizePerPage = sizePerPage;
-      
       this.appStore.homePageStore.getDiffItems(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
 
     }
