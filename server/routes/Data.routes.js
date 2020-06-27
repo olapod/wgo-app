@@ -4,7 +4,7 @@ const router = express.Router();
 const DataController = require('../controllers/Data.controller');
 
 // get summary
-router.route('/api/getSummary').get(DataController.getSummary);
+router.route('/api/getSummary/range/:startAt/:limit').get(DataController.getSummary);
 
 // get streets
 router.route('/api/getStreets').get(DataController.getStreets);

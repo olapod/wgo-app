@@ -12,6 +12,7 @@ import Logout from './components/pages/LogoutPage';
 import OneRecordPage from './components/pages/OneRecordPage';
 import DifferencePage from './components/pages/DifferencePage';
 import DGOstatusPage from './components/pages/DGOstatusPage';
+import Database from './components/pages/DatabasePage';
 import WithAuth from './components/pages/WithAuth';
 // import history from './history';
 
@@ -31,6 +32,7 @@ class App extends React.Component {
         <MainLayout>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/database/range/:startAt/:limit" component={Database} />
             <Route path="/admin" component={WithAuth(Admin)} />
             <Route path="/login" component={Login} />
             <Route path="/logout"component={Logout} />

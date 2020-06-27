@@ -7,7 +7,7 @@ import './NavBar.scss';
 import BBlogo from '../../img/BB_logo.png'
 
 
-@inject('appStore')
+@inject('appStore', 'homePageStore')
 @observer
 
 
@@ -15,6 +15,7 @@ class NavBar extends React.Component {
   
     render() {
         const {login, email} = this.props.appStore;
+       const {startAt ,limit } = this.props.homePageStore;
         
         return (
             <Navbar className="navbarContainer" bg="dark" variant="dark">
@@ -26,6 +27,7 @@ class NavBar extends React.Component {
                     height="30"                    
                     />
                     <Nav.Link as={Link} to='/'>Home</Nav.Link>
+                    <Nav.Link as={Link} to={'/database/range/' + startAt + '/' + limit}>Baza</Nav.Link>
                     {!login 
                 ?  <Nav.Link as={Link} to='/login'>Zaloguj</Nav.Link> 
                 : <div className='adminNavbar'>

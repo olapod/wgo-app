@@ -9,8 +9,54 @@ const {
 
 
 exports.getSummary = async (req, res) => {
+  // try {
+  //   res.status(200).json(await Data.find());
+  // } catch(err) {
+  //   res.status(500).json(err);
+  // }
   try {
-    res.status(200).json(await Data.find());
+    // let diff = req.params.diff;
+    let { startAt, limit, sort, filters } = req.query;
+    console.log('Mam: ', filters)
+    startAt = parseInt(startAt);
+    limit = parseInt(limit);
+    sort=JSON.parse(sort);
+    
+    // if (filters.diff) {filters.diff = {$regex: filters.DGO, $options: "$i"}}
+    if(filters === undefined) {
+      const docs = await Data
+      .find()
+      .sort(sort).collation({ locale: "pl", numericOrdering: true})
+      .skip(startAt)
+      .limit(limit)
+      .exec();
+      
+      const amount = await Data.find(filters).countDocuments();
+     
+      res.status(200).json({
+        docs,
+        amount,
+      });
+    }
+    else {     
+      filters=JSON.parse(filters);
+    if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
+    if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
+    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
+      const docs = await Data
+      .find(filters)
+      .sort(sort).collation({ locale: "pl", numericOrdering: true})
+      .skip(startAt)
+      .limit(limit)
+      .exec();
+      
+      const amount = await Data.find(filters).countDocuments();
+     
+      res.status(200).json({
+        docs,
+        amount,
+      });
+    }
   } catch(err) {
     res.status(500).json(err);
   }
@@ -90,7 +136,7 @@ exports.filterByDiff = async function (req, res) {
   try {
     // let diff = req.params.diff;
     let { startAt, limit, sort, filters } = req.query;
-    console.log('Filtry: ', filters)
+    
     startAt = parseInt(startAt);
     limit = parseInt(limit);
     sort=JSON.parse(sort);
@@ -98,7 +144,7 @@ exports.filterByDiff = async function (req, res) {
     if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
     if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
     if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
-    console.log('Filter: ', filters )
+    
          
       const docs = await Data
       .find(filters)
@@ -108,7 +154,7 @@ exports.filterByDiff = async function (req, res) {
       .exec();
       
       const amount = await Data.find(filters).countDocuments();
-      console.log('Amount: ', amount)
+     
       res.status(200).json({
         docs,
         amount,

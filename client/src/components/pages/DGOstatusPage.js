@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 // import Pagination from '../common/Pagination';
-import DiffTable from '../features/DiffTable';
+import Table from '../features/Table';
 // import Table from 'react-bootstrap/Table';
 import './DifferencePage.scss';
 
@@ -66,7 +66,7 @@ componentDidMount(){
              <h1 className='diffTitle'>Raport ze statusu: {selectedDGOstatus}</h1>
           <div className='diffTable'>
             
-            <DiffTable
+            <Table
               data={ selectedUnitsByDGOstatus.docs }
               // page={ selectedPage }
               // sizePerPage={ selectedUnitsByDiff.itemsPerPage }

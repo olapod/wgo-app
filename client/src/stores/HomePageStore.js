@@ -45,13 +45,64 @@ class HomePageStore {
     }
 
 //pobieram całą bazę
-@action getSummary = () => {
-   //GET message from server using fetch api
-   this.appStore.loading = true
-   return axios.get('/api/getSummary')
-   .then(res => {runInAction(() => {
-   this.summary= res.data})})
-  //  .then(json => this.summary = json)
+@action getSummary = (page, sortField, sortOrder, sizePerPage, filters) => {
+  //  //GET message from server using fetch api
+  //  this.appStore.loading = true
+  //  return axios.get('/api/getSummary')
+  //  .then(res => {runInAction(() => {
+  //  this.summary= res.data})})
+  
+  console.log('Filters: ', filters)
+  let filter = {};
+   let order = 1;
+  if(sizePerPage) {this.itemsPerPage = sizePerPage}
+   this.startAt = (page - 1) * this.itemsPerPage;
+    this.limit = this.itemsPerPage;
+    if (sortOrder === 'desc') { order = -1 }
+    else {order = 1}
+    
+        if (filters) {
+      // console.log('What: ', filters)
+      let values = Object.keys(filters).map(f =>filters[f].filterVal);
+      let keys = Object.keys(filters);
+      // console.log('One: ', keys, ' Two: ', values)
+      keys.forEach((key, i) => filter[key] = values[i]);
+     
+      }
+    
+    // console.log('Route2: ', this.startAt, this.limit)
+  
+    
+axios.get(`/api/getSummary/range/${this.startAt}/${this.limit}`, {
+        params: {
+          // diff: this.selectedDiff,
+          startAt: this.startAt,
+          limit: this.limit,
+          sort: {[sortField]: order},
+          filters: filter
+        }
+      })
+.then(res => {runInAction(() => {
+  this.summary = {
+        docs: res.data.docs,
+        amount: res.data.amount,
+        // itemsPerPage,
+        // selectedPage: page,
+      }
+      if (!this.startAt) {
+        history.push(`/database/range/1/10`)
+        console.log('MAMA')
+      }
+      else {
+      history.push(`/database/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
+      console.log('Push!', history)
+      // this.props.history.push(`/raport2/difference/${selectedDiff}/range/${startAt}/${limit}`)
+    }
+    )})
+    
+// .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
+.then(runInAction(() => {this.appStore.loading = false}))
+
 }
 //filtr wg ulicy i numeru
 
@@ -141,7 +192,7 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
 //   }
 
 @action getDiffItems = (page, sortField, sortOrder, sizePerPage, filters) => {
-  console.log('Filters: ', page)
+  console.log('Filters: ', filters)
   let filter = {};
    let order = 1;
   if(sizePerPage) {this.itemsPerPage = sizePerPage}
@@ -152,15 +203,16 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
     
     // if (filters === undefined || Object.keys(filters).length === 0) {filter = {diff: this.selectedDiff}}
     if (filters) {
+      console.log('Spr: ', filters)
       let values = Object.keys(filters).map(f =>filters[f].filterVal);
       let keys = Object.keys(filters);
-      // console.log('One: ', keys, ' Two: ', values)
+      console.log('One: ', keys, ' Two: ', values)
       keys.forEach((key, i) => filter[key] = values[i]);
       Object.assign(filter, {roznica: this.selectedDiff})
-      // console.log('Filter: ', filter)
+      console.log('Filter: ', filter)
       }
     else {filter = {roznica: this.selectedDiff}}
-    console.log('Route2: ', this.startAt, this.limit)
+    // console.log('Route2: ', this.startAt, this.limit)
   
     
 axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.limit}`, {
@@ -181,11 +233,11 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.li
       }
       if (!this.startAt) {
         history.push(`/raport2/difference/${this.selectedDiff}/range/1/10`)
-        console.log('MAMA')
+        // console.log('MAMA')
       }
       else {
       history.push(`/raport2/difference/${this.selectedDiff}/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
-      console.log('Push!', history)
+      // console.log('Push!', history)
       // this.props.history.push(`/raport2/difference/${selectedDiff}/range/${startAt}/${limit}`)
     }
     )})

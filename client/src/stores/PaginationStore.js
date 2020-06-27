@@ -42,6 +42,13 @@ class PaginationStore {
       this.appStore.homePageStore.getDGOStatusItems(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
       // console.log(selected)
     };
+
+    @action summaryHandleTableChange  = (type, { page, sortField, sortOrder,  sizePerPage, filters }) => {
+      this.selectedPage = page;
+      this.sizePerPage = sizePerPage;
+      this.appStore.homePageStore.getSummary(this.selectedPage, sortField, sortOrder, this.sizePerPage, filters);
+      // console.log(selected)
+    };
     
     
     }

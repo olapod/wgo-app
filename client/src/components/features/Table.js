@@ -7,7 +7,7 @@ import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
 // import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-import './DiffTable.scss';
+import './Table.scss';
 // import cellEditFactory from 'react-bootstrap-table2-editor';
 // import filterFactory, { textFilter, Comparator } from 'react-bootstrap-table2-filter';
 
@@ -68,7 +68,7 @@ const columns = [{
     </span>
   );
 
-   const DiffTable = ({ data, page, sizePerPage, totalSize, onTableChange }) => (
+   const Table = ({ data, page, sizePerPage, totalSize, onTableChange }) => (
     <div>
        
       <BootstrapTable
@@ -106,4 +106,4 @@ const columns = [{
      />    
     </div>
   );
-  export default DiffTable;
+  export default Table;

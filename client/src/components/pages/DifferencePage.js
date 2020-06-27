@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import DiffTable from '../features/DiffTable';
+import Table from '../features/Table';
 // import { withRouter } from 'react-router-dom'
 // import Pagination from '../common/Pagination';
 // import Table from 'react-bootstrap/Table';
@@ -46,7 +46,7 @@ export default class DifferencePage extends Component {
           <h1 className='diffTitle'>Raport z punktów adresowych o różnicy {selectedDiff}</h1>
           <div className='diffTable'>
           
-          <DiffTable
+          <Table
             data={ selectedUnitsByDiff.docs }
             // page={ selectedPage }
             // sizePerPage={ selectedUnitsByDiff.itemsPerPage }
