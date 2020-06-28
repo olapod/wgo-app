@@ -8,8 +8,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 // import Button from 'react-bootstrap/Button';
-import Spinner from '../common/Spinner';
-import { CSVLink } from "react-csv";
 import './HomePage.scss';
 // import history from "../../history";
 
@@ -30,26 +28,19 @@ export default class HomePage extends Component {
       
     }
 
-    componentWillUnmount() {
-      this.props.appStore.resetLoading();
-      this.props.homePageStore.resetSummary();      
-    }
+    // componentWillUnmount() {
+    //   this.props.appStore.resetLoading();
+    //   // this.props.homePageStore.resetSummary();      
+    // }
 
     diffHandleClick = (e) => {
       e.preventDefault();
       this.props.homePageStore.getDiffItems(this.props.appStore.presentPage)
     }
 
-    // historyHandleClick = (e) => {
-    //   e.preventDefault();
-    //   let {selectedDiff, startAt, limit} = this.props.homePageStore;
-    //   history.push(`/raport2/difference/${selectedDiff}/range/${startAt + 1}/${startAt + limit}`)
     
-    // }
-
     render() {
 let {streetsOptions,
-      summary,
       streetsHandleChange,
       numbersOptions,
       numbersHandleChange,
@@ -57,13 +48,11 @@ let {streetsOptions,
       selectedStreet,
       selectedNumber,
       diffOptions,
-      // diffHandleClick,
       diffHandleChange,
       selectedDiff,
       selectedDGOstatus,
       DGOhandleChange,
       DGOhandleClick,
-      getSummary,
       diffDisabled,
       recordDisabled,
       statusDisabled,
@@ -71,38 +60,11 @@ let {streetsOptions,
       limit    
         } = this.props.homePageStore;
 
-    let {loading} = this.props.appStore;
-    // let diffDisabled 
-    // if (selectedDiff === null ) {
-    //   diffDisabled = false}
-    //   else {diffDisabled = true}
     
-    // const selectStyle = {
-    //   control: base => ({
-    //     ...base,
-    //     border: '1px solid #343a40',
-    //     marginBottom: 5,
-    //     // This line disable the blue border
-    //     boxShadow: 'none'
-    //   })
-    // };
-
-    let downloadLink;
-    console.log('What: ', selectedDGOstatus, 'Co: ', statusDisabled)
-    // console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
-      
-    if (summary.length === 0 && loading === true) {
-      downloadLink = <Spinner />
-    } if (summary.length > 0 && loading === true) {
-      downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
-    }
-    if (summary.length === 0 && loading === false) {
-      downloadLink  = <Button className='csvButton' onClick={getSummary}> Pobierz bazę</Button>
-    }
 
       return (
         <div className='titleContainer'>
-          <h1 className='title'>Aplikacja do raportowania różnic w osobach zgłoszonych do deklaracji odpadowych i bazy ELUD</h1>
+          <h1 className='title'>Aplikacja do raportowania różnic w osobach zgłoszonych do deklaracji odpadowych i bazy meldunkowej</h1>
           <Container>
             <Row>
               <Col className='column'>
@@ -176,19 +138,8 @@ let {streetsOptions,
           </Col>
         </Row>
       </Container>
-      <Container className='text-center mt-5'>
-        <div className='csvTitle'><p>Pobierz całą bazę w formacie CSV</p></div>
-        <div className='downloadLink'>
-          {downloadLink}
-        </div>
-        
-      </Container>
-      
-      
-     
-          {/* <ul >
-			{summary.map(item => <li key={item._id}>{item.ulica} {item.nr} Meldunki: {item.meldunki} Deklaracja DGO: {item.osoby} Różnica: {item.roznica} Status: {item.DGO}</li>)}
-		</ul> */}
+         
+          
         </div>
       );
     }

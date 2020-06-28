@@ -7,6 +7,14 @@ const {
   Worker, isMainThread, parentPort, workerData
 } = require('worker_threads');
 
+exports.getAllRecords = async (req, res) => {
+  try {
+    res.status(200).json(await Data.find().exec());
+  } catch(err) {
+    res.status(500).json(err);
+  }
+}
+
 
 exports.getSummary = async (req, res) => {
   // try {

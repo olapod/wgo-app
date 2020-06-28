@@ -20,13 +20,13 @@ class NavBar extends React.Component {
         return (
             <Navbar className="navbarContainer" bg="dark" variant="dark">
                <Nav>
-                 <img className='BB_logo'
+                 <img 
                     alt="Logo Bielska-Białej"
                     src={BBlogo}
                     width="35"
                     height="30"                    
                     />
-                    <Nav.Link as={Link} to='/'>Home</Nav.Link>
+                    <Nav.Link as={Link} to='/' >Home</Nav.Link>
                     <Nav.Link as={Link} to={'/database/range/' + startAt + '/' + limit}>Baza</Nav.Link>
                     {!login 
                 ?  <Nav.Link as={Link} to='/login'>Zaloguj</Nav.Link> 

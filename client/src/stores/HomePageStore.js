@@ -12,7 +12,8 @@ class HomePageStore {
         this.appStore = appStore;        
     }
 
-    @observable summary = [];
+    @observable summary = {};
+    @observable allRecords = []
     @observable itemsPerPage = 10;
     @observable startAt = 0;
     @observable limit = 10;
@@ -40,8 +41,8 @@ class HomePageStore {
 
    
 
-    @action resetSummary = () => {
-      this.summary = []
+    @action resetAllRecords = () => {
+      this.allRecords = []
     }
 
 //pobieram całą bazę
@@ -104,6 +105,16 @@ axios.get(`/api/getSummary/range/${this.startAt}/${this.limit}`, {
 .then(runInAction(() => {this.appStore.loading = false}))
 
 }
+
+//pobieram całą bazę do csv
+@action getAllRecords = () => {
+  //  //GET message from server using fetch api
+   this.appStore.loading = true
+   return axios.get('/api/allRecords')
+   .then(res => {runInAction(() => {
+   this.allRecords= res.data})})
+}
+
 //filtr wg ulicy i numeru
 
 @action getStreets = () => {

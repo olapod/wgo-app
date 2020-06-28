@@ -20,28 +20,28 @@ componentDidMount(){
     componentWillUnmount() {
       
       this.props.appStore.resetLoading();
-      this.props.homePageStore.resetSummary(); 
+      this.props.homePageStore.resetAllRecords(); 
     }
 
     render() {
       //  let { handlePageClickedDGOStatus} = this.props.paginationStore;
        let { summaryHandleTableChange} = this.props.paginationStore;
        
-       let {summary, getSummary} = this.props.homePageStore;
+       let {summary, getAllRecords, allRecords} = this.props.homePageStore;
   
       let {loading} = this.props.appStore;
 
       let downloadLink;
     // console.log('What: ', selectedDGOstatus, 'Co: ', statusDisabled)
-    // console.log('Loading: ', loading, 'Selected Number: ', selectedNumber)
+    console.log('Loading: ', loading, 'Summary: ', allRecords)
       
-    if (summary.length === 0 && loading === true) {
+    if (allRecords.length === 0 && loading === true) {
       downloadLink = <Spinner />
-    } if (summary.length > 0 && loading === true) {
-      downloadLink  = <CSVLink data={summary}>Baza gotowa do pobrania</CSVLink>
+    } if (allRecords.length > 0 && loading === true) {
+      downloadLink  = <CSVLink data={allRecords}>Baza gotowa do pobrania</CSVLink>
     }
-    if (summary.length === 0 && loading === false) {
-      downloadLink  = <Button className='csvButton' onClick={getSummary}> Pobierz bazę</Button>
+    if (allRecords.length === 0 && loading === false) {
+      downloadLink  = <Button className='csvButton' onClick={getAllRecords}> Pobierz bazę</Button>
     }
     
       if(summary.docs) {

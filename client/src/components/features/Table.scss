@@ -26,4 +26,29 @@
     margin-top: 0;
   }
 
+  .pagination {
+  .page-item .page-link {
+    // z-index: 3;
+    color: #343a40;
+    background-color: #cad3db;
+    border-color: #ffffff;
+    }
+
+.active .page-link, .active .page-link:focus {
   
+  background-color: #343a40 !important;
+  border-color: #ffffff!important;
+  // box-shadow: none !important;  
+}  
+ }
+
+ .btn-secondary {
+  background-color: #343a40 !important;
+  border-color: #343a40 !important
+ }
+
+.react-bootstrap-table-pagination-total {
+  margin-left: 10px;
+}
+
+.react-bootstrap-table table { table-layout: auto !important; }

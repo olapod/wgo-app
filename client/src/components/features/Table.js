@@ -1,7 +1,7 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
@@ -11,6 +11,11 @@ import './Table.scss';
 // import cellEditFactory from 'react-bootstrap-table2-editor';
 // import filterFactory, { textFilter, Comparator } from 'react-bootstrap-table2-filter';
 
+
+const selectOptions = {
+  'złożona deklaracja odpadowa': 'złożona deklaracja odpadowa',
+  'niezłożona deklaracja odpadowa': 'niezłożona deklaracja odpadowa'  
+};
 const columns = [{
     dataField: '_id',
     text: 'ID',
@@ -20,15 +25,9 @@ const columns = [{
     dataField: 'ulica',
     text: 'ADRES',
     sort: true,
-    filter: textFilter({placeholder: 'wprowadź ulicę'})
-    // sortCaret: (order, column) => {
-    //   if (!order) return (<span>&nbsp;&nbsp;Desc/Asc</span>);
-    //   else if (order === 'asc') return (<span>&nbsp;&nbsp;Desc/<font color="red">Asc</font></span>);
-    //   else if (order === 'desc') return (<span>&nbsp;&nbsp;<font color="red">Desc</font>/Asc</span>);
-    //   return null;
-    // }
-  },
-  {
+    filter: textFilter({placeholder: 'wprowadź ulicę'}),
+    headerStyle: {width: '230px'}
+  }, {
     dataField: 'nr',
     text: 'NUMER',
     sort: true,
@@ -45,12 +44,14 @@ const columns = [{
     filter: textFilter({placeholder: 'wprowadź liczbę'})
   }, {
     dataField: 'roznica',
-    text: 'RÓŻNICA',    
+    text: 'RÓŻNICA',
+    filter: textFilter({placeholder: 'wprowadź liczbę'})    
   }, {
     dataField: 'DGO',
     text: 'STATUS DEKLARACJI',
     sort: true,
-    filter: textFilter({placeholder: 'wprowadź status deklaracji'})
+    filter: selectFilter({options: selectOptions, placeholder: 'wprowadź status deklaracji'}),
+    headerStyle: {width: '260px'}
   }];
 
   const defaultSorted = [{
@@ -58,10 +59,6 @@ const columns = [{
     order: 'asc'
   }];
   
-  // const cellEditProps = {
-  //   mode: 'click'
-  // };
-
   const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total">
        Pokazuję { from } do { to } z { size } wyników
@@ -95,7 +92,6 @@ const columns = [{
           firstPageTitle: 'Pierwsza', 
           lastPageTitle: 'Ostatnia',
           paginationTotalRenderer: customTotal,
-          // hideSizePerPage: true, 
           hidePageListOnlyOnePage: true
         })}
         

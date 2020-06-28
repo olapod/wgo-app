@@ -24,3 +24,16 @@
         display: inline-block;         
       }
 }
+
+.csvButton {
+    
+    background-color: #343a40 !important; 
+    border: 0px solid !important;       
+    transition-duration: 0.4s !important;
+    color: #79969f !important;        
+}
+.csvButton:hover {
+    background-color: #79969f !important;
+    color: #343a40 !important;
+    
+  }

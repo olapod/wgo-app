@@ -6,6 +6,9 @@ const DataController = require('../controllers/Data.controller');
 // get summary
 router.route('/api/getSummary/range/:startAt/:limit').get(DataController.getSummary);
 
+//get all records for csv file
+router.route('/api/allRecords').get(DataController.getAllRecords);
+
 // get streets
 router.route('/api/getStreets').get(DataController.getStreets);
 

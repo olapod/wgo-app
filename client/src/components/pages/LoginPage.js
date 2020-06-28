@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import Button from 'react-bootstrap/Button';
+import './LoginPage.scss';
 
 @inject('appStore')
 @observer
@@ -44,9 +46,12 @@ export default class Login extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
-        <h1>Logowanie do panelu administratora</h1>
-        <input
+      <div className='loginContainer'>
+          <h1 className='loginTitle'>Logowanie do panelu administratora</h1>          
+      <form className='loginForm' onSubmit={this.onSubmit}>
+        <ul className='formList'>
+          <li>
+          <input
           type="email"
           name="email"
           placeholder="Wprowadź email"
@@ -54,6 +59,8 @@ export default class Login extends Component {
           onChange={this.handleInputChange}
           required
         />
+          </li>
+        <li>
         <input
           type="password"
           name="password"
@@ -62,8 +69,17 @@ export default class Login extends Component {
           onChange={this.handleInputChange}
           required
         />
-       <input type="submit" value="Wyślij"/>
+        </li>
+        <li>
+          <Button type="submit">        
+          Wyślij
+          </Button>
+        
+        </li>
+       
+       </ul>
       </form>
+      </div>
     );
   }
 }
