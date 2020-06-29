@@ -14,6 +14,7 @@ import DifferencePage from './components/pages/DifferencePage';
 import DGOstatusPage from './components/pages/DGOstatusPage';
 import Database from './components/pages/DatabasePage';
 import WithAuth from './components/pages/WithAuth';
+// import NavbarWithRouter from './components/features/NavBar'
 // import history from './history';
 
 
@@ -30,14 +31,16 @@ class App extends React.Component {
         >
           {/* <Router history={history}> */}
         <MainLayout>
+        {/* <NavbarWithRouter/> */}
           <Switch>
+            
             <Route exact path="/" component={Home} />
             <Route exact path="/database/range/:startAt/:limit" component={Database} />
-            <Route path="/admin" component={WithAuth(Admin)} />
-            <Route path="/login" component={Login} />
-            <Route path="/logout"component={Logout} />
-            <Route path='/raport/:street/:number'component={OneRecordPage} />
-            <Route path='/raport2/difference/:diff/range/:startAt/:limit' component={DifferencePage} />
+            <Route exact path="/admin" component={WithAuth(Admin)} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/logout"component={Logout} />
+            <Route exact path='/raport/:street/:number'component={OneRecordPage} />
+            <Route exact path='/raport2/difference/:diff/range/:startAt/:limit' component={DifferencePage} />
             {/* <Route path='/raport2/differences/:diff' exact component={DifferencePage} /> */}
             <Route path='/raport3/status/:status' exact component={DGOstatusPage} />
             <Route component={NotFound} />

@@ -28,7 +28,34 @@
     
 
     .navbar-nav {
-        display: inherit;        
+        display: inherit;
+
+        a {
+            text-decoration: none;
+            color: #ffffe1;
+            -webkit-transition: border 200ms ease-out;
+            -moz-transition: border 200ms ease-out;
+            -o-transition: border 200ms ease-out;
+            transition: border 200ms ease-out;
+            border-bottom: 1.5px solid transparent;
+            // border-top: 1.5px solid transparent;
+            padding: 2px;
+            display: inline-block !important;
+        }
+
+        a:hover,
+a:focus,
+a:active, .active {
+    border-bottom: 1.5px solid #ffffe1;
+    // border-top: 1.5px solid #ffffe1;
+}
+        
+        
+        // .active {
+        //     padding-bottom: 0px;
+        //     border-bottom: #ffffe1 0.125em solid;
+        //     // text-decoration: underline;
+        // }
     }
 
     // .navbarText {
