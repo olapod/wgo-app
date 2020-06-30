@@ -91,7 +91,7 @@ let {streetsOptions,
         />
         <div className='d-flex justify-content-center'>
         <Button className={recordDisabled ? 'buttonInactive' : 'buttonActive'} onClick={recordHandleClick} >
-        <Link to={recordDisabled ? '#' :'/raport/' + selectedStreet +'/'+ selectedNumber}>Filtruj</Link>
+        <Link to={recordDisabled ? '#' :`/raport1/address/${selectedStreet}/${selectedNumber}`}>Filtruj</Link>
 
         </Button>
         </div>
@@ -130,7 +130,7 @@ let {streetsOptions,
         />
         <div className='d-flex justify-content-center statusButton'>
         <Button className={statusDisabled ? 'buttonInactive' : 'buttonActive'} onClick={DGOhandleClick} >
-        <Link to={statusDisabled ? '#' :'/raport3/status/' + selectedDGOstatus}>Filtruj</Link>
+        <Link to={statusDisabled ? '#' :`/raport3/status/${selectedDGOstatus}/range/${startAt + 1}/${startAt + limit}`}>Filtruj</Link>
 
         </Button>
         </div>

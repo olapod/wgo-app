@@ -38,7 +38,7 @@ export default class DifferencePage extends Component {
         let { diffHandleTableChange } = this.props.paginationStore;
       //  const pageCountbyDiff = Math.ceil(selectedUnitsByDiff.amount / selectedUnitsByDiff.itemsPerPage);
       
-       console.log('URL: ', this.props.match.params, 'Dupa: ', this.props.homePageStore.startAt)
+       
        
        if(selectedUnitsByDiff.docs) {
       return (

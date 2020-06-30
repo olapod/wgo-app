@@ -92,11 +92,11 @@ axios.get(`/api/getSummary/range/${this.startAt}/${this.limit}`, {
       }
       if (!this.startAt) {
         history.push(`/database/range/1/10`)
-        console.log('MAMA')
+      
       }
       else {
       history.push(`/database/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
-      console.log('Push!', history)
+      
       // this.props.history.push(`/raport2/difference/${selectedDiff}/range/${startAt}/${limit}`)
     }
     )})
@@ -164,11 +164,14 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
           street: this.selectedStreet,
           number: this.selectedNumber
         }
+        
       })
 .then(res => {runInAction(() => {
-  console.log('Test: ', res.data)
-  this.selectedUnitByAddress = res.data})})
-  }
+   this.selectedUnitByAddress = res.data
+   history.push(`/raport1/address/${this.selectedUnitByAddress.ulica}/${this.selectedUnitByAddress.nr}`)
+  
+  })})}   
+   
 
   @action resetRecordButton() {
     this.selectedNumber = null;
@@ -214,13 +217,13 @@ axios.get(`/api/streets/${this.selectedStreet}/${this.selectedNumber}`, {
     
     // if (filters === undefined || Object.keys(filters).length === 0) {filter = {diff: this.selectedDiff}}
     if (filters) {
-      console.log('Spr: ', filters)
+      // console.log('Spr: ', filters)
       let values = Object.keys(filters).map(f =>filters[f].filterVal);
       let keys = Object.keys(filters);
-      console.log('One: ', keys, ' Two: ', values)
+      // console.log('One: ', keys, ' Two: ', values)
       keys.forEach((key, i) => filter[key] = values[i]);
       Object.assign(filter, {roznica: this.selectedDiff})
-      console.log('Filter: ', filter)
+      // console.log('Filter: ', filter)
       }
     else {filter = {roznica: this.selectedDiff}}
     // console.log('Route2: ', this.startAt, this.limit)
@@ -244,9 +247,10 @@ axios.get(`/api/differences/${this.selectedDiff}/range/${this.startAt}/${this.li
       }
       if (!this.startAt) {
         history.push(`/raport2/difference/${this.selectedDiff}/range/1/10`)
-        // console.log('MAMA')
+        console.log('MAM 1', this.selectedDiff)
       }
       else {
+        console.log('MAM 2', this.selectedDiff)
       history.push(`/raport2/difference/${this.selectedDiff}/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
       // console.log('Push!', history)
       // this.props.history.push(`/raport2/difference/${selectedDiff}/range/${startAt}/${limit}`)
@@ -270,8 +274,8 @@ console.log('Filters: ', filters)
   let filter = {};
    let order = 1;
   if(sizePerPage) {this.itemsPerPage = sizePerPage}
-   const startAt = (page - 1) * this.itemsPerPage;
-     const limit = this.itemsPerPage;
+   this.startAt = (page - 1) * this.itemsPerPage;
+    this.limit = this.itemsPerPage;
     if (sortOrder === 'desc') { order = -1 }
     else {order = 1}
    
@@ -286,13 +290,13 @@ console.log('Filters: ', filters)
       // console.log('Filter: ', filter)
       }
     else {filter = {DGO: this.selectedDGOstatus}}
-    console.log('Filter: ', filter)
+    // console.log('Filter: ', filter)
   
     
-axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`, {
+axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${this.startAt}/${this.limit}`, {
         params: {
-          startAt: startAt,
-          limit: limit,
+          startAt: this.startAt,
+          limit: this.limit,
           sort: {[sortField]: order},
           filters: filter
         }
@@ -303,7 +307,16 @@ axios.get(`/api/DGOstatus/${this.selectedDGOstatus}}/range/${startAt}/${limit}`,
         amount: res.data.amount,
         // itemsPerPage,
         // selectedPage: page,
-      }})})
+      }
+      if (!this.startAt) {
+        history.push(`/raport3/status/${this.selectedDGOstatus}/range/1/10`)
+        console.log('MAM 1', this.selectedDGOstatus)
+      }
+      else {
+      history.push(`/raport3/status/${this.selectedDGOstatus}/range/${this.startAt + 1}/${this.startAt + this.limit}`)}
+      console.log('MAM 2', this.selectedDGOstatus)
+    }
+    )})
 // .then(console.log('Test: ', this.selectedUnitsByDiff.docs))
 .then(runInAction(() => {this.appStore.loading = false}))
   }

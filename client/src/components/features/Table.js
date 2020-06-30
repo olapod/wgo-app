@@ -45,6 +45,7 @@ const columns = [{
   }, {
     dataField: 'roznica',
     text: 'RÓŻNICA',
+    sort: true,
     filter: textFilter({placeholder: 'wprowadź liczbę'})    
   }, {
     dataField: 'DGO',
@@ -58,6 +59,7 @@ const columns = [{
     dataField: 'ulica',
     order: 'asc'
   }];
+  
   
   const customTotal = (from, to, size) => (
     <span className="react-bootstrap-table-pagination-total">

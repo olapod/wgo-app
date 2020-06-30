@@ -22,13 +22,13 @@ class NavBar extends React.Component {
         return (
             <Navbar className="navbarContainer" bg="dark" variant="dark" >
                <Nav activeKey={location.pathname}>
-                 <img 
+                 <img  className='BB_logo'
                     alt="Logo Bielska-Białej"
                     src={BBlogo}
                     width="35"
                     height="30"                    
                     />
-                    <Nav.Link as={Link} to='/' exact eventKey={'/'}>Home</Nav.Link>
+                    <Nav.Link as={Link} to='/' eventKey={'/'}>Home</Nav.Link>
                     <Nav.Link as={Link} to={'/database/range/' + startAt + '/' + limit} eventKey={'/database/range/' + startAt + '/' + limit}>Baza</Nav.Link>
                     {!login 
                 ?  <Nav.Link as={Link} to='/login' eventKey={'/login'}>Zaloguj</Nav.Link> 

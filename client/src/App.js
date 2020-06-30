@@ -39,10 +39,10 @@ class App extends React.Component {
             <Route exact path="/admin" component={WithAuth(Admin)} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/logout"component={Logout} />
-            <Route exact path='/raport/:street/:number'component={OneRecordPage} />
+            <Route exact path='/raport1/address/:street/:number'component={OneRecordPage} />
             <Route exact path='/raport2/difference/:diff/range/:startAt/:limit' component={DifferencePage} />
             {/* <Route path='/raport2/differences/:diff' exact component={DifferencePage} /> */}
-            <Route path='/raport3/status/:status' exact component={DGOstatusPage} />
+            <Route path='/raport3/status/:status/range/:startAt/:limit' exact component={DGOstatusPage} />
             <Route component={NotFound} />
           </Switch>
         </MainLayout>
