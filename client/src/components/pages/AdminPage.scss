@@ -1,0 +1,79 @@
+.dataLoadingContainer {
+    min-height: 80vh;
+
+.csvTitle {
+    margin:30px;
+    padding: 30px;
+    text-align: center;
+    // font-weight: bold;
+    // border: 2px solid #343a40;
+    background-color: #79969f;
+    border-radius: 5px;
+    color: #343a40;
+    }
+
+.fileUploadContainer {
+    text-align: center;
+    .utfStatement {
+        text-decoration: underline;
+    }
+
+    .btn-primary {
+        margin-top: 10px;
+        background-color: #343a40;        
+        transition-duration: 0.4s;
+        box-shadow: none;
+        border-radius: 5px;
+        border: 0px solid;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-bottom: 10px;
+        a {
+            text-decoration: none; 
+            color: #79969f;
+        }
+    }
+    .btn-primary:hover {
+        background-color: #79969f;
+        a {            
+            color: #343a40;
+        }
+      }
+
+
+      .buttonInactive {
+            cursor: not-allowed;
+            
+        a {           
+            cursor: not-allowed;
+            
+        }
+    }
+
+    .buttonInactive:hover {
+        background-color: #343a40;
+        a {            
+            color: #79969f;
+        }
+      }
+    
+      .buttonInactive:active {
+        background-color: #343a40 !important;        
+      }
+    }
+    .logs{
+        background-color: #ffffe1;
+        border: 1px solid black;
+        
+        height: 44vh;
+        width: 70%;
+        margin: auto;
+        overflow: auto;
+    
+
+    ul {
+        list-style-type: none;
+        
+    }
+    }
+}

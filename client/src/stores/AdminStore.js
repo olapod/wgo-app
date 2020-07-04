@@ -15,7 +15,8 @@ class AdminStore {
     @observable wgo = [];
 
 
-   @observable logs = [];  
+   @observable logs = [];
+   @observable loadingDisabled = true;  
 
 
   //get logs from node.js

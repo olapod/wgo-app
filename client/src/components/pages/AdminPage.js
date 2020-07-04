@@ -3,10 +3,14 @@ import { observer, inject } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
 // import Spinner from '../common/Spinner';
 import io from 'socket.io-client';
+import './AdminPage.scss';
 const socket = io("localhost:3001")
 
 @inject('appStore', 'adminStore') 
@@ -77,33 +81,49 @@ componentDidMount() {
 
   render() {
     console.log('SocketIO: ', this.props.adminStore.logs)
-    const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0;
+    const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.adminStore.logs[0];
     const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.appStore.loading;
+    console.log('Test: ', this.props.adminStore.wgo.length, this.props.adminStore.elud.length, this.props.appStore.loading, this.props.adminStore.logs)
   return (
-    <div className='data_loading'>
-      <div className='csv_title'>
-        <h3>Wgranie plików do porównania</h3>
-        <p>W celu uzyskania polskich znaków pliki powinny być kodowane w formacie UTF-8</p>
+    <div className='dataLoadingContainer'>
+      <div className='csvTitle'>
+        <h1>Wgranie plików do porównania</h1>        
       </div>
-
-      <div >
-        { this.renderWgo() }
+      <div className='fileUploadContainer'>
+      <p className='utfStatement'>W celu uzyskania polskich znaków pliki powinny być kodowane w formacie UTF-8</p>
+      <Container >
+        <Row>
+          <Col>
+          { this.renderWgo() }
+          </Col>
+        <Col>
         { this.renderElud() }
-      </div>
+        </Col>
+        
+        </Row>
+      </Container>
       <div className='button_container'>
-       <Button type="button" className="btn btn-primary" disabled={!isEnabled}
+      {noButton ? <p>Bazy zostały załadowane</p> : <div><p>Czekam na załadowanie</p></div>}
+       <Button 
+       className={!isEnabled ? 'buttonInactive' : 'buttonActive'}
+      
         onClick={this.props.adminStore.postData}
         >
-          Wgraj obie bazy
+          Porównaj obie bazy
         </Button>
-      {noButton ? <p>Bazy zostały załadowane</p> : <p>Czekam na załadowanie</p>}
+      
 
       </div>
-      <div>
+      
+      
+      <div className='logsContainer'>
       <h5>Logi</h5>
+      <div className='logs'>
       <ul >
 			{ this.props.adminStore.logs.map((log, i) => <li key={i}>{log}</li>)}
 		</ul>
+    </div>
+    </div>
       </div>
     </div>
     )
