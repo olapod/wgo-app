@@ -4,9 +4,7 @@ const { parentPort } = require('worker_threads');
 
 function prepareElud(elud) {
   return new Promise(resolve => {
-    // app.emitter.emit("newEvent", "Przygotowuję dane z bazy ELUD do analizy"); 
-    // console.log("Przygotowuję dane z bazy ELUD do analizy");
-    parentPort.postMessage('Przygotowuję dane z bazy ELUD do analizy')
+    parentPort.postMessage({type: 'status', body: 'Przygotowuję dane z bazy ELUD do analizy'})
     for (var i = 0; i < elud.length; i++) {
       if (typeof elud[i].ulica === 'string') {
         elud[i].ulica =  elud[i].ulica.toUpperCase();
@@ -22,13 +20,13 @@ function prepareElud(elud) {
 
 function prepareUniqueAddressElud(newElud) {
   return new Promise(resolve => {
-    parentPort.postMessage('Zliczam liczbę meldunków dla każdej nieruchomości. CHWILĘ TO POTRWA....')
-    let jsonObject =  newElud.map(JSON.stringify);
-    parentPort.postMessage('Faza 1')
+    parentPort.postMessage({type: 'status', body: 'Zliczam liczbę meldunków dla każdej nieruchomości. CHWILĘ TO POTRWA....'})
+    let jsonObject =  newElud.map(JSON.stringify);    
+    parentPort.postMessage({type: 'status', body: '...Faza 1'})    
     let uniqueSet =  new Set(jsonObject);
-    parentPort.postMessage('Faza 2')
+    parentPort.postMessage({type: 'status', body: '......Faza 2'})
     let unique =  Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
-    parentPort.postMessage('Faza 3')
+    parentPort.postMessage({type: 'status', body: '.........Faza 3'})
       for (var i = 0; i < unique.length; i++) {
         for (var k = 0; k < newElud.length; k++) {
           if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
@@ -36,14 +34,14 @@ function prepareUniqueAddressElud(newElud) {
           }
         }
       };
-    parentPort.postMessage('Faza 4');
+      parentPort.postMessage({type: 'status', body: '............Faza 4'})
     resolve(unique);
     })
 }
 
 function prepareWgo(wgo) {
   return new Promise(resolve => {
-    parentPort.postMessage('Przygotowuję dane z bazy WGO do analizy')
+    parentPort.postMessage({type: 'status', body: 'Przygotowuję dane z bazy WGO do analizy'})
     for (var i = 0; i < wgo.length; i++) {
       if (typeof wgo[i].ulica === 'string') {
         wgo[i].ulica =  wgo[i].ulica.toUpperCase();
@@ -62,7 +60,7 @@ function prepareWgo(wgo) {
 
   function prepareUniqueAddressWgo(newWgo) {
     return new Promise(resolve => {
-      parentPort.postMessage('Tworzę unikalną bazę adresów z bazy WGO')
+      parentPort.postMessage({type: 'status', body: 'Tworzę unikalną bazę adresów z bazy WGO'})      
       let jsonObject2 = newWgo.map(JSON.stringify);
       let uniqueWgo = new Set(jsonObject2);
       let uniqueWgoStreets = Array.from(uniqueWgo).map(JSON.parse).map((osoby, roznica, meldunki, DGO) => ({...osoby, roznica, meldunki, DGO, osoby: 0, roznica: 0, meldunki: 0, DGO: ''}));
@@ -72,7 +70,7 @@ function prepareWgo(wgo) {
 
   function getPersonsInWgo(uniqueWgoStreets, wgo) {
     return new Promise(resolve => {
-      parentPort.postMessage('Zliczam liczbę osób zgłoszonych do DGO')
+      parentPort.postMessage({type: 'status', body: 'Zliczam liczbę osób zgłoszonych do DGO'})   
       for (var i = 0; i < uniqueWgoStreets.length; i++) {
         for (var k = 0; k <wgo.length; k++) {
           if (uniqueWgoStreets[i].nr === wgo[k].nr && uniqueWgoStreets[i].ulica === wgo[k].ulica && wgo[k].osoby ) {
@@ -87,7 +85,7 @@ function prepareWgo(wgo) {
 
   function compareBothDatabase(uniqueWgoStreets, unique) {
     return new Promise(resolve => {
-      parentPort.postMessage('Porównuje dane z bazy ELUD i WGO i znajduję różnice - CHWILĘ TO POTRWA')
+      parentPort.postMessage({type: 'status', body: 'Porównuje dane z bazy ELUD i WGO i znajduję różnice - CHWILĘ TO POTRWA'}) 
       for (var i = 0; i < uniqueWgoStreets.length; i++) {
         for (var k = 0; k <unique.length; k++) {
           if (uniqueWgoStreets[i].nr == unique[k].nr && uniqueWgoStreets[i].ulica == unique[k].ulica
@@ -102,10 +100,7 @@ function prepareWgo(wgo) {
           }
         }
       }
-      // console.log("Porównałem bazę Elud i WGO na podstawie tych samych adresów")
-      // console.log('Po porównaniu liczba rekordów w Elud nieznalezionych w WGO: ', unique.length,
-      //  ' liczb rekordów w Wgo: ', uniqueWgoStreets.length
-      //  )
+     
       // Pętla dla ulic/numerów, które nie występują w bazie ELUD, a występują w bazie WGO
       for (var i = 0; i < uniqueWgoStreets.length; i++) {
             if (uniqueWgoStreets[i].DGO === '') {
@@ -113,10 +108,7 @@ function prepareWgo(wgo) {
               uniqueWgoStreets[i].DGO = 'złożona deklaracja odpadowa';
           }
       }
-      // console.log('Odnalazłem rekordy, które nie występują w bazie ELUD, a występują w bazie WGO ')
-      // console.log('Po tej operacji liczba rekordów w Elud nieznalezionych w WGO: ', unique.length,
-      //  ' liczb rekordów w Wgo: ', uniqueWgoStreets.length
-      //  )
+     
       // Pętla dla ulic/numerów, które nie występują w bazie WGO, a występują w bazie Elud
       for (var i = 0; i < unique.length; i++) {
             uniqueWgoStreets.push({ulica: unique[i].ulica,
@@ -148,7 +140,7 @@ function prepareWgo(wgo) {
         let uniqueWgoStreets2 = await getPersonsInWgo(uniqueWgoStreets, wgo);
         // app.emitter.emit("newEvent", "Faza 6");
         var uniqueWgoStreets3 = await compareBothDatabase(uniqueWgoStreets2, unique);
-       
+        parentPort.postMessage({type: 'status', body: 'DANE ZOSTAŁY PRZETWORZONE PRAWIDŁOWO! KONIEC!'})
         return uniqueWgoStreets3    
     
   }

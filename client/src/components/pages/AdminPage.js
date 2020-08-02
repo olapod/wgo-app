@@ -18,33 +18,34 @@ const socket = io("localhost:3001")
 class AdminPage extends Component {
 
 componentDidMount() {
+  socket.removeAllListeners();
   socket.on('log', log => this.props.adminStore.logReceive(log));
 }
 
-//  componentWillUnmount() {
-//    socket.emit('end');
-//    this.props.appStore.resetLogs();
-//   }
+ componentWillUnmount() {
+  //  socket.emit('end');
+   this.props.adminStore.resetAdminPanel();
+  }
 
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
 
     if (!this.props.adminStore.elud.length && !this.props.appStore.loading) {
-      console.log('War 1')
+      // console.log('War 1')
       return (
         <div className='button_container'>
         <DataUploadingElud />
         </div>
       )}
     if (this.props.appStore.loading) {
-      console.log('War 2', this.props.appStore.loading)
+      // console.log('War 2', this.props.appStore.loading)
       return (
         <div >
         <p>Loading...</p>
         </div>
       )}
     if (!this.props.appStore.loading) {
-      console.log('War 3')
+      // console.log('War 3')
         return (
           <div className='button_container'>
           <FontAwesomeIcon
@@ -83,7 +84,7 @@ componentDidMount() {
     console.log('SocketIO: ', this.props.adminStore.logs)
     const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.adminStore.logs[0];
     const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.appStore.loading;
-    console.log('Test: ', this.props.adminStore.wgo.length, this.props.adminStore.elud.length, this.props.appStore.loading, this.props.adminStore.logs)
+    // console.log('Test: ', this.props.adminStore.wgo.length, this.props.adminStore.elud.length, this.props.appStore.loading, this.props.adminStore.logs)
   return (
     <div className='dataLoadingContainer'>
       <div className='csvTitle'>

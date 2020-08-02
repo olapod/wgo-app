@@ -21,12 +21,15 @@ class AdminStore {
 
   //get logs from node.js
   @action logReceive = (log) => {
+    console.log('Logi: ', log)
         this.logs = [log, ...this.logs];
   }
 
-//   @action resetLogs = () => {
-//         this.logs = [];
-//   }
+  @action resetAdminPanel = () => {
+        this.logs = [];
+        this.elud = [];
+        this.wgo = [];
+  }
 
 
 //ładowanie danych - AdminPage

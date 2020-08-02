@@ -3,6 +3,7 @@ require("natural-compare-lite")
 // let { compareData } = require('../logic/compareData');
 
 const app = require('../server');
+
 const {
   Worker, isMainThread, parentPort, workerData
 } = require('worker_threads');
@@ -234,27 +235,49 @@ exports.filterByDGOstatus = async function (req, res) {
 //ładowanie baz danych - AdminPage
 
 exports.updateData = async function (req, res) {
-  
+  debugger
   try {
+ 
     await Data.deleteMany({});
         
     let payload = req.body;
     payload.wgo.forEach((element) =>{ element.osoby = parseInt(element.osoby, 10);})
     
-    app.emitter.emit("newEvent", "First task is done!"); 
+    app.emitter.emit("newEvent", {type: 'status', body: 'First task is done!'}); 
   
   
-    const worker = new Worker(`${__dirname}/../thread.js`, {
+    let worker = new Worker(`${__dirname}/../thread.js`, {
       workerData: payload
   });
-  
-    worker.on('message', (result) => {
-      app.emitter.emit("newEvent", result);          
-    });
-     
-    res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')
 
-  } catch(err) {
+   worker.on('message',(data) => {     
+     if (data.type === 'status') {
+      app.emitter.emit("newEvent", data)     
+     }
+     else {
+      async function insertMany() {
+        try {
+             return await Data.insertMany(data.body, {ordered: false})
+                .then(() => {app.emitter.emit("newEvent", {type: 'status', body: 'Last task is done!'});
+                res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')});
+        } catch (e) {
+            console.log(e);
+        }
+      }      
+      insertMany()
+      }
+    })
+    
+    worker.on('error',(err) => {
+        console.log(err);
+    })
+
+    worker.on('exit',(code) => {
+        if(code != 0) 
+            console.error(`Worker stopped with exit code ${code}`)
+    })    
+  } 
+  catch(err) {
     res.status(500).json(err);
     console.log(err)
   }

@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo')(session);
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
@@ -11,6 +13,9 @@ const userRoutes = require('./routes/User.routes');
 
 const app = express();
 const server = require('http').createServer(app);
+
+
+
 // const io = require('socket.io')(server);
 global.io = require('socket.io')(server);
 
@@ -41,7 +46,16 @@ mongoose
   .then(() => console.log('MongoDB successfully connected'))
   .catch(err => console.log(err));
 
-  
+// app.use(session({
+//     secret: 'foo',
+//     resave: false,
+//     saveUninitialized: false,
+//     store: new MongoStore({
+//       url : db,
+//       // db : 'Data',
+//       // collection : 'true'
+//    })
+// }));  
 
 
 app.get('/', function (req, res) {
@@ -59,7 +73,8 @@ app.get('/api/home', function(req, res) {
 io.on('connection', function(socket) {
   const eventEmitter = new events.EventEmitter();
   eventEmitter.on("newEvent", (msg) => {
-      socket.emit("log", msg);
+    console.log('Msg: ', msg.body)
+      socket.emit("log", msg.body);
   });
 
   exports.emitter = eventEmitter;
