@@ -2,6 +2,7 @@
 // const app = require('../server');
 const { parentPort } = require('worker_threads');
 
+//zliczam liczbę meldunków na nieruchomości
 function prepareElud(elud) {
   return new Promise(resolve => {
     parentPort.postMessage({type: 'status', body: 'Przygotowuję dane z bazy ELUD do analizy'})
@@ -26,15 +27,32 @@ function prepareUniqueAddressElud(newElud) {
     let uniqueSet =  new Set(jsonObject);
     parentPort.postMessage({type: 'status', body: '......Faza 2'})
     let unique =  Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
-    parentPort.postMessage({type: 'status', body: '.........Faza 3'})
-      for (var i = 0; i < unique.length; i++) {
-        for (var k = 0; k < newElud.length; k++) {
-          if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
-            unique[i].liczba_meldunków++
-          }
-        }
-      };
-      parentPort.postMessage({type: 'status', body: '............Faza 4'})
+    parentPort.postMessage({type: 'status', body: '.........Faza 3'});
+
+    // console.time('funkcja');
+    // // console.log('Loop1: ', unique);
+    //   for (var i = 0; i < unique.length; i++) {
+    //     for (var k = 0; k < newElud.length; k++) {
+    //       if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
+    //         unique[i].liczba_meldunków++
+    //       }
+    //     }
+    //   };
+    //   console.timeEnd('funkcja');
+
+      console.time('for each');
+      // unique.map(u => u.liczba_meldunków = newElud.filter((obj) => obj.ulica == unique.ulica && obj.nr == unique.ulica).length)
+      unique.forEach(u => u.liczba_meldunków = newElud.filter((obj) => obj.ulica == u.ulica && obj.nr == u.nr).length)
+      
+      console.timeEnd('for each');
+       
+       
+        
+      
+
+      parentPort.postMessage({type: 'status', body: '............Faza 4'});
+      // console.log('Loop2: ', unique);
+      
     resolve(unique);
     })
 }
@@ -78,6 +96,7 @@ function prepareWgo(wgo) {
           }
         }
       };
+      // uniqueWgoStreets.forEach(u => u.osoby = wgo.filter((obj) => obj.nr === u.nr && obj.ulica === u.ulica && obj.osoby).length)
       
         resolve(uniqueWgoStreets)
         })
