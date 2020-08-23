@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
-// import Spinner from '../common/Spinner';
+import Error from '../common/Error';
 import io from 'socket.io-client';
 import './AdminPage.scss';
 const socket = io("localhost:3001")
@@ -29,6 +29,11 @@ componentDidMount() {
 
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
+    if (this.props.adminStore.error) {
+      return (
+        <div>Dupa</div>
+      )
+    }
 
     if (!this.props.adminStore.elud.length && !this.props.appStore.loading) {
       // console.log('War 1')
@@ -53,6 +58,8 @@ componentDidMount() {
           <p>Plik z bazą ELUD wgrano poprawnie.</p>
           </div>
         )}
+
+       
        }
 
   renderWgo() {
@@ -61,6 +68,11 @@ componentDidMount() {
     //   return (
     //     <Spinner/>
     //   )}
+    if (this.props.adminStore.error) {
+      return (
+        <Error/>
+      )          
+    }
 
     if (!this.props.adminStore.wgo.length) {
       return (
@@ -76,12 +88,13 @@ componentDidMount() {
           <p>Plik WGO wgrano poprawnie.</p>
           </div>
         )}
+        
 
 
   }
 
   render() {
-    console.log('SocketIO: ', this.props.adminStore.logs)
+    console.log('Error: ', this.props.adminStore.error)
     const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.adminStore.logs[0];
     const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.appStore.loading;
     // console.log('Test: ', this.props.adminStore.wgo.length, this.props.adminStore.elud.length, this.props.appStore.loading, this.props.adminStore.logs)
@@ -104,7 +117,7 @@ componentDidMount() {
         </Row>
       </Container>
       <div className='button_container'>
-      {noButton ? <p>Bazy zostały załadowane</p> : <div><p>Czekam na załadowanie</p></div>}
+      {noButton ? <p>Bazy zostały załadowane.</p> : <p>Czekam na załadowanie plików.</p>}
        <Button 
        className={!isEnabled ? 'buttonInactive' : 'buttonActive'}
       

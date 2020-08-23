@@ -20,7 +20,8 @@ function processData(data) {
   
   return compareData(data.elud, data.wgo)
   .then((result) => {parentPort.postMessage({type: 'done', body: result}) })
-  .then(() => {process.exit()})
+
+  // .then(() => {process.exit()})
 }
 
 processData(workerData);

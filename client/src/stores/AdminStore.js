@@ -17,7 +17,7 @@ class AdminStore {
 
    @observable logs = [];
    @observable loadingDisabled = true;  
-
+   @observable error = false;
 
   //get logs from node.js
   @action logReceive = (log) => {
@@ -29,13 +29,15 @@ class AdminStore {
         this.logs = [];
         this.elud = [];
         this.wgo = [];
+        this.error = false;
   }
 
 
 //ładowanie danych - AdminPage
 loadEludData = data => {
   return new Promise(function(resolve, reject) {
-    if (data) {
+    if (data[0].ulica && data[0].nr) {
+      console.table(data);
         resolve(data);
     } else {
         reject("Nie jest ok");
@@ -44,7 +46,7 @@ loadEludData = data => {
 
 loadWgoData = data => {
   return new Promise(function(resolve, reject) {
-    if (data) {
+    if (data[0].ulica && data[0].nr && data[0].osoby) {
         resolve(data);
     } else {
         reject("Nie jest ok");
@@ -97,9 +99,9 @@ loadWgo = async (data) => {
 //   return this.wgo = data;
 // };
 
-// @action errorHandle = () => {
-//   this.error = true;
-// }
+@action errorHandle = () => {
+  this.error = true;
+}
 
 @action postData = (e) => {
   e.preventDefault();

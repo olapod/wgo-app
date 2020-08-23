@@ -29,22 +29,24 @@ function prepareUniqueAddressElud(newElud) {
     let unique =  Array.from(uniqueSet).map(JSON.parse).map(v => ({...v, liczba_meldunków: 0}));
     parentPort.postMessage({type: 'status', body: '.........Faza 3'});
 
-    // console.time('funkcja');
+    console.time('funkcja1');
     // // console.log('Loop1: ', unique);
-    //   for (var i = 0; i < unique.length; i++) {
-    //     for (var k = 0; k < newElud.length; k++) {
-    //       if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
-    //         unique[i].liczba_meldunków++
-    //       }
-    //     }
-    //   };
-    //   console.timeEnd('funkcja');
+      // for (var i = 0; i < unique.length; i++) {
+      //   for (var k = 0; k < newElud.length; k++) {
+      //     if (unique[i].nr == newElud[k].nr && unique[i].ulica == newElud[k].ulica) {
+      //       unique[i].liczba_meldunków++
+      //     }
+      //   }
+      // };
+    
 
-      console.time('for each');
+      // for (var i = 0; i < unique.length; i++) {
+      //   unique[i].liczba_meldunków = newElud.filter((obj) => obj.ulica == unique[i].ulica && obj.nr == unique[i].nr).length
+      // }
       // unique.map(u => u.liczba_meldunków = newElud.filter((obj) => obj.ulica == unique.ulica && obj.nr == unique.ulica).length)
       unique.forEach(u => u.liczba_meldunków = newElud.filter((obj) => obj.ulica == u.ulica && obj.nr == u.nr).length)
       
-      console.timeEnd('for each');
+      console.timeEnd('funkcja1');
        
        
         
@@ -87,8 +89,10 @@ function prepareWgo(wgo) {
     }
 
   function getPersonsInWgo(uniqueWgoStreets, wgo) {
+    
     return new Promise(resolve => {
       parentPort.postMessage({type: 'status', body: 'Zliczam liczbę osób zgłoszonych do DGO'})   
+      console.time('funkcja2');
       for (var i = 0; i < uniqueWgoStreets.length; i++) {
         for (var k = 0; k <wgo.length; k++) {
           if (uniqueWgoStreets[i].nr === wgo[k].nr && uniqueWgoStreets[i].ulica === wgo[k].ulica && wgo[k].osoby ) {
@@ -96,8 +100,15 @@ function prepareWgo(wgo) {
           }
         }
       };
-      // uniqueWgoStreets.forEach(u => u.osoby = wgo.filter((obj) => obj.nr === u.nr && obj.ulica === u.ulica && obj.osoby).length)
-      
+      // for (var i = 0; i < uniqueWgoStreets.length; i++) {
+      //   uniqueWgoStreets[i].osoby = wgo.filter((obj) => uniqueWgoStreets[i].nr === obj.nr && uniqueWgoStreets[i].ulica === obj.ulica && obj.osoby)
+      //   .reduce((sum, obj) => sum + obj.osoby, 0)
+      // };
+     
+      // uniqueWgoStreets.forEach(u => u.osoby = wgo.filter((obj) => u.nr === obj.nr && u.ulica === obj.ulica && obj.osoby)
+      //                            .reduce((sum, obj) => sum + obj.osoby, 0))
+
+     console.timeEnd('funkcja2') 
         resolve(uniqueWgoStreets)
         })
       }
@@ -142,7 +153,7 @@ function prepareWgo(wgo) {
   }
         
   async function compareData(elud, wgo, res) {
-    
+    try {
   
         // app.emitter.emit("newEvent", "Faza 1");
         let newElud = await prepareElud(elud)
@@ -156,12 +167,15 @@ function prepareWgo(wgo) {
         
         let uniqueWgoStreets = await prepareUniqueAddressWgo(newWgo)
         // app.emitter.emit("newEvent", "Faza 5");
+       
         let uniqueWgoStreets2 = await getPersonsInWgo(uniqueWgoStreets, wgo);
         // app.emitter.emit("newEvent", "Faza 6");
         var uniqueWgoStreets3 = await compareBothDatabase(uniqueWgoStreets2, unique);
         parentPort.postMessage({type: 'status', body: 'DANE ZOSTAŁY PRZETWORZONE PRAWIDŁOWO! KONIEC!'})
         return uniqueWgoStreets3    
-    
+    } catch(error) {
+      res.status(500).json(error);
+    }
   }
   
 
