@@ -1,0 +1,77 @@
+// input[type="file"]:focus {
+//     // display: none;
+// cursor: pointer;
+// z-index: -1;
+// }
+
+.btn-primary {
+    margin-top: 10px;
+    background-color: #343a40;        
+    transition-duration: 0.4s;
+    box-shadow: none;
+    border-radius: 5px;
+    border: 0px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    color: #79969f;
+    
+//     a {
+//         text-decoration: none; 
+//         color: #c9172f;
+//     }
+}
+
+.btn-primary:hover {
+    background-color: #79969f;
+    color: #343a40;
+    // z-index: 5 !important; 
+    // a {            
+    //    color: #343a40;
+    // }
+}
+
+.csv {
+    padding: 20px;
+    border: 3px solid #4621ad;
+}
+
+.csv_title, .button_container {
+    text-align: center;
+    margin-top: 40px;
+    // border: 3px solid #73AD21;
+}
+
+.csv-input {
+    border: 3px solid #1daa93;   
+}
+
+// .csv-reader-input {
+//     border: 3px solid #bb1776;    
+// //     // display: none; 
+    
+// }
+
+.csv-input:hover {
+    // border: 3px solid #aa1d1d;  
+    // cursor: pointer;
+    z-index: -2;
+}
+
+// .custom-file-upload {
+//     border: 3px solid #242222;     
+// }
+
+// .custom-file-upload:hover {
+//     border: 3px solid #aa1d1d;  
+//     cursor: pointer;
+// }
+
+.spanButton {
+    border: 3px solid #aa1d1d;
+    background-color: green;
+}
+
+.spanButton:hover {
+    cursor: pointer;
+}

@@ -29,12 +29,7 @@ componentDidMount() {
 
   renderElud() {
     console.log('What: ', this.props.appStore.loading)
-    if (this.props.adminStore.error) {
-      return (
-        <div>Dupa</div>
-      )
-    }
-
+    
     if (!this.props.adminStore.elud.length && !this.props.appStore.loading) {
       // console.log('War 1')
       return (
@@ -68,11 +63,7 @@ componentDidMount() {
     //   return (
     //     <Spinner/>
     //   )}
-    if (this.props.adminStore.error) {
-      return (
-        <Error/>
-      )          
-    }
+    
 
     if (!this.props.adminStore.wgo.length) {
       return (
@@ -106,6 +97,7 @@ componentDidMount() {
       <div className='fileUploadContainer'>
       <p className='utfStatement'>W celu uzyskania polskich znaków pliki powinny być kodowane w formacie UTF-8</p>
       <Container >
+      {this.props.adminStore.error ? <Error /> : 
         <Row>
           <Col>
           { this.renderWgo() }
@@ -114,7 +106,7 @@ componentDidMount() {
         { this.renderElud() }
         </Col>
         
-        </Row>
+        </Row>}
       </Container>
       <div className='button_container'>
       {noButton ? <p>Bazy zostały załadowane.</p> : <p>Czekam na załadowanie plików.</p>}
