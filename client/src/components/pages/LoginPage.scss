@@ -21,24 +21,11 @@
 
         input {
             border-color: rgb(255, 255, 255);
-            border-radius: 5px;
+            border-radius: 5px;            
         }
+        input:focus {
+            outline: none;
+        }
+    }   
     }
-    .btn-primary {
-        margin-top: 10px;
-        background-color: #343a40;        
-        transition-duration: 0.4s;
-        box-shadow: none;
-        border-radius: 5px;
-        border: 0px solid;
-        padding-left: 10px;
-        padding-right: 10px;
-        margin-bottom: 10px;        
-    }
-    .btn-primary:hover {
-        background-color: #79969f;
-        
-      }
-
-}
 }

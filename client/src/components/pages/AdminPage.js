@@ -49,7 +49,8 @@ componentDidMount() {
         return (
           <div className='button_container'>
           <FontAwesomeIcon
-								icon={faCheckCircle}/>
+								icon={faCheckCircle }
+                style={{color: 'green', fontSize: 40}}/>
           <p>Plik z bazą ELUD wgrano poprawnie.</p>
           </div>
         )}
@@ -58,13 +59,7 @@ componentDidMount() {
        }
 
   renderWgo() {
-    // if (this.props.appStore.loading) {
-    //   //  this.props.appStore.getLogs();
-    //   return (
-    //     <Spinner/>
-    //   )}
     
-
     if (!this.props.adminStore.wgo.length) {
       return (
         <div className='button_container'>
@@ -75,7 +70,8 @@ componentDidMount() {
         return (
           <div className='button_container'>
           <FontAwesomeIcon
-								icon={faCheckCircle}/>
+								icon={faCheckCircle}
+                style={{color: 'green', fontSize: 40}}/>
           <p>Plik WGO wgrano poprawnie.</p>
           </div>
         )}

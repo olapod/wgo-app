@@ -48,37 +48,37 @@ export default class Login extends Component {
     return (
       <div className='loginContainer'>
           <h1 className='loginTitle'>Logowanie do panelu administratora</h1>          
-      <form className='loginForm' onSubmit={this.onSubmit}>
-        <ul className='formList'>
-          <li>
-          <input
-          type="email"
-          name="email"
-          placeholder="Wprowadź email"
-          value={this.state.email}
-          onChange={this.handleInputChange}
-          required
-        />
-          </li>
-        <li>
-        <input
-          type="password"
-          name="password"
-          placeholder="Wprowadź hasło"
-          value={this.state.password}
-          onChange={this.handleInputChange}
-          required
-        />
-        </li>
-        <li>
-          <Button type="submit">        
-          Wyślij
-          </Button>
-        
-        </li>
-       
-       </ul>
-      </form>
+          <form className='loginForm' onSubmit={this.onSubmit}>
+            <ul className='formList'>
+              <li>
+                <input
+                type="email"
+                name="email"
+                placeholder="Wprowadź email"
+                value={this.state.email}
+                onChange={this.handleInputChange}
+                required
+              />
+              </li>
+              <li>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Wprowadź hasło"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                  required
+                />
+              </li>
+              <li>
+                <div className='button_container'>
+                  <Button type="submit">        
+                    Zaloguj
+                  </Button>
+                </div>        
+              </li>       
+            </ul>
+          </form>
       </div>
     );
   }

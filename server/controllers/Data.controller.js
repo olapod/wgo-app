@@ -178,24 +178,7 @@ exports.filterByDiff = async function (req, res) {
 };
 
 exports.filterByDGOstatus = async function (req, res) {
-  // try {
-
-  //   let { startAt, limit, status } = req.query;
-
-  //   startAt = parseInt(startAt);
-  //   limit = parseInt(limit);
-
-  //   const docs = await Data.find({DGO: status}).skip(startAt).limit(limit).exec();
-  //   const amount = await Data.find({DGO: status}).countDocuments();
-  //   // console.log('DDDD: ', docs, 'WWWWWWW ', amount)
-  //   res.status(200).json({
-  //     docs,
-  //     amount,
-  //   });
-
-  // } catch(err) {
-  //   res.status(500).json(err);
-  // }
+ 
   try {
     // let diff = req.params.diff;
     let { startAt, limit, sort, filters } = req.query;

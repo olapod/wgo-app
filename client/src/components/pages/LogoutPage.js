@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import './LogoutPage.scss';
 
 // @inject('routing')
 @inject('appStore')
@@ -12,8 +15,11 @@ export default class Logout extends Component {
     }
     render() {
         return (
-    <div>
+    <div className='logout_container'>
         <h1>Wylogowano z panelu administratora!</h1>
+        <FontAwesomeIcon
+			icon={faSignOutAlt  }
+            style={{color: '#343a40', fontSize: 80, textAlign: 'center'}}/>
     </div>
      )
     }

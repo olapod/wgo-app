@@ -1,9 +1,6 @@
 import React from "react";
 import CSVReader from 'react-csv-reader';
 import { observer, inject } from 'mobx-react';
-// import appStore from '../stores/appStore';
-
-// import Button from 'react-bootstrap/Button';
 
 @inject("appStore", 'adminStore')
 @observer
@@ -11,21 +8,21 @@ class DataUploadingWgo extends React.Component {
   render() {
     return (
       <div className='csv'>
-        <CSVReader
-          onFileLoaded={this.props.adminStore.loadWgo.bind(this)}
-          // inputStyle={{ opacity: 0, width: '170px', marginLeft: '-170px' }}
-          parserOptions={{header: true}}
-          cssClass="csv-reader-input"
-          cssInputClass='csv-input'
-          inputId='contained-button-file'
-          onError={this.props.appStore.errorHandle.bind(this)}
-        />
-        {/* <label className="custom-file-upload" htmlFor="contained-button-file">
-          <Button type="button" className="btn btn-primary">
-          Wgraj plik .CSV
-          </Button>
-        </label> */}
-        <p>Wgraj plik .CSV z bazą WGO. </p>
+        <label className="custom-file-upload" htmlFor="contained-button-file-1">
+          <CSVReader
+            onFileLoaded={this.props.adminStore.loadWgo.bind(this)}
+            inputStyle={{display: 'none'}}
+            parserOptions={{header: true}}
+            cssClass="csv-reader-input"
+            cssInputClass='csv-input'
+            onError={this.props.appStore.errorHandle.bind(this)}
+            inputId="contained-button-file-1"
+          />
+          <span className='spanButton'>
+            Wgraj plik .CSV
+          </span>
+        </label>      
+        <p>Wgraj plik z bazą danych WGO. </p>
       </div>
     )};
 };

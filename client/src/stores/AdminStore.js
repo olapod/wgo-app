@@ -36,8 +36,8 @@ class AdminStore {
 //ładowanie danych - AdminPage
 loadEludData = data => {
   return new Promise(function(resolve, reject) {
-    if (data[0].ulica && data[0].nr) {
-      console.table(data);
+    if (data[0].ulica && data[0].nr && data[0].ul_cecha) {
+      // console.table(data);
         resolve(data);
     } else {
         reject("Nie jest ok");
