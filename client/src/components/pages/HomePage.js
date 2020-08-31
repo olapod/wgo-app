@@ -22,7 +22,6 @@ const DGOoptions = [
 export default class HomePage extends Component {
 
     componentDidMount() {
-      // this.props.appStore.getSummary();
       this.props.homePageStore.getStreets();
       this.props.homePageStore.getDiff();
       
@@ -60,6 +59,16 @@ let {streetsOptions,
       limit    
         } = this.props.homePageStore;
 
+  let theme = theme => ({
+    ...theme,
+    colors: {
+      ...theme.colors,
+      primary50: '#b6b6b6',
+      primary25: '#79969f',
+      primary: 'grey',
+    },
+  })
+
     
 
       return (
@@ -70,13 +79,14 @@ let {streetsOptions,
               <Col className='column'>
          <form>
          <h3>Raport dla punktu adresowego</h3>
-        <Select className='selector'
+        <Select className='selector street_selector'
           options={streetsOptions}
           // value={this.streetsOptions.filter(({value}) => value === selectedStreet)}
           onChange={streetsHandleChange}
           // isMulti
           placeholder="Wybierz ulicę"
-          noOptionsMessage={() => 'BRAK DANYCH'}          
+          noOptionsMessage={() => 'BRAK DANYCH'}
+          theme={theme}         
         />
 
         <Select
@@ -87,7 +97,7 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz numer"
           noOptionsMessage={() => 'BRAK DANYCH'} 
-          // styles={selectStyle}
+          theme={theme}
         />
         <div className='d-flex justify-content-center'>
         <Button className={recordDisabled ? 'buttonInactive' : 'buttonActive'} onClick={recordHandleClick} >
@@ -107,6 +117,7 @@ let {streetsOptions,
           // isMulti
           placeholder="Wybierz różnicę"
           noOptionsMessage={() => 'BRAK DANYCH'} 
+          theme={theme}
         />
         <div className='d-flex justify-content-center diffButton'>
         <Button className={diffDisabled ? 'buttonInactive' : 'buttonActive'} >
@@ -126,7 +137,8 @@ let {streetsOptions,
           onChange={DGOhandleChange}
           // isMulti
           placeholder="Status deklaracji odpadowej"
-          noOptionsMessage={() => 'BRAK DANYCH'} 
+          noOptionsMessage={() => 'BRAK DANYCH'}
+          theme={theme} 
         />
         <div className='d-flex justify-content-center statusButton'>
         <Button className={statusDisabled ? 'buttonInactive' : 'buttonActive'} onClick={DGOhandleClick} >

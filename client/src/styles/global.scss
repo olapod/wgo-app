@@ -46,7 +46,7 @@ footer {
 }
 
 .button_container {
-    .btn-primary, .btn-primary:active, &:focus  {
+    .btn-primary, .btn-primary:active, .btn-primary:focus {
         margin-top: 10px;
         background-color: #343a40 !important;        
         transition-duration: 0.4s;
@@ -62,8 +62,8 @@ footer {
    
 
     .btn-primary:hover {
-        background-color: #79969f;
-        color: #343a40;      
+        background-color: #79969f !important;
+        color: #343a40 !important;      
     }
 
     .buttonInactive {
