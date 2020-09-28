@@ -51,7 +51,7 @@ exports.getSummary = async (req, res) => {
       filters=JSON.parse(filters);
     if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
     if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
-    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
+    if (filters.DGO) {filters.DGO = new RegExp('^' + filters.DGO, 'i')}
       const docs = await Data
       .find(filters)
       .sort(sort).collation({ locale: "pl", numericOrdering: true})
@@ -152,7 +152,7 @@ exports.filterByDiff = async function (req, res) {
     filters=JSON.parse(filters);
     if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
     if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
-    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
+    if (filters.DGO) {filters.DGO = new RegExp('^' + filters.DGO, 'i')}
     
          
       const docs = await Data
@@ -189,7 +189,7 @@ exports.filterByDGOstatus = async function (req, res) {
     filters=JSON.parse(filters);
     if (filters.ulica) {filters.ulica = {$regex: filters.ulica, $options: "$i"}}
     if (filters.nr) {filters.nr = new RegExp('^' + filters.nr, 'i')}
-    if (filters.DGO) {filters.DGO = {$regex: filters.DGO, $options: "$i"}}
+    if (filters.DGO) {filters.DGO = new RegExp('^' + filters.DGO, 'i')}
     console.log('Filter: ', filters )
          
       const docs = await Data
@@ -218,11 +218,11 @@ exports.filterByDGOstatus = async function (req, res) {
 //ładowanie baz danych - AdminPage
 
 exports.updateData = async function (req, res) {
-  debugger
+  
   try {
  
     await Data.deleteMany({});
-        
+    
     let payload = req.body;
     payload.wgo.forEach((element) =>{ element.osoby = parseInt(element.osoby, 10);})
     
@@ -238,17 +238,31 @@ exports.updateData = async function (req, res) {
       app.emitter.emit("newEvent", data)     
      }
      else {
-      async function insertMany() {
-        try {
-             return await Data.insertMany(data.body, {ordered: false})
-                .then(() => {app.emitter.emit("newEvent", {type: 'status', body: 'Last task is done!'});
-                res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')});
-        } catch (e) {
-            console.log(e);
-        }
-      }      
-      insertMany()
+      // async function insertMany() {
+      //   try {
+      //       //  return await Data.insertMany(data.body, {ordered: false})
+      //       //     // .then(() => {app.emitter.emit("newEvent", {type: 'status', body: 'Last task is done!'})})
+      //       //     .then(() => {res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')});
+      //        return Data.insertMany(data.body, {ordered: false})
+      //           // .then(() => {app.emitter.emit("newEvent", {type: 'status', body: 'Last task is done!'})})
+      //           .then(res => {res.status(200).send('Dane zostały przetworzone i załadowane bez błędów!!!')});
+      //   } catch (err) {
+      //     res.status(500).json({ err })
+      //   }
+      // }      
+      // insertMany()
+      try {
+        
+
+        console.log('Co: ', data.body[0])
+        const response = Data.insertMany(data.body, {ordered: false});
+        console.log("Insert Successful");
+        return res.status(200).send("Operacja zakończona sukcesem");
+      } catch (err) {
+        return res.status(500).json({ err })
       }
+      }
+      
     })
     
     worker.on('error',(err) => {

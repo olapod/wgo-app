@@ -29,6 +29,14 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit:500
 app.use(cookieParser());
 app.use(dataRoutes);
 app.use(userRoutes);
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '/../client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../client/build/index.html'));
+  });
+
 // app.use(express.static(path.join(__dirname, 'public')));
 // // app.use(express.static(path.join(__dirname, 'build')));
 // app.use('/', express.static(path.join(__dirname, 'public')))
