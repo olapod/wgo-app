@@ -46,9 +46,9 @@ componentDidMount(){
     
       if(summary.docs) {
         return (
-            <div className='diffContainer'>
-             <h1 className='diffTitle'>Kompletna baza danych</h1>
-          <Container className='diffTable'>
+            <div className='dataContainer'>
+             <h1 className='dataTitle'>Kompletna baza danych</h1>
+          <Container className='dataTable'>
             
             <Table
               data={ summary.docs }

@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 import DataUploadingWgo from '../features/DataUploadingWgo';
 import DataUploadingElud from '../features/DataUploadingElud';
 import Error from '../common/Error';
+import Spinner from '../common/Spinner';
 import io from 'socket.io-client';
 import './AdminPage.scss';
 const socket = io("localhost:3001")
@@ -28,23 +29,17 @@ componentDidMount() {
   }
 
   renderElud() {
-    console.log('What: ', this.props.appStore.loading)
+    // console.log('What: ', this.props.appStore.loading)
     
-    if (!this.props.adminStore.elud.length && !this.props.appStore.loading) {
-      // console.log('War 1')
+    if (!this.props.adminStore.elud.length ) {
+      
       return (
         <div className='button_container'>
         <DataUploadingElud />
         </div>
       )}
-    if (this.props.appStore.loading) {
-      // console.log('War 2', this.props.appStore.loading)
-      return (
-        <div >
-        <p>Loading...</p>
-        </div>
-      )}
-    if (!this.props.appStore.loading) {
+    
+    if (this.props.adminStore.elud.length) {
       // console.log('War 3')
         return (
           <div className='button_container'>
@@ -81,9 +76,9 @@ componentDidMount() {
   }
 
   render() {
-    console.log('Error: ', this.props.adminStore.error)
+    console.log('Logs: ',this.props.adminStore.logs)
     const isEnabled = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.adminStore.logs[0];
-    const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 && !this.props.appStore.loading;
+    const noButton = this.props.adminStore.wgo.length > 0 && this.props.adminStore.elud.length > 0 ;
     // console.log('Test: ', this.props.adminStore.wgo.length, this.props.adminStore.elud.length, this.props.appStore.loading, this.props.adminStore.logs)
   return (
     <div className='dataLoadingContainer'>
@@ -105,7 +100,7 @@ componentDidMount() {
         </Row>}
       </Container>
       <div className='button_container'>
-      {noButton ? <p>Bazy zostały załadowane.</p> : <p>Czekam na załadowanie plików.</p>}
+      {noButton ? <h5>Pliki do porównania zostały wczytane poprawnie.</h5> : <h5>Czekam na wczytanie plików.</h5>}
        <Button 
        className={!isEnabled ? 'buttonInactive' : 'buttonActive'}
       
@@ -113,7 +108,8 @@ componentDidMount() {
         >
           Porównaj obie bazy
         </Button>
-      
+        
+          
 
       </div>
       
@@ -124,6 +120,7 @@ componentDidMount() {
       <ul >
 			{ this.props.adminStore.logs.map((log, i) => <li key={i}>{log}</li>)}
 		</ul>
+    <Spinner/>
     </div>
     </div>
       </div>

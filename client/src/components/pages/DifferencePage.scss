@@ -1,7 +1,7 @@
-.diffContainer {
+.dataContainer {
     min-height: 80vh;
 
-.diffTitle {
+.dataTitle {
     margin:30px;
     padding: 30px;
     text-align: center;
@@ -13,7 +13,7 @@
     }
 }
 
-.diffTable {
+.dataTable {
     margin-left: 5%;
     margin-right: 5%; 
 }
@@ -37,3 +37,25 @@
     color: #343a40 !important;
     
   }
+
+  .statusTable {
+      tr th:last-child {
+          display: none;
+      }
+  }
+
+  .statusTable {
+      td:nth-child(6) {
+          display: none;
+      }
+  }
+
+  .diffTable {
+    tr th:nth-last-child(2) {
+        display: none;
+    }
+    td:nth-child(5) {
+        display: none;
+    }
+}
+

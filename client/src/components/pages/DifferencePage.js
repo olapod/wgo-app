@@ -42,9 +42,9 @@ export default class DifferencePage extends Component {
        
        if(selectedUnitsByDiff.docs) {
       return (
-        <div className='diffContainer'>
-          <h1 className='diffTitle'>Raport z punktów adresowych o różnicy {selectedDiff}</h1>
-          <div className='diffTable'>
+        <div className='dataContainer'>
+          <h1 className='dataTitle'>Raport z punktów adresowych o różnicy {selectedDiff}</h1>
+          <div className='dataTable diffTable'>
           
           <Table
             data={ selectedUnitsByDiff.docs }

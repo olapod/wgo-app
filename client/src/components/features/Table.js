@@ -52,7 +52,7 @@ const columns = [{
     text: 'STATUS DEKLARACJI',
     sort: true,
     filter: selectFilter({options: selectOptions, placeholder: 'wprowadź status deklaracji'}),
-    headerStyle: {width: '260px'}
+    headerStyle: {width: '260px'},    
   }];
 
   const defaultSorted = [{

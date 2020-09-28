@@ -18,10 +18,11 @@ class AdminStore {
    @observable logs = [];
    @observable loadingDisabled = true;  
    @observable error = false;
+   @observable dataLoading = false;
 
   //get logs from node.js
   @action logReceive = (log) => {
-    console.log('Logi: ', log)
+    // console.log('Logi: ', log)
         this.logs = [log, ...this.logs];
   }
 
@@ -30,6 +31,7 @@ class AdminStore {
         this.elud = [];
         this.wgo = [];
         this.error = false;
+        this.dataLoading = false;
   }
 
 
@@ -54,16 +56,16 @@ loadWgoData = data => {
   })}
 
 @action loadElud = async (data) => {
-  this.loading = true;
+  // this.dataLoading = true;
 
         try {
 
             const response = await this.loadEludData(data)
-            console.log('Spr: ', this.loading)
+            // console.log('Spr: ', this.dataLoading)
             if (response) {
                 runInAction(() => {
                   this.elud = response;
-                  this.loading = false;
+                  // this.dataLoading = false;
                 })
             }
         } catch (error) {
@@ -77,14 +79,14 @@ loadWgoData = data => {
 
 @action
 loadWgo = async (data) => {
-  this.loading = true;
+  // this.dataLoading = true;
         try {
 
             const response = await this.loadWgoData(data)
             if (response) {
                 runInAction(() => {
                   this.wgo = response
-                    this.loading = false;
+                    // this.dataLoading = false;
                 })
             }
         } catch (error) {
@@ -103,20 +105,26 @@ loadWgo = async (data) => {
   this.error = true;
 }
 
-@action postData = (e) => {
-  e.preventDefault();
+@action
+postData = async (e ) => {
+  // this.dataLoading = true;
+        try {
+          runInAction(() => {this.dataLoading = true;});
+            const response = await axios.post('/api/updateData', {elud: this.elud, wgo: this.wgo})
+            if (response) {
+              console.log('Status: ', response)
+                runInAction(() => {                
+                this.dataLoading = false;
+                })
+            }
+        } catch (error) {
+            runInAction(() => {
+                this.error = true;
+            });
+        }
+    };
 
-  axios.post('/api/updateData', {elud: this.elud, wgo: this.wgo})
-    .then(runInAction(() => {this.loading = true}))
-    .then(res => {runInAction(() => {
-      this.loading = false;
-      console.log('Status: ', res)})})
-    // .then(console.log('Finish status: ', res.status))
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+
 }
 
-
-export default AdminStore;
+export default AdminStore
