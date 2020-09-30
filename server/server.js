@@ -66,17 +66,17 @@ mongoose
 // }));  
 
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// app.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 // app.get('/', function (req, res) {
 //   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 // });
 
-app.get('/api/home', function(req, res) {
-  res.send('Welcome!');
-})
+// app.get('/api/home', function(req, res) {
+//   res.send('Welcome!');
+// })
 
 io.on('connection', function(socket) {
   const eventEmitter = new events.EventEmitter();
