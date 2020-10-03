@@ -41,7 +41,7 @@ app.get('*', (req, res) => {
 // // app.use(express.static(path.join(__dirname, 'build')));
 // app.use('/', express.static(path.join(__dirname, 'public')))
 // DB Config
-const db = require('./config/keys').mongoURI;
+const db = process.env.PROD_MONGODB;
 // Connect to MongoDB
 mongoose
   .connect(
