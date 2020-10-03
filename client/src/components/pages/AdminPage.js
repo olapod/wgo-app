@@ -12,7 +12,7 @@ import Error from '../common/Error';
 import Spinner from '../common/Spinner';
 import io from 'socket.io-client';
 import './AdminPage.scss';
-const socket = io("localhost:3001")
+const socket = io("localhost:12851")
 
 @inject('appStore', 'adminStore') 
 @observer
