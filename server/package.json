@@ -15,7 +15,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.11",
     "natural-compare-lite": "^1.4.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.5.0"
   },
   "devDependencies": {}
 }
